@@ -1,0 +1,516 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>המרכז להישגים לימודיים</title>
+    
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="המרכז להישגים">
+    <link rel="apple-touch-icon" href="Logo.png">
+    <link rel="icon" type="image/png" href="Logo.png">
+    <meta name="mobile-web-app-capable" content="yes">
+
+    <link href="https://fonts.googleapis.com/css2?family=Heebo:wght@300;400;500;700;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-cream: #fbfaf8;                
+            --card-white: #ffffff;
+            --primary-blue: #0f172a;            
+            --accent-gold: #b09151;            
+            --secondary-gold: #f5eadd;         
+            --math: #ef4444; --english: #f59e0b; --hebrew: #8b5cf6;
+            --science: #10b981; --arabic: #f97316;
+            --shadow-card: 0 10px 15px -3px rgba(0, 0, 0, 0.05);
+            --shadow-hover: 0 20px 25px -5px rgba(0, 0, 0, 0.15);
+        }
+
+        /* הגדרות נגישות */
+        body.high-contrast { background: #000 !important; color: #fff !important; background-image: none !important; }
+        body.high-contrast .subject-card, body.high-contrast header, body.high-contrast footer, body.high-contrast .testimonial-card, body.high-contrast .login-card { background: #000 !important; border: 2px solid #fff !important; color: #fff !important; }
+        body.high-contrast .btn-action { background: #fff !important; color: #000 !important; border: 2px solid #fff !important; }
+        body.high-contrast .floating-icon { opacity: 0.1 !important; color: #fff !important; }
+        body.large-text { font-size: 1.2rem !important; }
+        body.underline-links a { text-decoration: underline !important; font-weight: bold !important; }
+
+        body {
+            font-family: 'Heebo', sans-serif; margin: 0; padding: 0; color: #334155; line-height: 1.5;
+            background-color: var(--bg-cream); position: relative; min-height: 100vh;
+            overflow-x: hidden; /* מניעת גלילה לצדדים בנייד */
+        }
+
+        /* התאמות לנייד - Media Queries */
+        @media (max-width: 768px) {
+            .main-logo-img { width: 90% !important; transform: none !important; }
+            .subjects-grid { grid-template-columns: 1fr !important; gap: 20px !important; }
+            .subject-card { min-height: auto !important; padding: 20px !important; }
+            .login-card { width: 90% !important; padding: 20px !important; }
+            .guest-access { top: 15px; left: 15px; flex-direction: column; align-items: flex-start; gap: 8px; }
+            .user-welcome-tag, .btn-guest { min-width: 120px; font-size: 0.85rem; height: 38px; }
+            .testimonials-grid { grid-template-columns: 1fr !important; }
+            .toast-msg { width: 85%; padding: 15px; }
+        }
+
+        /* רקע צף */
+        #floating-container { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1; overflow: hidden; pointer-events: none; }
+        .floating-icon { position: absolute; font-size: 2.5rem; color: var(--accent-gold); opacity: 0.12; animation: floatDiagonal infinite linear; }
+        @keyframes floatDiagonal { 0% { transform: translate(0, 0) rotate(0deg); } 100% { transform: translate(100px, -100px) rotate(360deg); } }
+
+        .edu-updates-strip { background: #f1f5f9; color: #475569; padding: 8px 0; font-size: 0.85rem; border-bottom: 1px solid #e2e8f0; overflow: hidden; white-space: nowrap; position: relative; z-index: 10; }
+        .edu-ticker { display: inline-block; animation: marquee-slow 60s linear infinite; }
+        @keyframes marquee-slow { from { transform: translateX(100%); } to { transform: translateX(-100%); } }
+
+        .accessibility-btn { position: fixed; bottom: 20px; right: 20px; width: 50px; height: 50px; background: #2563eb; color: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 24px; cursor: pointer; z-index: 3000; box-shadow: 0 4px 12px rgba(0,0,0,0.2); transition: 0.3s; }
+        .acc-menu { position: fixed; bottom: 80px; right: 20px; background: white; border-radius: 15px; box-shadow: var(--shadow-hover); display: none; flex-direction: column; padding: 15px; z-index: 3000; border: 1px solid #e2e8f0; width: 200px; }
+        .acc-menu button { background: #f8fafc; border: 1px solid #e2e8f0; padding: 10px; margin-bottom: 8px; border-radius: 8px; cursor: pointer; font-family: 'Heebo'; font-weight: 600; text-align: right; }
+
+        .guest-access { position: absolute; top: 40px; left: 30px; z-index: 100; display: flex; align-items: center; gap: 15px; }
+        .user-welcome-tag, .btn-guest { height: 45px; min-width: 140px; display: flex; align-items: center; justify-content: center; border-radius: 12px; font-size: 0.95rem; font-weight: 700; padding: 0 20px; transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); cursor: pointer; }
+        .user-welcome-tag { background: rgba(255, 255, 255, 0.95); color: var(--primary-blue); backdrop-filter: blur(5px); display: none; border: 1px solid rgba(176, 145, 81, 0.3); box-shadow: var(--shadow-card); }
+        .btn-guest { background: var(--primary-blue); color: white; border: none; box-shadow: var(--shadow-card); }
+        .btn-logout { background: #dc2626 !important; }
+
+        header { padding: 10px 20px 0 20px; text-align: center; position: relative; z-index: 5; }
+        .main-logo-img { max-width: 700px; height: auto; display: block; margin: 0 auto; transform: scaleX(1.1) scaleY(1.05); transform-origin: bottom center; }
+
+        .container { max-width: 1250px; margin: 0 auto; padding: 0 20px; position: relative; z-index: 5; }
+        .subjects-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 40px; }
+
+        .subject-card { background: rgba(255, 255, 255, 0.95); border-radius: 30px; padding: 25px 40px 50px 40px; text-align: center; box-shadow: var(--shadow-card); position: relative; transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1); overflow: hidden; border: 1px solid #f1f5f9; display: flex; flex-direction: column; justify-content: space-between; min-height: 420px; }
+        .card-line { position: absolute; top: 0; left: 0; width: 100%; height: 7px; }
+
+        .subject-icon { width: 70px; height: 70px; margin: 0 auto 20px auto; display: flex; align-items: center; justify-content: center; }
+        .subject-icon svg { width: 100%; height: 100%; }
+
+        .btn-action { background: var(--primary-blue); color: white; border: none; padding: 18px 35px; border-radius: 50px; font-weight: 700; cursor: pointer; transition: 0.3s; }
+
+        .grade-overlay { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(255, 255, 255, 0.99); display: none; flex-direction: column; justify-content: center; align-items: center; padding: 30px; z-index: 20; border-radius: 30px; box-sizing: border-box; }
+        .grade-title { font-weight: 800; color: var(--primary-blue); margin-bottom: 25px; font-size: 1.4rem; }
+        .grade-options { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; width: 100%; }
+        .grade-link { padding: 12px; background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 15px; text-decoration: none; color: var(--primary-blue); font-weight: 600; text-align: center; }
+        
+        .bagrut-list { display: flex; flex-direction: column; gap: 8px; width: 100%; overflow-y: auto; max-height: 85%; padding: 5px; box-sizing: border-box;}
+        .unit-label { font-size: 0.9rem; font-weight: 700; color: var(--accent-gold); text-align: right; border-right: 3px solid var(--accent-gold); padding-right: 10px; margin: 15px 0 8px 0; }
+        .close-btn { margin-top: 20px; color: #94a3b8; cursor: pointer; font-size: 0.95rem; text-decoration: underline; font-weight: 600; }
+
+        .login-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); backdrop-filter: blur(4px); display: none; justify-content: center; align-items: center; z-index: 2000; }
+        .login-card { background: white; width: 440px; padding: 40px; border-radius: 30px; position: relative; text-align: center; overflow-y: auto; max-height: 90vh; }
+        .login-card input { width: 100%; padding: 14px; margin-bottom: 12px; border: 1px solid #e2e8f0; border-radius: 12px; box-sizing: border-box; font-family: 'Heebo'; }
+        
+        .input-row { display: flex; gap: 10px; width: 100%; }
+        .input-row input { flex: 1; min-width: 0; }
+
+        .profile-btn { cursor: pointer; background: #f8fafc; padding: 18px; border-radius: 20px; margin-bottom: 12px; font-weight: 700; border: 1px solid #e2e8f0; transition: 0.3s; display: flex; align-items: center; justify-content: center; gap: 10px; }
+
+        .testimonials { padding: 100px 20px; background: rgba(255,255,255,0.5); margin-top: 50px; position: relative; z-index: 5; }
+        .testimonials-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(340px, 1fr)); gap: 40px; max-width: 1200px; margin: 0 auto; }
+        
+        .testimonial-card { 
+            background: white; padding: 40px; border-radius: 25px; box-shadow: var(--shadow-card); 
+            border: 1px solid #f1f5f9; text-align: right; position: relative; 
+            transition: opacity 0.8s ease, transform 0.8s ease; 
+        }
+        .testimonial-card.fade-out { opacity: 0; transform: translateY(10px); }
+
+        .testimonial-user { display: flex; align-items: center; gap: 18px; margin-top: 25px; border-top: 1px solid #f1f5f9; padding-top: 20px; }
+        .user-avatar { width: 55px; height: 55px; border-radius: 50%; background: var(--secondary-gold); display: flex; align-items: center; justify-content: center; font-size: 24px; color: var(--accent-gold); border: 2px solid white; }
+        .stars { color: #fbbf24; font-size: 1.2rem; margin-bottom: 15px; }
+
+        .news-ticker-bottom { background: linear-gradient(90deg, var(--primary-blue), #1e293b); color: white; padding: 20px 0; overflow: hidden; white-space: nowrap; border-top: 4px solid var(--accent-gold); margin-top: 60px; position: relative; z-index: 10; font-size: 1.1rem; }
+        .news-content { display: inline-block; animation: marquee 40s linear infinite; font-weight: 700; }
+        @keyframes marquee { from { transform: translateX(100%); } to { transform: translateX(-100%); } }
+        footer { text-align: center; padding: 50px 20px; background: #fff; border-top: 1px solid #e2e8f0; color: #94a3b8; position: relative; z-index: 10; }
+
+        /* סגנון הודעת הצלחה */
+        .toast-msg {
+            position: fixed; top: 30px; left: 50%; transform: translateX(-50%) translateY(-100px);
+            background: white; padding: 20px 40px; border-radius: 20px;
+            box-shadow: 0 15px 30px rgba(0,0,0,0.1); border-right: 8px solid var(--accent-gold);
+            z-index: 5000; transition: 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55); opacity: 0;
+            display: flex; align-items: center; gap: 15px; pointer-events: none;
+        }
+        .toast-msg.show { transform: translateX(-50%) translateY(0); opacity: 1; }
+        .toast-msg h4 { margin: 0; color: var(--primary-blue); font-size: 1.2rem; }
+        .toast-msg p { margin: 5px 0 0; color: #64748b; font-size: 0.95rem; }
+    </style>
+</head>
+<body>
+
+<div id="floating-container"></div>
+<div id="success-toast" class="toast-msg">
+    <div style="font-size: 2rem;">✨</div>
+    <div>
+        <h4 id="toast-title">ברוך הבא!</h4>
+        <p id="toast-body">התהליך הושלם, למידה מהנה ופורה.</p>
+    </div>
+</div>
+
+<div class="accessibility-btn" onclick="toggleAccMenu()">♿</div>
+<div id="acc-menu" class="acc-menu">
+    <button onclick="toggleAcc('large-text')">טקסט גדול</button>
+    <button onclick="toggleAcc('high-contrast')">ניגודיות גבוהה</button>
+    <button onclick="toggleAcc('underline-links')">הדגשת קישורים</button>
+    <button onclick="resetAcc()" style="background:#fee2e2; color:#b91c1c;">איפוס</button>
+</div>
+
+<div class="edu-updates-strip">
+    <div class="edu-ticker">🔹 עדכון משרד החינוך: נפתחה ההרשמה למבחני המחוננים לשנת תשפ"ו • 🔹 שינוי במבנה הבגרות במתמטיקה - שאלון 35471 יעודכן</div>
+</div>
+
+<div class="guest-access">
+    <div id="user-welcome" class="user-welcome-tag" onclick="openProfileSwitcher()"></div>
+    <button class="btn-guest" id="main-auth-btn" onclick="handleAuthClick()">כניסה / הרשמה</button>
+</div>
+
+<div id="login-modal" class="login-overlay">
+    <div class="login-card">
+        <span style="position:absolute; left:25px; top:20px; cursor:pointer; font-weight:800; color:#94a3b8;" onclick="toggleLogin()">✕</span>
+        <div id="auth-forms">
+            <div style="display:flex; margin-bottom:25px; border-bottom:1px solid #e2e8f0;">
+                <div id="tab-login" style="flex:1; cursor:pointer; font-weight:800; border-bottom:3px solid var(--accent-gold); padding:15px;" onclick="switchAuth('login')">כניסה</div>
+                <div id="tab-register" style="flex:1; cursor:pointer; padding:15px; color:#64748b;" onclick="switchAuth('register')">הרשמה</div>
+            </div>
+            <div id="login-section">
+                <input type="email" id="login-email" placeholder="אימייל">
+                <input type="password" id="login-pass" placeholder="סיסמה">
+                <button class="btn-action" style="width:100%" onclick="handleLocalLogin()">כניסה למערכת</button>
+            </div>
+            <div id="register-section" style="display:none;">
+                <input type="email" id="reg-email" placeholder="אימייל *">
+                <div class="input-row">
+                    <input type="text" id="reg-fname" placeholder="שם פרטי *">
+                    <input type="text" id="reg-lname" placeholder="שם משפחה *">
+                </div>
+                <div class="input-row">
+                    <input type="password" id="reg-pass" placeholder="סיסמה *">
+                    <input type="password" id="reg-pass-confirm" placeholder="אימות סיסמה *">
+                </div>
+                <input type="text" id="reg-city" placeholder="עיר מגורים *">
+                <input type="text" id="reg-address" placeholder="כתובת מגורים *">
+                <input type="text" id="reg-children" placeholder="שמות הילדים (מופרדים ברווח) *">
+                <input type="text" id="reg-voucher" placeholder="קוד שובר הפעלה *">
+                <button class="btn-action" style="width:100%" onclick="handleLocalRegister()">צור חשבון</button>
+            </div>
+        </div>
+        <div id="profile-selection" style="display:none;">
+            <h3 style="margin-bottom:25px; font-weight:800;">מי לומד עכשיו?</h3>
+            <div id="profiles-list"></div>
+        </div>
+    </div>
+</div>
+
+<header><img src="Logo.png" class="main-logo-img"></header>
+
+<div class="container">
+    <div class="subjects-grid">
+        <div class="subject-card">
+            <div class="card-line" style="background: var(--math);"></div>
+            <div>
+                <h3>מתמטיקה</h3>
+                <p>אלגברה, גיאומטריה וסימולציות בגרות מקיפות.</p>
+            </div>
+            <div class="subject-icon">
+                <svg viewBox="0 0 24 24" fill="none" stroke="#ef4444" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="2" width="16" height="20" rx="2" ry="2"></rect><line x1="8" y1="6" x2="16" y2="6"></line><line x1="16" y1="14" x2="16" y2="18"></line><path d="M16 10h.01"></path><path d="M12 10h.01"></path><path d="M8 10h.01"></path><path d="M12 14h.01"></path><path d="M8 14h.01"></path><path d="M12 18h.01"></path><path d="M8 18h.01"></path></svg>
+            </div>
+            <button class="btn-action" onclick="checkAccess('math-overlay')">המשך לתרגול ←</button>
+            <div id="math-overlay" class="grade-overlay">
+                <div class="grade-title">בחר שכבת גיל</div>
+                <div class="grade-options">
+                    <a href="math.html?grade=ה-ו" class="grade-link">כיתות ה-ו</a>
+                    <a href="math.html?grade=ז" class="grade-link">כיתה ז</a>
+                    <a href="math.html?grade=ח" class="grade-link">כיתה ח</a>
+                    <a href="math.html?grade=ט" class="grade-link">כיתה ט</a>
+                    <button class="grade-link" style="grid-column: span 2; background: #fef2f2; color: var(--math); font-weight:700;" onclick="showMenu('bagrut-overlay')">🎓 שאלוני בגרות</button>
+                </div>
+                <div class="close-btn" onclick="hideMenu('math-overlay')">חזור</div>
+            </div>
+            <div id="bagrut-overlay" class="grade-overlay">
+                <div class="grade-title">שאלוני בגרות</div>
+                <div class="bagrut-list">
+                    <div class="unit-label">3 יחידות לימוד</div>
+                    <a href="math.html?grade=35172" class="grade-link">שאלון 35172</a>
+                    <a href="math.html?grade=35371" class="grade-link">שאלון 35371</a>
+                    <a href="math.html?grade=35372" class="grade-link">שאלון 35372</a>
+                    <div class="unit-label">4 יחידות לימוד</div>
+                    <a href="math.html?grade=35471" class="grade-link">שאלון 35471</a>
+                    <a href="math.html?grade=35472" class="grade-link">שאלון 35472</a>
+                    <div class="unit-label">5 יחידות לימוד</div>
+                    <a href="math.html?grade=35571" class="grade-link">שאלון 35571</a>
+                    <a href="math.html?grade=35572" class="grade-link">שאלון 35572</a>
+                </div>
+                <div class="close-btn" onclick="showMenu('math-overlay')">חזור</div>
+            </div>
+        </div>
+
+        <div class="subject-card">
+            <div class="card-line" style="background: var(--english);"></div>
+            <div>
+                <h3>אנגלית</h3>
+                <p>אוצר מילים, דקדוק והכנה למבחני Unseen.</p>
+            </div>
+            <div class="subject-icon">
+                <svg viewBox="0 0 24 24" fill="none" stroke="#f59e0b" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="2" y1="12" x2="22" y2="12"></line><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path></svg>
+            </div>
+            <button class="btn-action" onclick="checkAccessRedirect('english.html')">המשך לתרגול ←</button>
+        </div>
+
+        <div class="subject-card">
+            <div class="card-line" style="background: var(--hebrew);"></div>
+            <div>
+                <h3>לשון והבעה</h3>
+                <p>שליטה במערכת הפועל, תחביר והבנת הנקרא.</p>
+            </div>
+            <div class="subject-icon">
+                <svg viewBox="0 0 24 24" fill="none" stroke="#8b5cf6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 19l7-7 3 3-7 7-3-3z"></path><path d="M18 13l-1.5-7.5L2 2l3.5 14.5L13 18l5-5z"></path><path d="M2 2l1.5 1.5"></path><circle cx="11" cy="11" r="2"></circle></svg>
+            </div>
+            <button class="btn-action" onclick="checkAccessRedirect('hebrew.html')">המשך לתרגול ←</button>
+        </div>
+
+        <div class="subject-card">
+            <div class="card-line" style="background: var(--science);"></div>
+            <div>
+                <h3>מדעים</h3>
+                <p>פיזיקה, כימיה וביולוגיה לחטיבת הביניים.</p>
+            </div>
+            <div class="subject-icon">
+                <svg viewBox="0 0 24 24" fill="none" stroke="#10b981" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16.3 21.2L12 15 7.7 21.2c-.6.8-.2 2 .8 2h7c1 0 1.4-1.2.8-2z"></path><path d="M9 12V4c0-1.1.9-2 2-2h2a2 2 0 0 1 2 2v8"></path><path d="M9 8h6"></path></svg>
+            </div>
+            <button class="btn-action" onclick="checkAccessRedirect('science.html')">המשך לתרגול ←</button>
+        </div>
+
+        <div class="subject-card">
+            <div class="card-line" style="background: var(--arabic);"></div>
+            <div>
+                <h3>ערבית</h3>
+                <p>לימוד השפה, דקדוק ואוצר מילים מורחב.</p>
+            </div>
+            <div class="subject-icon">
+                <svg viewBox="0 0 24 24" fill="none" stroke="#f97316" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9z"></path></svg>
+            </div>
+            <button class="btn-action" onclick="checkAccessRedirect('arabic.html')">המשך לתרגול ←</button>
+        </div>
+    </div>
+</div>
+
+<section class="testimonials">
+    <div style="text-align:center; margin-bottom:60px;">
+        <h2 style="font-size:2.8rem; color:var(--primary-blue); font-weight:800;">מה ההורים והתלמידים אומרים?</h2>
+    </div>
+    <div class="testimonials-grid" id="testimonials-container">
+        <div class="testimonial-card" id="card-0">
+            <div class="stars">★★★★★</div>
+            <p class="t-text">"הבת שלי פחדה ממתמטיקה, והיום היא הכי טובה בכיתה. התרגולים באתר פשוט מעולים."</p>
+            <div class="testimonial-user"><div class="user-avatar">👩</div><div><strong class="t-name">מיכל כהן</strong><br><small class="t-role">אמא לילדה בכיתה ח'</small></div></div>
+        </div>
+        <div class="testimonial-card" id="card-1">
+            <div class="stars">★★★★★</div>
+            <p class="t-text">"אתר חובה לכל מי שרוצה להצליח בבגרות. הסימולציות באנגלית הצילו אותי."</p>
+            <div class="testimonial-user"><div class="user-avatar">👨</div><div><strong class="t-name">יונתן לוי</strong><br><small class="t-role">תלמיד י"ב</small></div></div>
+        </div>
+        <div class="testimonial-card" id="card-2">
+            <div class="stars">★★★★★</div>
+            <p class="t-text">"הממשק נוח, הילדים נהנים ללמוד וזה חוסך לנו המון כסף על מורים פרטיים."</p>
+            <div class="testimonial-user"><div class="user-avatar">👩</div><div><strong class="t-name">דנה אלוני</strong><br><small class="t-role">אמא ל-3 תלמידים</small></div></div>
+        </div>
+    </div>
+</section>
+
+<div class="news-ticker-bottom"><div class="news-content">🚀 עדכון מערכת: נוספו 200 תרגילים חדשים • 🏆 מזל טוב לנבחרת האתר על זכייה בתחרות הארצית</div></div>
+<footer><p>© 2026 המרכז להישגים לימודיים | מצוינות. יוקרה. הצלחה.</p></footer>
+
+<script>
+    let activeProfile = localStorage.getItem('activeProfile');
+    let loggedInEmail = localStorage.getItem('loggedInEmail');
+
+    // פונקציית הודעת הצלחה חדשה
+    function showToast(title, body) {
+        const toast = document.getElementById('success-toast');
+        document.getElementById('toast-title').innerText = title;
+        document.getElementById('toast-body').innerText = body;
+        toast.classList.add('show');
+        setTimeout(() => { toast.classList.remove('show'); }, 4000);
+    }
+
+    // מאגר ביקורות נוספות
+    const allTestimonials = [
+        { text: '"הבת שלי פחדה ממתמטיקה, והיום היא הכי טובה בכיתה. התרגולים באתר פשוט מעולים."', name: "מיכל כהן", role: "אמא לילדה בכיתה ח'", avatar: "👩" },
+        { text: '"אתר חובה לכל מי שרוצה להצליח בבגרות. הסימולציות באנגלית הצילו אותי."', name: "יונתן לוי", role: "תלמיד י\"ב", avatar: "👨" },
+        { text: '"הממשק נוח, הילדים נהנים ללמוד וזה חוסך לנו המון כסף על מורים פרטיים."', name: "דנה אלוני", role: "אמא ל-3 תלמידים", avatar: "👩" },
+        { text: '"הילד לומד ערבית בהנאה, חומר הלימוד מונגש בצורה מקצועית ומעניינת."', name: "רוני גבאי", role: "אבא לתלמיד ז'", avatar: "👨" },
+        { text: '"שיפרתי את הציון בלשון ב-30 נקודות בזכות התרגול הממוקד באתר. פשוט מדהים."', name: "עדי שרון", role: "תלמידת כיתה ט'", avatar: "👩" },
+        { text: '"מרכז ברמה הגבוהה ביותר. השילוב של טכנולוגיה וחינוך עובד פה מצוין."', name: "יצחק לוין", role: "סבא לנכדים לומדים", avatar: "👴" }
+    ];
+
+    let currentStartIndex = 0;
+
+    function updateTestimonials() {
+        const cards = [document.getElementById('card-0'), document.getElementById('card-1'), document.getElementById('card-2')];
+        if(!cards[0]) return;
+        cards.forEach(card => card.classList.add('fade-out'));
+        setTimeout(() => {
+            currentStartIndex = (currentStartIndex + 1) % allTestimonials.length;
+            cards.forEach((card, i) => {
+                const dataIndex = (currentStartIndex + i) % allTestimonials.length;
+                const data = allTestimonials[dataIndex];
+                card.querySelector('.t-text').innerText = data.text;
+                card.querySelector('.t-name').innerText = data.name;
+                card.querySelector('.t-role').innerText = data.role;
+                card.querySelector('.user-avatar').innerText = data.avatar;
+                card.classList.remove('fade-out');
+            });
+        }, 800);
+    }
+    setInterval(updateTestimonials, 6000);
+
+    function createFloatingIcons() {
+        const container = document.getElementById('floating-container');
+        const icons = ['📖', '🎓', '💡', '✏️', '🧮', '📓'];
+        for (let i = 0; i < 15; i++) { // צמצום קל לביצועים בנייד
+            const iconSpan = document.createElement('span');
+            iconSpan.className = 'floating-icon';
+            iconSpan.innerText = icons[Math.floor(Math.random() * icons.length)];
+            iconSpan.style.left = Math.random() * 100 + 'vw';
+            iconSpan.style.top = Math.random() * 100 + 'vh';
+            iconSpan.style.animationDuration = Math.random() * 15 + 20 + 's';
+            container.appendChild(iconSpan);
+        }
+    }
+    createFloatingIcons();
+
+    function setOnlineStatus(email, status) {
+        if (!email) return;
+        const users = JSON.parse(localStorage.getItem('edu_users') || '{}');
+        if (users[email]) {
+            users[email].isOnline = status;
+            users[email].lastSeen = Date.now();
+            localStorage.setItem('edu_users', JSON.stringify(users));
+        }
+    }
+    setInterval(() => { if(loggedInEmail) setOnlineStatus(loggedInEmail, true); }, 10000);
+
+    function updateUI() {
+        const btn = document.getElementById('main-auth-btn');
+        const welcome = document.getElementById('user-welcome');
+        if (activeProfile && loggedInEmail) {
+            btn.innerText = "התנתק"; btn.classList.add('btn-logout');
+            welcome.innerHTML = "<span>👤 " + activeProfile + "</span>"; welcome.style.display = 'flex';
+        } else {
+            btn.innerText = "כניסה / הרשמה"; btn.classList.remove('btn-logout');
+            welcome.style.display = 'none';
+        }
+    }
+
+    function openProfileSwitcher() {
+        const users = JSON.parse(localStorage.getItem('edu_users') || '{}');
+        const user = users[loggedInEmail];
+        if (user && user.children) {
+            document.getElementById('login-modal').style.display = 'flex';
+            showProfiles(user.children);
+        }
+    }
+
+    function handleLocalLogin() {
+        const email = document.getElementById('login-email').value.trim().toLowerCase();
+        const pass = document.getElementById('login-pass').value;
+        const users = JSON.parse(localStorage.getItem('edu_users') || '{}');
+        const user = users[email];
+        if (user && user.password === pass) {
+            localStorage.setItem('loggedInEmail', email);
+            setOnlineStatus(email, true);
+            showProfiles(user.children || ["אורח"]);
+            showToast("התחברת בהצלחה!", "טוב לראות אותך שוב, למידה מהנה.");
+        } else alert("פרטים שגויים.");
+    }
+
+    function handleLocalRegister() {
+        const email = document.getElementById('reg-email').value.trim().toLowerCase();
+        const fname = document.getElementById('reg-fname').value.trim();
+        const lname = document.getElementById('reg-lname').value.trim();
+        const pass = document.getElementById('reg-pass').value;
+        const passConfirm = document.getElementById('reg-pass-confirm').value;
+        const city = document.getElementById('reg-city').value.trim();
+        const address = document.getElementById('reg-address').value.trim();
+        const voucherInput = document.getElementById('reg-voucher').value.trim();
+        const children = document.getElementById('reg-children').value.split(/\s+/).filter(n => n);
+
+        if(!email || !fname || !lname || !pass || !city || !address || !voucherInput) { 
+            alert("נא למלא את כל שדות החובה"); return; 
+        }
+
+        let config = JSON.parse(localStorage.getItem('shared_config') || '{"vouchers":[]}');
+        let voucherObj = config.vouchers.find(v => v.code === voucherInput);
+
+        if(!voucherObj) { alert("קוד שובר לא קיים במערכת."); return; }
+        if(voucherObj.used) { alert("שובר זה כבר נוצל להרשמה קודמת."); return; }
+        if(pass !== passConfirm) { alert("הסיסמאות לא תואמות"); return; }
+
+        voucherObj.used = true;
+        voucherObj.usedBy = email;
+        voucherObj.dateUsed = new Date().toLocaleString();
+        localStorage.setItem('shared_config', JSON.stringify(config));
+
+        let users = JSON.parse(localStorage.getItem('edu_users') || '{}');
+        users[email] = { 
+            password: pass, firstName: fname, lastName: lname, city: city, address: address, 
+            children: children, voucher: voucherInput, isOnline: true, lastSeen: Date.now() 
+        };
+        localStorage.setItem('edu_users', JSON.stringify(users));
+        localStorage.setItem('loggedInEmail', email);
+        
+        showToast("ברוך הבא למרכז! 🎉", "החשבון נוצר בהצלחה. מאחלים לך לימוד פורה.");
+        showProfiles(children);
+    }
+
+    function showProfiles(children) {
+        document.getElementById('auth-forms').style.display = 'none';
+        document.getElementById('profile-selection').style.display = 'block';
+        const list = document.getElementById('profiles-list');
+        list.innerHTML = '';
+        children.forEach(name => {
+            const d = document.createElement('div'); d.className = 'profile-btn'; d.innerText = '👤 ' + name;
+            d.onclick = () => { localStorage.setItem('activeProfile', name); location.reload(); };
+            list.appendChild(d);
+        });
+    }
+
+    function handleAuthClick() { 
+        if (activeProfile) { 
+            setOnlineStatus(loggedInEmail, false);
+            localStorage.removeItem('activeProfile'); 
+            localStorage.removeItem('loggedInEmail'); 
+            location.reload(); 
+        } else toggleLogin(); 
+    }
+    
+    function toggleLogin() { 
+        const m = document.getElementById('login-modal');
+        m.style.display = (m.style.display === 'flex') ? 'none' : 'flex'; 
+    }
+    
+    function switchAuth(mode) { 
+        document.getElementById('login-section').style.display = mode === 'login' ? 'block' : 'none'; 
+        document.getElementById('register-section').style.display = mode === 'register' ? 'block' : 'none'; 
+        const tLogin = document.getElementById('tab-login');
+        const tReg = document.getElementById('tab-register');
+        if(mode === 'login') {
+            tLogin.style.borderBottom = '3px solid var(--accent-gold)';
+            tReg.style.borderBottom = 'none';
+        } else {
+            tReg.style.borderBottom = '3px solid var(--accent-gold)';
+            tLogin.style.borderBottom = 'none';
+        }
+    }
+    
+    function showMenu(id) { document.querySelectorAll('.grade-overlay').forEach(el => el.style.display = 'none'); document.getElementById(id).style.display = 'flex'; }
+    function hideMenu(id) { document.getElementById(id).style.display = 'none'; }
+    function checkAccess(id) { if(loggedInEmail) showMenu(id); else toggleLogin(); }
+    function checkAccessRedirect(url) { if(loggedInEmail) window.location.href = url; else toggleLogin(); }
+    function toggleAccMenu() { const m = document.getElementById('acc-menu'); m.style.display = (m.style.display === 'flex') ? 'none' : 'flex'; }
+    function toggleAcc(cls) { document.body.classList.toggle(cls); }
+    function resetAcc() { document.body.className = ''; }
+    
+    updateUI();
+</script>
+</body>
+</html>

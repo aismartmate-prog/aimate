@@ -1,0 +1,364 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <title>ניהול מערכת - אביב ⚙️</title>
+    <link href="https://fonts.googleapis.com/css2?family=Heebo:wght@400;700;800&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Heebo'; background: #f1f5f9; padding: 20px; direction: rtl; margin: 0; color: #1e293b; }
+        .admin-nav { background: #1e293b; color: white; padding: 15px 30px; display: flex; justify-content: space-between; align-items: center; position: sticky; top: 0; z-index: 100; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
+        .nav-left { display: flex; align-items: center; gap: 15px; }
+        .container { max-width: 1200px; margin: 25px auto; }
+        
+        .voucher-creator { 
+            background: white; padding: 30px; border-radius: 20px; 
+            box-shadow: 0 10px 25px rgba(0,0,0,0.05); border-right: 8px solid #b09151;
+            margin-bottom: 30px; display: flex; flex-wrap: wrap; gap: 20px; align-items: flex-end;
+        }
+        .input-group { display: flex; flex-direction: column; gap: 8px; }
+        .input-group label { font-weight: 700; font-size: 0.9rem; color: #64748b; }
+        .voucher-creator input, .voucher-creator select { 
+            padding: 12px 15px; border: 2px solid #e2e8f0; border-radius: 12px; 
+            font-family: 'Heebo'; font-size: 1rem; outline: none; transition: 0.2s;
+        }
+
+        .card { background: white; padding: 25px; border-radius: 20px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); margin-bottom: 25px; }
+        
+        .stats-bar { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 15px; margin-top: 30px; }
+        .stat-item { background: white; padding: 20px; border-radius: 15px; text-align: center; box-shadow: 0 4px 6px rgba(0,0,0,0.02); border-bottom: 4px solid #e2e8f0; }
+        .stat-item h4 { margin: 0; font-size: 0.85rem; color: #64748b; }
+        .stat-item div { font-size: 1.8rem; font-weight: 800; margin-top: 5px; color: #1e293b; }
+
+        table { width: 100%; border-collapse: collapse; background: white; border-radius: 15px; overflow: hidden; }
+        th, td { padding: 15px; border-bottom: 1px solid #f1f5f9; text-align: center; }
+        th { background: #f8fafc; color: #64748b; font-weight: 700; }
+        
+        .admin-modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.6); z-index: 1000; justify-content: center; align-items: center; backdrop-filter: blur(3px); }
+        .admin-modal-content { background: white; padding: 30px; border-radius: 20px; width: 400px; text-align: right; overflow-y: auto; max-height: 90vh; }
+        .admin-modal-content input { width: 100%; padding: 12px; margin: 8px 0; border: 1px solid #ddd; border-radius: 10px; box-sizing: border-box; font-family: 'Heebo'; }
+        
+        .btn { padding: 10px 20px; border: none; border-radius: 10px; cursor: pointer; font-weight: bold; font-family: 'Heebo'; transition: 0.2s; display: inline-flex; align-items: center; gap: 5px; }
+        .btn-gold { background: #b09151; color: white; }
+        .btn-red { background: #ef4444; color: white; }
+        .btn-blue { background: #3b82f6; color: white; }
+        .btn-sm { padding: 6px 12px; font-size: 0.8rem; }
+        
+        .status-tag { padding: 5px 10px; border-radius: 8px; font-size: 0.85rem; font-weight: 700; }
+        .status-active { background: #dcfce7; color: #166534; }
+        .status-blocked { background: #fee2e2; color: #b91c1c; }
+        .status-infinite { background: #e0f2fe; color: #0369a1; }
+        .status-online { background: #3b82f6; color: white; border: 2px solid #2563eb; }
+        .status-offline { background: #94a3b8; color: white; }
+        
+        #refresh-timer { font-size: 0.75rem; color: #94a3b8; margin-top: 2px; text-align: left; }
+
+        .edit-label { display: block; margin-top: 10px; font-weight: bold; font-size: 0.9rem; color: #475569; }
+        .user-info-box { background: #f8fafc; padding: 10px; border-radius: 10px; margin-bottom: 10px; border: 1px solid #e2e8f0; font-size: 0.9rem; }
+    </style>
+</head>
+<body>
+
+<div class="admin-nav">
+    <h2 style="margin:0;">אביב - פאנל ניהול ⚙️</h2>
+    <div class="nav-left">
+        <div style="display: flex; flex-direction: column; align-items: flex-start;">
+            <div style="display: flex; gap: 8px;">
+                <button class="btn btn-blue btn-sm" onclick="window.location.href='index.html'">🌐 לאתר</button>
+                <button class="btn btn-gold btn-sm" onclick="toggleModal('adminPassModal')">🔑 שינוי סיסמה</button>
+                <button class="btn btn-red btn-sm" onclick="adminLogout()">🚪 התנתק</button>
+            </div>
+            <div id="refresh-timer">רענון אוטומטי בעוד: <span id="timer-sec">30</span> שניות</div>
+        </div>
+    </div>
+</div>
+
+<div id="adminPassModal" class="admin-modal">
+    <div class="admin-modal-content">
+        <h3>שינוי סיסמת מנהל 🔑</h3>
+        <input type="password" id="old-p" placeholder="סיסמה נוכחית">
+        <hr style="border: 0; border-top: 1px solid #eee; margin: 15px 0;">
+        <input type="password" id="new-p" placeholder="סיסמה חדשה">
+        <input type="password" id="confirm-p" placeholder="אימות סיסמה חדשה">
+        <button class="btn btn-gold" style="width:100%; margin-top:10px;" onclick="updateAdminPass()">עדכן סיסמה</button>
+        <button class="btn" style="width:100%; margin-top:8px; background:#eee;" onclick="toggleModal('adminPassModal')">ביטול</button>
+    </div>
+</div>
+
+<div id="editUserModal" class="admin-modal">
+    <div class="admin-modal-content">
+        <h3 id="modal-title">עריכת שובר/משתמש ✏️</h3>
+        <div id="verify-box">
+            <p>הכנס סיסמת מנהל לביצוע שינויים:</p>
+            <input type="password" id="verify-admin-p" placeholder="סיסמת מנהל">
+            <button class="btn btn-gold" style="width:100%" onclick="confirmAdminAction()">אמת מנהל</button>
+        </div>
+        <div id="edit-box" style="display:none">
+            <div class="user-info-box">
+                <strong>אימייל נרשם:</strong> <span id="info-email">---</span>
+            </div>
+            
+            <label class="edit-label">סיסמת לקוח:</label>
+            <input type="text" id="e-pass">
+            
+            <label class="edit-label">הגבלת מכשירים (ילדים בו זמנית):</label>
+            <input type="number" id="e-limit" min="1" max="10">
+            
+            <label class="edit-label">תאריך תוקף (תפוגה):</label>
+            <input type="date" id="e-date">
+            
+            <label class="edit-label">סטטוס חשבון:</label>
+            <select id="e-status" style="width:100%; padding:12px; margin:8px 0; border-radius:10px; border:1px solid #ddd; font-family:'Heebo';">
+                <option value="active">פעיל ✅</option>
+                <option value="blocked">חסום ⛔</option>
+            </select>
+
+            <button class="btn btn-gold" style="width:100%; margin-top:15px;" onclick="saveChanges()">שמור שינויים</button>
+            <button class="btn btn-red" style="width:100%; margin-top:8px;" onclick="resetSessions()">🚫 נתק את כל המכשירים</button>
+        </div>
+        <button class="btn" style="width:100%; margin-top:10px; background:#eee;" onclick="toggleModal('editUserModal')">סגור</button>
+    </div>
+</div>
+
+<div class="container">
+    <div class="voucher-creator">
+        <div class="input-group">
+            <label>קוד שובר הבא</label>
+            <input type="text" id="v-next" readonly style="background:#f8fafc; font-weight:bold; color:#b09151; width:120px;">
+        </div>
+        <div class="input-group">
+            <label>כמות זמן</label>
+            <input type="number" id="v-num" value="1" min="1" style="width:80px;">
+        </div>
+        <div class="input-group">
+            <label>יחידות זמן</label>
+            <select id="v-type" onchange="checkInfinite(this.value)">
+                <option value="days">ימים</option>
+                <option value="months" selected>חודשים</option>
+                <option value="years">שנים</option>
+                <option value="infinite">ללא הגבלת זמן ♾️</option>
+            </select>
+        </div>
+        <button class="btn btn-gold" onclick="addVoucher()" style="height:50px;">+ צור שובר חדש</button>
+    </div>
+
+    <div class="card" style="padding:0; overflow:hidden;">
+        <table>
+            <thead>
+                <tr>
+                    <th>קוד</th>
+                    <th>תוקף</th>
+                    <th>אימייל לקוח</th>
+                    <th>שם לקוח</th>
+                    <th>עיר</th>
+                    <th>כתובת</th> <th>סטטוס אונליין</th>
+                    <th>ניהול</th>
+                </tr>
+            </thead>
+            <tbody id="table-body"></tbody>
+        </table>
+    </div>
+
+    <div class="stats-bar">
+        <div class="stat-item" style="border-color: #b09151;"><h4>סה"כ שוברים</h4><div id="stat-total">0</div></div>
+        <div class="stat-item" style="border-color: #10b981;"><h4>לקוחות פעילים</h4><div id="stat-active">0</div></div>
+        <div class="stat-item" style="border-color: #3b82f6;"><h4>מחוברים כרגע</h4><div id="stat-online">0</div></div>
+        <div class="stat-item" style="border-color: #ef4444;"><h4>מנויים שפגו</h4><div id="stat-expired">0</div></div>
+        <div class="stat-item" style="border-color: #f59e0b;"><h4>שוברים פנויים</h4><div id="stat-free">0</div></div>
+    </div>
+</div>
+
+<script>
+    let activeVoucherCode = null;
+    let refreshSec = 30;
+
+    setInterval(() => {
+        refreshSec--;
+        document.getElementById('timer-sec').innerText = refreshSec;
+        if(refreshSec <= 0) { render(); refreshSec = 30; }
+    }, 1000);
+
+    function checkInfinite(val) {
+        document.getElementById('v-num').disabled = (val === 'infinite');
+        if(val === 'infinite') document.getElementById('v-num').value = "";
+    }
+
+    function toggleModal(id) { 
+        document.getElementById(id).style.display = (document.getElementById(id).style.display === 'flex') ? 'none' : 'flex'; 
+    }
+
+    function adminLogout() { if(confirm("להתנתק מהמערכת?")) window.location.href = 'index.html'; }
+
+    function updateAdminPass() {
+        const currentP = localStorage.getItem('admin_p') || "2391995";
+        const oldP = document.getElementById('old-p').value;
+        const newP = document.getElementById('new-p').value;
+        const confirmP = document.getElementById('confirm-p').value;
+        if(oldP !== currentP) return alert("סיסמה נוכחית שגויה");
+        if(newP !== confirmP) return alert("החדשות לא זהות");
+        localStorage.setItem('admin_p', newP);
+        alert("עודכן!"); toggleModal('adminPassModal');
+    }
+
+    function confirmAdminAction() {
+        if(document.getElementById('verify-admin-p').value === (localStorage.getItem('admin_p') || "2391995")) {
+            document.getElementById('verify-box').style.display = 'none';
+            document.getElementById('edit-box').style.display = 'block';
+        } else alert("סיסמה שגויה");
+    }
+
+    function addVoucher() {
+        const config = JSON.parse(localStorage.getItem('shared_config') || '{"vouchers":[]}');
+        const code = (config.vouchers.length > 0 ? Math.max(...config.vouchers.map(v => parseInt(v.code))) + 1 : 12851).toString();
+        const num = parseInt(document.getElementById('v-num').value) || 0;
+        const type = document.getElementById('v-type').value;
+        const exp = new Date();
+        let expStr = (type === 'infinite') ? "2099-12-31" : "";
+        if(!expStr) {
+            if(type === 'days') exp.setDate(exp.getDate() + num);
+            else if(type === 'months') exp.setMonth(exp.getMonth() + num);
+            else if(type === 'years') exp.setFullYear(exp.getFullYear() + num);
+            expStr = exp.toISOString().split('T')[0];
+        }
+        config.vouchers.push({ code, expiryDate: expStr, used: false, usedBy: null });
+        localStorage.setItem('shared_config', JSON.stringify(config));
+        render();
+    }
+
+    function openEdit(code, email) {
+        activeVoucherCode = code;
+        const users = JSON.parse(localStorage.getItem('edu_users') || '{}');
+        const config = JSON.parse(localStorage.getItem('shared_config') || '{"vouchers":[]}');
+        const v = config.vouchers.find(x => x.code === code);
+        const u = users[email] || {};
+        
+        document.getElementById('info-email').innerText = email !== 'null' && email !== 'undefined' ? email : 'טרם נרשם';
+        document.getElementById('e-pass').value = u.password || "";
+        document.getElementById('e-limit').value = u.deviceLimit || 1;
+        document.getElementById('e-date').value = v ? v.expiryDate : "";
+        document.getElementById('e-status').value = u.status || "active";
+        
+        document.getElementById('verify-admin-p').value = "";
+        document.getElementById('verify-box').style.display = 'block';
+        document.getElementById('edit-box').style.display = 'none';
+        
+        toggleModal('editUserModal');
+    }
+
+    function deleteVoucher(code) {
+        const adminPass = prompt("הכנס סיסמת מנהל למחיקת השובר:");
+        if(adminPass === (localStorage.getItem('admin_p') || "2391995")) {
+            if(confirm("האם אתה בטוח שברצונך למחוק את שובר " + code + "?")) {
+                let config = JSON.parse(localStorage.getItem('shared_config') || '{"vouchers":[]}');
+                const v = config.vouchers.find(x => x.code === code);
+                if(v && v.usedBy) {
+                    let users = JSON.parse(localStorage.getItem('edu_users') || '{}');
+                    delete users[v.usedBy];
+                    localStorage.setItem('edu_users', JSON.stringify(users));
+                }
+                config.vouchers = config.vouchers.filter(x => x.code !== code);
+                localStorage.setItem('shared_config', JSON.stringify(config));
+                render();
+            }
+        } else if(adminPass !== null) alert("סיסמה שגויה.");
+    }
+
+    function saveChanges() {
+        const config = JSON.parse(localStorage.getItem('shared_config') || '{"vouchers":[]}');
+        const users = JSON.parse(localStorage.getItem('edu_users') || '{}');
+        const v = config.vouchers.find(x => x.code === activeVoucherCode);
+        if(v) {
+            v.expiryDate = document.getElementById('e-date').value;
+            if(v.usedBy && users[v.usedBy]) {
+                const u = users[v.usedBy];
+                u.password = document.getElementById('e-pass').value;
+                u.deviceLimit = parseInt(document.getElementById('e-limit').value);
+                u.status = document.getElementById('e-status').value;
+                u.expiry = v.expiryDate;
+            }
+        }
+        localStorage.setItem('shared_config', JSON.stringify(config));
+        localStorage.setItem('edu_users', JSON.stringify(users));
+        toggleModal('editUserModal'); render();
+    }
+
+    function resetSessions() {
+        const users = JSON.parse(localStorage.getItem('edu_users') || '{}');
+        const config = JSON.parse(localStorage.getItem('shared_config') || '{"vouchers":[]}');
+        const v = config.vouchers.find(x => x.code === activeVoucherCode);
+        if(v && v.usedBy && users[v.usedBy]) {
+            users[v.usedBy].activeSessions = 0;
+            users[v.usedBy].isOnline = false;
+            users[v.usedBy].forceLogoutToken = "OUT_" + Math.random();
+            localStorage.setItem('edu_users', JSON.stringify(users));
+            alert("מכשירים נותקו."); render();
+        }
+    }
+
+    function render() {
+        const config = JSON.parse(localStorage.getItem('shared_config') || '{"vouchers":[]}');
+        const users = JSON.parse(localStorage.getItem('edu_users') || '{}');
+        const tbody = document.getElementById('table-body');
+        const today = new Date().toISOString().split('T')[0];
+        const now = Date.now();
+
+        tbody.innerHTML = '';
+        let stats = { total: 0, active: 0, online: 0, expired: 0, free: 0 };
+
+        config.vouchers.forEach(v => {
+            stats.total++;
+            const u = users[v.usedBy] || null;
+            let onlineHTML = '<span class="status-tag status-offline">מנותק</span>';
+            let clientName = '---';
+            let clientCity = '---';
+            let clientAddress = '---'; // משתנה לכתובת
+            
+            if(u) {
+                const isRecentlyActive = u.lastSeen && (now - u.lastSeen < 20000);
+                if(u.isOnline && isRecentlyActive) {
+                    onlineHTML = '<span class="status-tag status-online">מחובר 🟢</span>';
+                    stats.online++;
+                } else if (u.isOnline && !isRecentlyActive) {
+                    u.isOnline = false;
+                    localStorage.setItem('edu_users', JSON.stringify(users));
+                }
+                
+                clientName = (u.firstName || '') + ' ' + (u.lastName || '');
+                if(clientName.trim() === '') clientName = 'משתמש';
+                clientCity = u.city || '---';
+                clientAddress = u.address || '---'; // שליפת הכתובת
+                
+                if (v.expiryDate >= today) stats.active++;
+                else stats.expired++;
+            } else {
+                stats.free++;
+            }
+
+            tbody.innerHTML += `
+                <tr>
+                    <td><strong>${v.code}</strong></td>
+                    <td>${v.expiryDate === "2099-12-31" ? "♾️ ללא הגבלה" : v.expiryDate}</td>
+                    <td>${v.usedBy || '---'}</td>
+                    <td>${clientName}</td>
+                    <td>${clientCity}</td>
+                    <td>${clientAddress}</td> <td>${onlineHTML}</td>
+                    <td>
+                        <div style="display:flex; gap:5px; justify-content:center;">
+                            <button class="btn btn-sm btn-gold" onclick="openEdit('${v.code}','${v.usedBy}')">עריכה</button>
+                            <button class="btn btn-sm btn-red" onclick="deleteVoucher('${v.code}')">מחק</button>
+                        </div>
+                    </td>
+                </tr>`;
+        });
+        document.getElementById('stat-total').innerText = stats.total;
+        document.getElementById('stat-active').innerText = stats.active;
+        document.getElementById('stat-online').innerText = stats.online;
+        document.getElementById('stat-expired').innerText = stats.expired;
+        document.getElementById('stat-free').innerText = stats.free;
+        document.getElementById('v-next').value = (config.vouchers.length > 0 ? Math.max(...config.vouchers.map(v => parseInt(v.code))) + 1 : 12851);
+    }
+    
+    window.addEventListener('storage', render);
+    render();
+</script>
+</body>
+</html>
