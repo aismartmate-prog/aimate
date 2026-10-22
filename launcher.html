@@ -287,7 +287,7 @@
   function go(c, ev) {
     remember(c);
     if (ev && ev.clientX != null) { veil.style.setProperty('--vx', ev.clientX + 'px'); veil.style.setProperty('--vy', ev.clientY + 'px'); }
-    veil.classList.add('on'); setTimeout(function () { location.href = c.href; }, 260);
+    veil.classList.add('on'); var u = c.href + (c.href.indexOf('?') > -1 ? '&' : '?') + 'nosplash=1'; setTimeout(function () { location.href = u; }, 120);
   }
   cards.forEach(function (c) {
     c.addEventListener('click', function (ev) { if (ev.metaKey || ev.ctrlKey || ev.shiftKey || ev.button === 1) { remember(c); return; } ev.preventDefault(); go(c, ev); });
