@@ -254,20 +254,23 @@
 
 <script>
 (function () {
+  // ---------- הגנה: pwa.js של הקידס מחזיר ל-/launcher.html על תת-הדומיין של הקידס בכניסה הראשונה ----------
+  // אם הלאנצ'ר נטען שם, עוברים מיד לדף הראשי של אותה מערכת - בלי מסך פתיחה ובלי להציג דף בית.
+  var host = location.hostname;
+  if (/^kids\./.test(host) && !/[?&]stay=1/.test(location.search)) {
+    var sp0 = document.getElementById('splash'); if (sp0) sp0.remove();
+    document.getElementById('app').style.visibility = 'hidden';
+    location.replace('/');
+    return;
+  }
+
   // ---------- מסך פתיחה: פעם אחת בכל סשן, ואפשר לדלג ----------
   var splash = document.getElementById('splash'), inner = document.getElementById('sp-in'), title = document.getElementById('sp-title'), fill = document.getElementById('sp-fill');
-  // הפתיחה מוצגת בכל כניסה לאפליקציה (סשן חדש), אבל לא אחרי לחיצה על מערכת (קידס וכו') ולא בחזרה ממנה
-  var SKIP_MS = 30 * 60 * 1000;
-  function markSplash() { try { sessionStorage.setItem('splashSeen', '1'); } catch (e) {} }
-  function markLeaving() { markSplash(); try { localStorage.setItem('leftForSystemAt', String(Date.now())); } catch (e) {} }
-  var seen = false;
-  try { seen = sessionStorage.getItem('splashSeen') === '1'; } catch (e) {}
-  try { var at = parseInt(localStorage.getItem('leftForSystemAt'), 10); if (at && Date.now() - at < SKIP_MS) seen = true; } catch (e) {}
+  var seen = false; try { seen = sessionStorage.getItem('splashSeen') === '1'; } catch (e) {}
   var finished = false;
-  function finish() { if (finished) return; finished = true; markSplash(); splash.classList.add('hide'); setTimeout(function () { splash.remove(); }, 700); }
+  function finish() { if (finished) return; finished = true; try { sessionStorage.setItem('splashSeen', '1'); } catch (e) {} splash.classList.add('hide'); setTimeout(function () { splash.remove(); }, 700); }
   if (seen) { splash.remove(); finished = true; }
   else {
-    markSplash();
     var txt = 'TIRGULIM', i = 0;
     setTimeout(function () { inner.classList.add('show'); (function t() { if (i < txt.length) { title.textContent += txt.charAt(i++); setTimeout(t, 100); } else title.classList.add('done'); })(); }, 150);
     var t0 = null, DUR = 1500;
@@ -283,11 +286,11 @@
   // ---------- ניתוב: זיכרון בחירה, "המשך מאיפה שעצרת", קיצורי מקלדת, מעבר חלק ----------
   var cards = Array.prototype.slice.call(document.querySelectorAll('.card'));
   var veil = document.getElementById('nav-veil');
-  function remember(c) { markLeaving(); try { localStorage.setItem('lastSystemChoice', c.href); localStorage.setItem('lastSystemId', c.getAttribute('data-id')); localStorage.setItem('lastSystemName', c.getAttribute('data-name')); } catch (e) {} }
+  function remember(c) { try { localStorage.setItem('lastSystemChoice', c.href); localStorage.setItem('lastSystemId', c.getAttribute('data-id')); localStorage.setItem('lastSystemName', c.getAttribute('data-name')); } catch (e) {} }
   function go(c, ev) {
     remember(c);
     if (ev && ev.clientX != null) { veil.style.setProperty('--vx', ev.clientX + 'px'); veil.style.setProperty('--vy', ev.clientY + 'px'); }
-    veil.classList.add('on'); var u = c.href + (c.href.indexOf('?') > -1 ? '&' : '?') + 'nosplash=1'; setTimeout(function () { location.href = u; }, 120);
+    veil.classList.add('on'); setTimeout(function () { location.href = c.href; }, 260);
   }
   cards.forEach(function (c) {
     c.addEventListener('click', function (ev) { if (ev.metaKey || ev.ctrlKey || ev.shiftKey || ev.button === 1) { remember(c); return; } ev.preventDefault(); go(c, ev); });
@@ -295,7 +298,7 @@
   });
   document.addEventListener('keydown', function (ev) { var n = parseInt(ev.key, 10); if (n >= 1 && n <= cards.length && !ev.ctrlKey && !ev.metaKey && !ev.altKey) go(cards[n - 1]); });
   // חזרה לדף (bfcache): מסירים את מסך המעבר
-  window.addEventListener('pageshow', function () { veil.classList.remove('on'); if (finished === false && document.getElementById('splash') && (function(){ try { return sessionStorage.getItem('splashSeen') === '1' && !document.getElementById('sp-in').classList.contains('show'); } catch (e) { return false; } })()) finish(); });
+  window.addEventListener('pageshow', function () { veil.classList.remove('on'); });
 
   var lastHref = null, lastName = null; try { lastHref = localStorage.getItem('lastSystemChoice'); lastName = localStorage.getItem('lastSystemName'); } catch (e) {}
   if (lastHref) {
