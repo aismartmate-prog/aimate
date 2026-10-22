@@ -1,0 +1,143 @@
+<title>Tirgulim ad</title>
+<style>
+#shape{box-shadow:0 0 0 2px rgba(176,145,81,.9),0 24px 60px rgba(0,0,0,.45)}
+.tx{position:absolute;direction:rtl;unicode-bidi:isolate;text-align:right;white-space:nowrap}
+.cn{text-align:center}
+.nv{color:#0f172a}.iv{color:#fbfaf8}.gd{color:#b09151}.mu{color:#64748b}
+.qmk{position:absolute;font-family:'Liberation Serif',Georgia,serif;font-size:190px;line-height:1;color:#b09151;opacity:.9}
+.dv{position:absolute;height:2px;background:#b09151}
+.ic{position:absolute;width:88px;height:88px;border-radius:44px;background:#0f172a;display:flex;align-items:center;justify-content:center;color:#b09151;font-size:38px;font-weight:700}
+.chip{position:absolute;height:96px;border-radius:48px;box-sizing:border-box;border:2px solid #e2e8f0;display:flex;align-items:center;justify-content:center;font-size:38px;font-weight:600;color:#0f172a;direction:rtl}
+.hl{position:absolute;border-radius:30px}
+.btn{position:absolute;left:-270px;width:540px;height:112px;border-radius:56px;display:flex;align-items:center;justify-content:center;font-size:44px;font-weight:700;direction:rtl}
+.cap{position:absolute;left:-500px;width:1000px;top:640px;text-align:center;direction:rtl;font-size:56px;font-weight:800;color:#fbfaf8;text-shadow:0 3px 14px rgba(0,0,0,.55)}
+.cap span{display:inline-block;margin:0 9px}
+.hdr{position:absolute;left:-500px;width:1000px;top:-700px;text-align:center;direction:rtl;font-size:42px;font-weight:600;color:#b09151;letter-spacing:.02em}
+.hdl{position:absolute;left:-60px;width:120px;top:-630px;height:2px;background:#b09151;opacity:.7}
+</style>
+
+<div data-slot="world">
+  <div class="hdr" id="hdr">המרכז להישגים לימודיים</div><div class="hdl" id="hdl"></div>
+</div><!--/world-->
+
+<div data-slot="shape">
+  <!-- A: parent quote -->
+  <div class="L" id="LA">
+    <div class="a" id="stA" style="left:-410px;top:58px;width:820px;display:flex;justify-content:flex-end;gap:8px"></div>
+    <div class="qmk" style="left:-420px;top:30px">&ldquo;</div>
+    <div class="tx nv" id="a1" style="left:-410px;width:820px;top:150px;font-size:62px;font-weight:700">הבת שלי פחדה ממתמטיקה,</div>
+    <div class="tx nv" id="a2" style="left:-410px;width:820px;top:238px;font-size:62px;font-weight:700">והיום היא <span class="gd">הכי טובה</span> בכיתה.</div>
+    <div class="dv" id="aDv" style="left:-410px;width:820px;top:372px;opacity:.35"></div>
+    <div class="tx" id="a3" style="left:-410px;width:820px;top:400px"><span class="nv" style="font-size:36px;font-weight:700">מיכל כהן</span><span class="mu" style="font-size:30px;font-weight:500"> · אמא לילדה בכיתה ח׳</span></div>
+  </div>
+  <!-- B: brand -->
+  <div class="L" id="LB">
+    <div class="tx iv cn" style="left:-440px;width:880px;top:88px;font-size:66px;font-weight:800">המרכז להישגים לימודיים</div>
+    <div class="dv" id="bDv" style="left:-70px;width:140px;top:200px"></div>
+    <div class="a" style="left:-440px;width:880px;top:232px;display:flex;justify-content:center;gap:34px;direction:rtl">
+      <span class="gd" id="b1" style="font-size:46px;font-weight:600">מצוינות.</span>
+      <span class="gd" id="b2" style="font-size:46px;font-weight:600">יוקרה.</span>
+      <span class="gd" id="b3" style="font-size:46px;font-weight:600">הצלחה.</span>
+    </div>
+  </div>
+  <!-- C: subjects -->
+  <div class="L" id="LC">
+    <div class="tx nv" style="left:-420px;width:840px;top:52px;font-size:54px;font-weight:800">מי לומד עכשיו?</div>
+    <div class="hl" id="hlC" style="left:-440px;width:880px;top:146px;height:128px"></div>
+    <div id="rowsC"></div>
+  </div>
+  <!-- D: grades + bagrut -->
+  <div class="L" id="LD">
+    <div class="tx nv" style="left:-420px;width:840px;top:52px;font-size:54px;font-weight:800">בחר שכבת גיל</div>
+    <div class="chip" id="d0" style="left:20px;width:400px;top:146px">כיתות ה-ו</div>
+    <div class="chip" id="d1" style="left:-420px;width:400px;top:146px">כיתה ז</div>
+    <div class="chip" id="d2" style="left:20px;width:400px;top:262px">כיתה ח</div>
+    <div class="chip" id="d3" style="left:-420px;width:400px;top:262px">כיתה ט</div>
+    <div class="dv" style="left:-420px;width:840px;top:394px;opacity:.35"></div>
+    <div class="tx nv" style="left:-420px;width:840px;top:420px;font-size:48px;font-weight:800">שאלוני בגרות</div>
+    <div class="chip" id="g0" style="left:150px;width:270px;top:506px">3 יח״ל</div>
+    <div class="chip" id="g1" style="left:-135px;width:270px;top:506px">4 יח״ל</div>
+    <div class="chip" id="g2" style="left:-420px;width:270px;top:506px">5 יח״ל</div>
+    <div class="tx mu cn" id="gq" style="left:-420px;width:840px;top:634px;font-size:34px;font-weight:500">שאלון 35571 · שאלון 35572</div>
+  </div>
+  <!-- E: parent quote 2 -->
+  <div class="L" id="LE">
+    <div class="a" id="stE" style="left:-410px;top:58px;width:820px;display:flex;justify-content:flex-end;gap:8px"></div>
+    <div class="qmk" style="left:-420px;top:30px">&ldquo;</div>
+    <div class="tx iv" id="e1" style="left:-410px;width:820px;top:150px;font-size:66px;font-weight:700">חוסך לנו <span class="gd">המון כסף</span></div>
+    <div class="tx iv" id="e2" style="left:-410px;width:820px;top:240px;font-size:66px;font-weight:700">על מורים פרטיים.</div>
+    <div class="dv" style="left:-410px;width:820px;top:374px;opacity:.35"></div>
+    <div class="tx" id="e3" style="left:-410px;width:820px;top:400px"><span class="iv" style="font-size:36px;font-weight:700">דנה אלוני</span><span style="color:#94a3b8;font-size:30px;font-weight:500"> · אמא ל-3 תלמידים</span></div>
+  </div>
+  <!-- F: CTA -->
+  <div class="L" id="LF">
+    <div class="a nv" style="left:-400px;width:800px;top:62px;text-align:center;font-size:84px;font-weight:800;letter-spacing:-.02em">tirgulim.co.il</div>
+    <div class="btn" id="btn" style="top:206px"><span id="btT">כניסה / הרשמה</span></div>
+  </div>
+</div><!--/shape-->
+
+<div data-slot="over">
+  <div class="cap" id="cap"></div>
+</div><!--/over-->
+
+<script>
+const $=id=>document.getElementById(id);
+const NV='#0f172a', IV='#fbfaf8', GD='#b09151';
+const star=(s,c)=>`<svg width="${s}" height="${s}" viewBox="0 0 24 24"><path fill="${c}" d="M11.525 2.295a.53.53 0 0 1 .95 0l2.31 4.679a2.123 2.123 0 0 0 1.595 1.16l5.166.756a.53.53 0 0 1 .294.904l-3.736 3.638a2.123 2.123 0 0 0-.611 1.878l.882 5.14a.53.53 0 0 1-.771.56l-4.618-2.428a2.122 2.122 0 0 0-1.973 0L6.396 21.01a.53.53 0 0 1-.77-.56l.881-5.139a2.122 2.122 0 0 0-.611-1.879L2.16 9.795a.53.53 0 0 1 .294-.906l5.165-.755a2.122 2.122 0 0 0 1.597-1.16z"/></svg>`;
+for(const id of ['stA','stE']) $(id).innerHTML=[0,1,2,3,4].map(i=>`<span id="${id}${i}">${star(46,GD)}</span>`).join('');
+M.IC.flask=['M14 2v6a2 2 0 0 0 .245.96l5.51 10.08A2 2 0 0 1 18 22H6a2 2 0 0 1-1.755-2.96l5.51-10.08A2 2 0 0 0 10 8V2','M6.453 15h11.094','M8.5 2h7'];
+M.IC.lang=['m5 8 6 6','m4 14 6-6 2-3','M2 5h12','M7 2h1','m22 22-5-10-5 10','M14 18h6'];
+const SUBJ=[['π','מתמטיקה','אלגברה, גיאומטריה וסימולציות בגרות'],['Aa','אנגלית','אוצר מילים, דקדוק והכנה ל-Unseen'],
+  ['אב','לשון והבעה','מערכת הפועל, תחביר והבנת הנקרא'],[M.icon('flask',40,GD,2.4),'מדעים','פיזיקה, כימיה וביולוגיה'],[M.icon('lang',40,GD,2.4),'ערבית','דקדוק ואוצר מילים מורחב']];
+$('rowsC').innerHTML=SUBJ.map((s,i)=>`<div id="c${i}"><div class="ic" style="left:326px;top:${166+i*140}px">${s[0]}</div>
+  <div class="tx nv" style="left:-420px;width:726px;top:${160+i*140}px;font-size:46px;font-weight:700">${s[1]}</div>
+  <div class="tx mu" style="left:-420px;width:726px;top:${220+i*140}px;font-size:29px;font-weight:500">${s[2]}</div></div>`).join('');
+
+// timeline (seconds)
+const tA=0.25, tB=4.7, tC=7.5, tD=11.7, tE=15.1, tF=18.1, T=21.6;
+const POP={stA0:0.55,stA1:0.65,stA2:0.75,stA3:0.85,stA4:0.95, a1:1.05,a2:2.25,a3:3.3,
+  b1:5.55,b2:5.95,b3:6.35, c0:8.0,c1:8.55,c2:9.1,c3:9.65,c4:10.2,
+  d0:12.05,d1:12.3,d2:12.55,d3:12.8, g0:13.25,g1:13.5,g2:13.75, gq:14.4,
+  stE0:15.45,stE1:15.55,stE2:15.65,stE3:15.75,stE4:15.85, e1:15.95,e2:16.75,e3:17.3};
+const CLK={math:10.95, five:14.15, btn:19.75};
+// narration lines shown as captions (the transcript of the ad); words reveal one by one
+const CAP=[[0.3,4.5,'מה ההורים והתלמידים אומרים?'],[4.8,7.35,'הכירו את המרכז להישגים לימודיים'],[7.6,11.55,'מתמטיקה, אנגלית, לשון, מדעים וערבית'],
+  [11.8,14.95,'מכיתה ה׳ ועד שאלוני הבגרות'],[15.2,17.95,'הילדים נהנים ללמוד'],[18.2,T,'היכנסו עכשיו לתרגול']];
+const capEl=$('cap'); let capIdx=-2;
+const CUR_ON=[[10.1,11.5],[13.3,14.7],[18.9,20.5]];
+
+M.scene({
+  W:1080,H:1920,bg:NV,T,center:[540,880],intro:tA,
+  SH:{A:{w:920,h:540,r:48,bg:IV,cam:1}, B:{w:920,h:360,r:48,bg:NV,cam:1}, C:{w:920,h:880,r:48,bg:IV,cam:1},
+      D:{w:920,h:740,r:48,bg:IV,cam:1}, E:{w:920,h:520,r:48,bg:'#1e293b',cam:1}, F:{w:860,h:380,r:190,bg:IV,cam:1}},
+  start:'A', SEQ:[[tB,'B'],[tC,'C'],[tD,'D'],[tE,'E'],[tF,'F']],
+  geom:(t,g)=>{g.cy=-40; return g;},
+  layers:[
+    {el:'LA',tin:tA,tout:tB,anchor:'t'},
+    {el:'LB',tin:tB,tout:tC,anchor:'t',update:(t)=>{$('bDv').style.transform=`scaleX(${M.eio(M.clamp((t-tB-0.3)/0.5))})`;}},
+    {el:'LC',tin:tC,tout:tD,anchor:'t',update:(t)=>{const k=M.clamp(M.track(0,[[CLK.math,1,[22,.8]]])(t)); $('hlC').style.background=`rgba(176,145,81,${(0.22*k).toFixed(3)})`;}},
+    {el:'LD',tin:tD,tout:tE,anchor:'t',update:(t)=>{const on=t>=CLK.five, s=$('g2').style; s.background=on?GD:'transparent'; s.borderColor=on?GD:'#e2e8f0'; s.color=on?IV:NV;}},
+    {el:'LE',tin:tE,tout:tF,anchor:'t'},
+    {el:'LF',tin:tF,tout:null,anchor:'t',update:(t)=>{const on=t>=CLK.btn, b=$('btn').style; b.background=on?GD:NV; b.color=on?NV:IV;
+      M.setText($('btT'),on?'המשך לתרגול ←':'כניסה / הרשמה');}},
+  ],
+  extra:(t,g)=>{
+    for(const [id,ti] of Object.entries(POP)){const e=$(id); if(!e) continue; const v=M.vis(t,ti,null,{din:0,lin:0.25});
+      e.style.opacity=v.o.toFixed(3); e.style.filter=v.blur>0.05?`blur(${v.blur.toFixed(2)}px)`:'none';
+      const k=M.clamp((t-ti)/0.35); e.style.transform=`translateY(${((1-v.a)*12).toFixed(1)}px) scale(${(1+0.05*Math.sin(Math.PI*k)).toFixed(3)})`;}
+    // header fades in with the first card
+    const h=M.clamp((t-0.4)/0.5); $('hdr').style.opacity=h; $('hdl').style.opacity=0.7*h;
+    // captions
+    let i=CAP.findIndex(c=>t>=c[0]&&t<c[1]);
+    if(i!==capIdx){capIdx=i; capEl.innerHTML=i<0?'':CAP[i][2].split(' ').map(w=>`<span>${w}</span>`).join('');}
+    if(i>=0){const [a,b]=CAP[i], sp=[...capEl.children], dur=Math.min(1.8,(b-a)*0.55);
+      sp.forEach((s,j)=>{const ti=a+dur*j/sp.length, v=M.vis(t,ti,b-0.12,{din:0,lin:0.2,lout:0.12});
+        s.style.opacity=v.o.toFixed(3); s.style.transform=`translateY(${((1-v.a)*10).toFixed(1)}px)`;});}
+    // cursor only while it acts
+    const on=CUR_ON.some(([a,b])=>t>a&&t<b), fade=Math.max(0,...CUR_ON.map(([a,b])=>Math.min(M.clamp((t-a)/0.25),M.clamp((b-t)/0.25))));
+    $('cursor').style.opacity=on?fade:0;
+  },
+  cursor:{size:52,clicks:[CLK.math,CLK.five,CLK.btn],keys:[[0,300,560],[10.1,300,560],[10.75,-60,-262],[11.5,-60,-262],
+    [13.3,200,560],[13.95,-285,150],[14.7,-285,150],[18.9,260,560],[19.55,120,45],[20.5,120,45]]},
+});
+</script>
