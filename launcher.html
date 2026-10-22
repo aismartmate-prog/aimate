@@ -256,12 +256,13 @@
 (function () {
   // ---------- מסך פתיחה: פעם אחת בכל סשן, ואפשר לדלג ----------
   var splash = document.getElementById('splash'), inner = document.getElementById('sp-in'), title = document.getElementById('sp-title'), fill = document.getElementById('sp-fill');
-  // הפתיחה מוצגת פעם אחת ל-12 שעות (localStorage) ופעם אחת לכל סשן (sessionStorage); הדגל נשמר מיד בהתחלה
-  var SPLASH_TTL = 12 * 3600 * 1000;
-  function markSplash() { try { sessionStorage.setItem('splashSeen', '1'); } catch (e) {} try { localStorage.setItem('splashSeenAt', String(Date.now())); } catch (e) {} }
+  // הפתיחה מוצגת בכל כניסה לאפליקציה (סשן חדש), אבל לא אחרי לחיצה על מערכת (קידס וכו') ולא בחזרה ממנה
+  var SKIP_MS = 30 * 60 * 1000;
+  function markSplash() { try { sessionStorage.setItem('splashSeen', '1'); } catch (e) {} }
+  function markLeaving() { markSplash(); try { localStorage.setItem('leftForSystemAt', String(Date.now())); } catch (e) {} }
   var seen = false;
   try { seen = sessionStorage.getItem('splashSeen') === '1'; } catch (e) {}
-  try { var at = parseInt(localStorage.getItem('splashSeenAt'), 10); if (at && Date.now() - at < SPLASH_TTL) seen = true; } catch (e) {}
+  try { var at = parseInt(localStorage.getItem('leftForSystemAt'), 10); if (at && Date.now() - at < SKIP_MS) seen = true; } catch (e) {}
   var finished = false;
   function finish() { if (finished) return; finished = true; markSplash(); splash.classList.add('hide'); setTimeout(function () { splash.remove(); }, 700); }
   if (seen) { splash.remove(); finished = true; }
@@ -282,7 +283,7 @@
   // ---------- ניתוב: זיכרון בחירה, "המשך מאיפה שעצרת", קיצורי מקלדת, מעבר חלק ----------
   var cards = Array.prototype.slice.call(document.querySelectorAll('.card'));
   var veil = document.getElementById('nav-veil');
-  function remember(c) { markSplash(); try { localStorage.setItem('lastSystemChoice', c.href); localStorage.setItem('lastSystemId', c.getAttribute('data-id')); localStorage.setItem('lastSystemName', c.getAttribute('data-name')); } catch (e) {} }
+  function remember(c) { markLeaving(); try { localStorage.setItem('lastSystemChoice', c.href); localStorage.setItem('lastSystemId', c.getAttribute('data-id')); localStorage.setItem('lastSystemName', c.getAttribute('data-name')); } catch (e) {} }
   function go(c, ev) {
     remember(c);
     if (ev && ev.clientX != null) { veil.style.setProperty('--vx', ev.clientX + 'px'); veil.style.setProperty('--vy', ev.clientY + 'px'); }
