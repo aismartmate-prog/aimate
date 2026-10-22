@@ -18,3 +18,4 @@ motion/inputs/*.task
 # preview stills (working files)
 motion/*/beats.png
 motion/*/qa.png
+motion/*/site/
