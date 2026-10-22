@@ -1,0 +1,39 @@
+{
+ "source": "motion/v15/raw.mov", "W": 1920, "H": 1080, "fps": 30,
+ "segments": [
+  {"in": 93.55,   "out": 98.417,  "name": "hook"},
+  {"in": 218.933, "out": 226.34,  "name": "hand"},
+  {"in": 226.84,  "out": 230.55,  "name": "throw (ends on the impact flash)"},
+  {"in": 331.59,  "out": 340.2,   "name": "layers"},
+  {"in": 371.983, "out": 377.733, "name": "hide"},
+  {"in": 422.0,   "out": 434.645, "name": "price"},
+  {"in": 436.72,  "out": 440.805, "name": "cheap"},
+  {"in": 489.267, "out": 493.75,  "name": "frames"},
+  {"in": 545.62,  "out": 560.38,  "name": "steps"},
+  {"in": 560.62,  "out": 562.67,  "name": "steps2"},
+  {"in": 581.103, "out": 583.017, "name": "full"},
+  {"in": 606.933, "out": 612.25,  "name": "float"},
+  {"in": 612.53,  "out": 616.82,  "name": "float2"},
+  {"in": 665.233, "out": 669.5,   "name": "doc"},
+  {"in": 705.4,   "out": 706.2,   "name": "cta0"},
+  {"in": 706.5,   "out": 713.09,  "name": "cta"}
+ ],
+ "joins": [
+  {"type": "morph", "frames": 10},
+  {"type": "ramp", "pre": 0.35, "post": 0.48},
+  {"type": "cut", "note": "white flash at the coin impact in compose.py", "xf": 0.03},
+  {"type": "morph", "frames": 10},
+  {"type": "morph", "frames": 10, "note": "mid-fold of the 3D layers"},
+  {"type": "morph", "frames": 8, "xa": 0, "xb": 0.05, "note": "connected speech: A ends on the /f/ of מטורף"},
+  {"type": "morph", "frames": 10, "xa": 0, "xb": 0.05, "note": "A ends before the next word"},
+  {"type": "cut", "note": "card flip in compose.py, edge-on at the cut"},
+  {"type": "ramp", "pre": 0.20, "post": 0.18},
+  {"type": "morph", "frames": 10},
+  {"type": "morph", "frames": 10},
+  {"type": "ramp", "pre": 0.22, "post": 0.21},
+  {"type": "morph", "frames": 10},
+  {"type": "morph", "frames": 10},
+  {"type": "ramp", "pre": 0.22, "post": 0.22}
+ ],
+ "audio": {"xf": 0.06}
+}

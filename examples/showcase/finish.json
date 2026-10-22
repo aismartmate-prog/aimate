@@ -1,0 +1,274 @@
+{
+ "video": "motion/v15/layout.mp4",
+ "out": "motion/v15/final_master.mp4",
+ "crf": 14,
+ "preset": "slow",
+ "sfx": [
+  {
+   "file": "motion/inputs/sfx/whoosh.wav",
+   "at": 1.02,
+   "gain_db": -17
+  },
+  {
+   "file": "motion/inputs/sfx/swoosh-short.wav",
+   "at": 1.36,
+   "gain_db": -19
+  },
+  {
+   "file": "motion/inputs/sfx/hit.wav",
+   "at": 1.95,
+   "gain_db": -11
+  },
+  {
+   "file": "motion/inputs/sfx/whoosh.wav",
+   "at": 3.72,
+   "gain_db": -17
+  },
+  {
+   "file": "motion/inputs/sfx/beep.wav",
+   "at": 3.86,
+   "gain_db": -20
+  },
+  {
+   "file": "motion/inputs/sfx/swoosh-short.wav",
+   "at": 4.22,
+   "gain_db": -18
+  },
+  {
+   "file": "motion/inputs/sfx/whoosh.wav",
+   "at": 6.71,
+   "gain_db": -18
+  },
+  {
+   "file": "motion/inputs/sfx/pop.wav",
+   "at": 8.68,
+   "gain_db": -13
+  },
+  {
+   "file": "motion/inputs/sfx/hit.wav",
+   "at": 8.72,
+   "gain_db": -17
+  },
+  {
+   "file": "motion/inputs/sfx/swoosh-short.wav",
+   "at": 12.74,
+   "gain_db": -20
+  },
+  {
+   "file": "motion/inputs/sfx/whoosh-big.wav",
+   "at": 15.427,
+   "gain_db": -13
+  },
+  {
+   "file": "motion/inputs/sfx/glass.wav",
+   "at": 15.957,
+   "gain_db": -10
+  },
+  {
+   "file": "motion/inputs/sfx/riser.wav",
+   "at": 17.36,
+   "gain_db": -22
+  },
+  {
+   "file": "motion/inputs/sfx/whoosh-big.wav",
+   "at": 18.51,
+   "gain_db": -14
+  },
+  {
+   "file": "motion/inputs/sfx/click.wav",
+   "at": 19.11,
+   "gain_db": -15
+  },
+  {
+   "file": "motion/inputs/sfx/click.wav",
+   "at": 25.517,
+   "gain_db": -13
+  },
+  {
+   "file": "motion/inputs/sfx/swoosh-short.wav",
+   "at": 25.567,
+   "gain_db": -18
+  },
+  {
+   "file": "motion/inputs/sfx/click.wav",
+   "at": 29.067,
+   "gain_db": -13
+  },
+  {
+   "file": "motion/inputs/sfx/swoosh-short.wav",
+   "at": 29.117,
+   "gain_db": -18
+  },
+  {
+   "file": "motion/inputs/sfx/whoosh.wav",
+   "at": 29.517,
+   "gain_db": -18
+  },
+  {
+   "file": "motion/inputs/sfx/pop.wav",
+   "at": 33.25,
+   "gain_db": -14
+  },
+  {
+   "file": "motion/inputs/sfx/pop.wav",
+   "at": 34.35,
+   "gain_db": -14
+  },
+  {
+   "file": "motion/inputs/sfx/stamp.wav",
+   "at": 35.55,
+   "gain_db": -9
+  },
+  {
+   "file": "motion/inputs/sfx/tear.wav",
+   "at": 37.05,
+   "gain_db": -8
+  },
+  {
+   "file": "motion/inputs/sfx/whoosh.wav",
+   "at": 37.5,
+   "gain_db": -17
+  },
+  {
+   "file": "motion/inputs/sfx/pop.wav",
+   "at": 38.75,
+   "gain_db": -15
+  },
+  {
+   "file": "motion/inputs/sfx/pop.wav",
+   "at": 39.07,
+   "gain_db": -15
+  },
+  {
+   "file": "motion/inputs/sfx/pop.wav",
+   "at": 43.21,
+   "gain_db": -15
+  },
+  {
+   "file": "motion/inputs/sfx/swoosh-short.wav",
+   "at": 44.477,
+   "gain_db": -19
+  },
+  {
+   "file": "motion/inputs/sfx/hit.wav",
+   "at": 45.7,
+   "gain_db": -11
+  },
+  {
+   "file": "motion/inputs/sfx/whoosh.wav",
+   "at": 48.363,
+   "gain_db": -15
+  },
+  {
+   "file": "motion/inputs/sfx/whoosh.wav",
+   "at": 50.743,
+   "gain_db": -15
+  },
+  {
+   "file": "motion/inputs/sfx/swoosh-short.wav",
+   "at": 51.3,
+   "gain_db": -15
+  },
+  {
+   "file": "motion/inputs/sfx/pop.wav",
+   "at": 52.013,
+   "gain_db": -15
+  },
+  {
+   "file": "motion/inputs/sfx/pop.wav",
+   "at": 55.563,
+   "gain_db": -14
+  },
+  {
+   "file": "motion/inputs/sfx/pop.wav",
+   "at": 60.363,
+   "gain_db": -14
+  },
+  {
+   "file": "motion/inputs/sfx/pop.wav",
+   "at": 62.2,
+   "gain_db": -14
+  },
+  {
+   "file": "motion/inputs/sfx/click.wav",
+   "at": 66.49,
+   "gain_db": -12
+  },
+  {
+   "file": "motion/inputs/sfx/pop.wav",
+   "at": 66.51,
+   "gain_db": -14
+  },
+  {
+   "file": "motion/inputs/sfx/whoosh.wav",
+   "at": 68.66,
+   "gain_db": -15
+  },
+  {
+   "file": "motion/inputs/sfx/whoosh-big.wav",
+   "at": 70.467,
+   "gain_db": -13
+  },
+  {
+   "file": "motion/inputs/sfx/swoosh-short.wav",
+   "at": 70.717,
+   "gain_db": -19
+  },
+  {
+   "file": "motion/inputs/sfx/swoosh-short.wav",
+   "at": 82.35,
+   "gain_db": -16
+  },
+  {
+   "file": "motion/inputs/sfx/hit.wav",
+   "at": 82.37,
+   "gain_db": -9
+  },
+  {
+   "file": "motion/inputs/sfx/stamp.wav",
+   "at": 82.7,
+   "gain_db": -10
+  },
+  {
+   "file": "motion/inputs/sfx/stamp.wav",
+   "at": 83.1,
+   "gain_db": -10
+  },
+  {
+   "file": "motion/inputs/sfx/stamp.wav",
+   "at": 83.5,
+   "gain_db": -10
+  },
+  {
+   "file": "motion/inputs/sfx/swoosh-short.wav",
+   "at": 83.88,
+   "gain_db": -20
+  },
+  {
+   "file": "motion/inputs/sfx/whoosh.wav",
+   "at": 86.943,
+   "gain_db": -15
+  },
+  {
+   "file": "motion/inputs/sfx/pop.wav",
+   "at": 87.043,
+   "gain_db": -14
+  },
+  {
+   "file": "motion/inputs/sfx/typing.wav",
+   "at": 87.943,
+   "gain_db": -17
+  },
+  {
+   "file": "motion/inputs/sfx/pop.wav",
+   "at": 87.993,
+   "gain_db": -14
+  },
+  {
+   "file": "motion/inputs/sfx/pop.wav",
+   "at": 88.643,
+   "gain_db": -15
+  }
+ ],
+ "loudness": -14
+}

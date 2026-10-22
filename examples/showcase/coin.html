@@ -1,0 +1,22 @@
+<!doctype html><html><head><meta charset="utf-8"><style>
+@font-face{font-family:'Heebo';font-weight:900;src:url('file:///home/user/editing-tool/.claude/skills/hebrew-captions/fonts/Heebo-Black.ttf')}
+html,body{margin:0;background:transparent}
+#st{width:600px;height:600px;perspective:1100px;display:flex;align-items:center;justify-content:center}
+.coin{position:relative;width:400px;height:400px;transform-style:preserve-3d}
+.face{position:absolute;inset:0;border-radius:50%;overflow:hidden;backface-visibility:hidden;
+ background:radial-gradient(circle at 32% 28%,#FFD0B0 0%,#F08A5D 28%,#E8693C 52%,#A9441C 82%,#7A2E10 100%);
+ box-shadow:inset 0 0 0 10px rgba(255,214,190,.35),inset 0 0 0 26px rgba(122,46,16,.35),inset 0 0 40px rgba(60,20,5,.5)}
+.back{transform:rotateY(180deg)}
+.m{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-family:'Heebo';font-weight:900;font-size:180px;letter-spacing:-6px;
+ color:#FFF3EA;text-shadow:0 4px 0 rgba(122,46,16,.65),0 -2px 1px rgba(255,255,255,.6),0 10px 24px rgba(60,20,5,.45)}
+.ring{position:absolute;inset:44px;border-radius:50%;box-shadow:inset 0 0 0 3px rgba(255,236,224,.55)}
+.edge{position:absolute;inset:0;border-radius:50%;background:linear-gradient(90deg,#6A250C,#C8572A 50%,#6A250C)}
+.sh{position:absolute;top:-30%;width:40%;height:160%;background:linear-gradient(90deg,rgba(255,255,255,0),rgba(255,255,255,.5),rgba(255,255,255,0))}
+</style></head><body><div id="st"><div class="coin" id="c">
+<script>for(let i=0;i<14;i++)document.write(`<div class="edge" style="transform:translateZ(${-i*2+13}px)"></div>`)</script>
+<div class="face" style="transform:translateZ(14px)"><div class="ring"></div><div class="m">AY</div><div class="sh" id="s1"></div></div>
+<div class="face back" style="transform:rotateY(180deg) translateZ(14px)"><div class="ring"></div><div class="m">AY</div><div class="sh" id="s2"></div></div>
+</div></div>
+<script>window.setA=a=>{document.getElementById('c').style.transform=`rotateY(${a}deg) rotateX(12deg)`;
+ const x=(-60+160*((a%180)/180))+'%';document.getElementById('s1').style.left=x;document.getElementById('s2').style.left=x;}</script>
+</body></html>

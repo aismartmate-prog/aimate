@@ -1,0 +1,27 @@
+<!doctype html><html><head><meta charset="utf-8"><style>
+@font-face{font-family:'Heebo';font-weight:900;src:url('file:///home/user/editing-tool/.claude/skills/hebrew-captions/fonts/Heebo-Black.ttf')}
+@font-face{font-family:'Heebo';font-weight:700;src:url('file:///home/user/editing-tool/.claude/skills/hebrew-captions/fonts/Heebo-Bold.ttf')}
+html,body{margin:0}#r{position:relative;width:360px;height:640px;overflow:hidden;font-family:'Heebo';color:#fff;direction:rtl}
+.pb{position:absolute;top:14px;left:14px;right:14px;height:5px;border-radius:3px;background:rgba(255,255,255,.3)}.pb i{display:block;height:100%;background:#fff;border-radius:3px}
+.c{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center}
+.cap{position:absolute;bottom:70px;left:0;right:0;text-align:center;font-weight:900;font-size:40px;text-shadow:0 4px 14px rgba(0,0,0,.4)}
+</style></head><body><div id="r"></div>
+<script>
+const R=document.getElementById('r');
+const ease=x=>1-Math.pow(1-Math.min(1,Math.max(0,x)),3);
+function draw(k,t){ // t in 0..1 (loop)
+ let h='';
+ if(k==0){h=`<div class="c" style="background:linear-gradient(${160+60*t}deg,#FF8A4C,#E8693C 45%,#7A1F0A)">
+  <div style="font-weight:900;font-size:${200+40*Math.sin(t*6.28)}px;line-height:1">${1+Math.floor(t*5)}</div><div style="font-weight:900;font-size:44px">טיפים לשיווק</div></div>`}
+ if(k==1){let bars='';for(let i=0;i<5;i++){const v=ease(t*1.6-i*0.12)*(60+i*40);bars+=`<div style="width:38px;height:${v}px;background:${i==4?'#E8693C':'#fff'};border-radius:8px 8px 0 0"></div>`}
+  h=`<div class="c" style="background:radial-gradient(circle at 50% 30%,#2B2B33,#0F0F11)"><div style="display:flex;gap:14px;align-items:flex-end;height:260px;direction:ltr">${bars}</div>
+  <div style="font-weight:900;font-size:52px;margin-top:20px">צמיחה <span style="color:#E8693C">↑</span></div></div>`}
+ if(k==2){const a=t*360;h=`<div class="c" style="background:linear-gradient(200deg,#5B4BFF,#1C1653)"><div style="width:220px;height:220px;border-radius:50%;border:14px solid rgba(255,255,255,.25);border-top-color:#fff;transform:rotate(${a}deg)"></div>
+  <div class="cap" style="bottom:120px">מוצר חדש</div></div>`}
+ if(k==3){const w=['סטופ.','גלילה.','עכשיו.'];const i=Math.min(2,Math.floor(t*3));const s=0.85+0.15*ease((t*3-i)*3);
+  h=`<div class="c" style="background:linear-gradient(170deg,#11998E,#0B3D3A)"><div style="font-weight:900;font-size:110px;transform:scale(${s})">${w[i]}</div></div>`}
+ if(k==4){const s=1+0.12*Math.abs(Math.sin(t*12.56));h=`<div class="c" style="background:linear-gradient(160deg,#FF5F8F,#7A1240)"><div style="font-size:170px;transform:scale(${s})">❤</div>
+  <div class="cap">תודה לכולם</div></div>`}
+ R.innerHTML=h+`<div class="pb"><i style="width:${(t*100).toFixed(1)}%"></i></div>`;
+}
+</script></body></html>

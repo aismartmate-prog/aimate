@@ -1,0 +1,17 @@
+motion/node_modules/
+motion/package-lock.json
+motion/dist/
+motion/work/
+motion/out/
+*.mp4
+*.mov
+*.wav
+motion/package.json
+# per-video work folders (source video, transcripts, analysis)
+motion/v*/
+# reference videos the user sends for style (not ours to publish)
+motion/ref*/
+__pycache__/
+# downloaded ML models (MediaPipe), fetched by the skill when needed
+motion/inputs/*.tflite
+motion/inputs/*.task

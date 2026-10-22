@@ -1,0 +1,17 @@
+{
+ "_note": "Brand kit per business or character. Claude uses these colours on every card, button and hairline, and the handle on the Follow/CTA card (only in that brand's own videos). Add your own entry; ask Claude: 'add my business to motion/brands.json'.",
+ "example-brand": {
+  "name": "Your Business",
+  "niche": "What you do, in a few words",
+  "language": "he",
+  "colors": {
+   "ink": "#0B0B0C",
+   "gold": "#C9A24D",
+   "gold_light": "#E2C27A",
+   "ivory": "#F5F1E8",
+   "muted": "#8E8778"
+  },
+  "handle": "Your Business",
+  "clips": "motion/clips/"
+ }
+}
