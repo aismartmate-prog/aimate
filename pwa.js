@@ -38,11 +38,11 @@
     try {
       if (!sessionStorage.getItem('pwa_started')) {
         sessionStorage.setItem('pwa_started', '1');
-        /* ניווט שיצא מהלאנצ'ר (נבחרה מערכת: קידס / תרגולים) - לא מחזירים אותו ללאנצ'ר, אחרת מסך הפתיחה נטען שוב */
-        var fromLauncher = /[?&]nosplash=1(&|$)/.test(location.search);
-        try { if (document.referrer && /(^|\.)tirgulim\.co\.il$/.test(new URL(document.referrer).hostname)) fromLauncher = true; } catch (e2) {}
+        /* לא מחזירים ללאנצ'ר כשהגענו אליו מבחירת מערכת (קידס / תרגולים), ולא על תת-הדומיין של הקידס - אחרת מסך הפתיחה נטען שוב */
+        var skipHome = /^kids\./.test(location.hostname) || /[?&]nosplash=1(&|$)/.test(location.search);
+        try { if (document.referrer && /(^|\.)tirgulim\.co\.il$/.test(new URL(document.referrer).hostname)) skipHome = true; } catch (e2) {}
         var p = location.pathname.replace(/index\.html$/, '');
-        if (!fromLauncher && p !== CFG.home && !(CFG.home === '/' && p === '/')) { location.replace(CFG.home); return; }
+        if (!skipHome && p !== CFG.home && !(CFG.home === '/' && p === '/')) { location.replace(CFG.home); return; }
       }
     } catch (e) {}
   }
