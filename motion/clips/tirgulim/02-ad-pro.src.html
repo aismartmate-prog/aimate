@@ -1,0 +1,255 @@
+<title>Tirgulim ad pro</title>
+<style>
+/*FONTS*/
+.fa{font-family:'FA6';font-weight:900;font-style:normal;line-height:1;display:inline-block}
+.fab{font-family:'FA6B';font-weight:400;font-style:normal;line-height:1;display:inline-block}
+#shape{display:none}
+#stage{font-family:'Geist','Heebo',system-ui,sans-serif}
+.E{position:absolute;left:0;top:0;will-change:auto}
+.rt{direction:rtl;unicode-bidi:isolate}
+#bg{position:absolute;left:-540px;top:-960px;width:1080px;height:1920px;background:#0a1633;overflow:hidden}
+.glow{position:absolute;border-radius:50%}
+#dots{position:absolute;inset:0;background-image:radial-gradient(rgba(148,184,255,.16) 2px,transparent 2.2px);background-size:46px 46px}
+/* headline = the voice-over transcript */
+.hl{position:absolute;left:-490px;width:980px;text-align:center;direction:rtl;color:#fff;font-weight:800;line-height:1.16}
+.hl span{display:inline-block;margin:0 .13em}
+.hl .k{color:#5cc8ff}
+/* notebook */
+#nb{width:760px;height:860px;border-radius:30px;background:#fdfdfb;box-shadow:0 40px 90px rgba(0,0,0,.45);overflow:hidden}
+#nb .lines{position:absolute;inset:0;background:repeating-linear-gradient(#fdfdfb 0 62px,#cfe0ff 62px 64px);background-position:0 40px}
+#nb .mg{position:absolute;right:96px;top:0;bottom:0;width:3px;background:#f2a1a1}
+.eq{position:absolute;direction:ltr;color:#1e293b;font-weight:600;white-space:nowrap}
+#stamp{width:230px;height:230px;border-radius:50%;border:12px solid #ef4444;color:#ef4444;display:flex;align-items:center;justify-content:center;font-size:170px;font-weight:900;box-sizing:border-box}
+.qf{color:#5cc8ff;font-weight:800}
+/* logo */
+#lg{width:270px;height:270px;border-radius:76px;background:linear-gradient(135deg,#3b82f6,#1e3a8a);display:flex;align-items:center;justify-content:center;color:#fff;font-size:132px;box-shadow:0 0 0 2px rgba(255,255,255,.18) inset,0 30px 80px rgba(37,99,235,.55)}
+.sl{color:#5cc8ff;font-weight:700;direction:rtl;white-space:nowrap}
+/* phone */
+#ph{width:592px;height:1244px;border-radius:92px;background:#05070d;box-shadow:0 0 0 3px #2b3446,0 50px 120px rgba(0,0,0,.6)}
+#scr{position:absolute;left:16px;top:16px;width:560px;height:1212px;border-radius:78px;overflow:hidden;background:#0b1220}
+#scr img{position:absolute;left:0;top:0;width:560px;height:1212px}
+#notch{position:absolute;left:226px;top:30px;width:140px;height:40px;border-radius:20px;background:#05070d}
+.po{position:absolute;left:0;top:0;background-repeat:no-repeat;box-shadow:0 30px 70px rgba(0,0,0,.5),0 0 0 3px rgba(92,200,255,.9)}
+/* cards */
+.card{background:#fff;border-radius:44px;box-shadow:0 40px 100px rgba(0,0,0,.5)}
+.vf{position:absolute;border-radius:28px;background:#f1f5f9}
+.br{position:absolute;width:54px;height:54px;border-color:#2563eb;border-style:solid}
+#scanline{position:absolute;height:6px;border-radius:3px;background:#22d3ee;box-shadow:0 0 24px 6px rgba(34,211,238,.6)}
+.stp{position:absolute;direction:ltr;font-weight:700;white-space:nowrap}
+.pill{display:flex;align-items:center;gap:22px;direction:rtl;white-space:nowrap}
+.ring{position:absolute;border-radius:50%;border:5px solid #5cc8ff}
+.bar{position:absolute;bottom:0;width:12px;border-radius:6px;background:#2563eb}
+/* subjects */
+.tile{width:450px;height:236px;border-radius:42px;overflow:hidden;box-shadow:0 24px 60px rgba(0,0,0,.35)}
+.tile .ic{position:absolute;right:30px;top:34px;width:104px;height:104px;border-radius:52px;background:rgba(255,255,255,.24);display:flex;align-items:center;justify-content:center;color:#fff;font-size:48px}
+.tile .nm{position:absolute;right:156px;top:40px;color:#fff;font-size:50px;font-weight:800;direction:rtl;white-space:nowrap}
+.tile .sb{position:absolute;right:156px;top:110px;color:rgba(255,255,255,.88);font-size:29px;font-weight:600;direction:rtl;white-space:nowrap}
+.tile .bub{position:absolute;left:-60px;bottom:-90px;width:260px;height:260px;border-radius:50%;background:rgba(255,255,255,.12)}
+/* dashboard */
+.dh{position:absolute;right:52px;direction:rtl;white-space:nowrap;color:#0f172a;font-weight:800}
+.tab{position:absolute;height:64px;border-radius:32px;display:flex;align-items:center;justify-content:center;font-size:28px;font-weight:700;direction:rtl}
+.bl{position:absolute;right:52px;width:200px;white-space:nowrap;text-align:right;direction:rtl;font-size:30px;font-weight:700;color:#334155}
+.bt{position:absolute;right:270px;width:598px;height:26px;border-radius:13px;background:#eef2f7}
+.bf{position:absolute;right:270px;height:26px;border-radius:13px}
+/* cta */
+#url{height:124px;padding:0 64px;border-radius:62px;background:#fff;color:#1e3a8a;font-size:74px;font-weight:800;display:flex;align-items:center;letter-spacing:-.01em;box-shadow:0 30px 80px rgba(0,0,0,.4)}
+#btn{width:560px;height:124px;border-radius:62px;background:linear-gradient(135deg,#3b82f6,#1d4ed8);color:#fff;font-size:50px;font-weight:800;display:flex;align-items:center;justify-content:center;direction:rtl;box-shadow:0 20px 60px rgba(37,99,235,.6)}
+</style>
+
+<div data-slot="world">
+  <div id="bg"><div class="glow" id="g1"></div><div class="glow" id="g2"></div><div id="dots"></div></div>
+
+  <!-- S1 notebook -->
+  <div class="E" id="nb"><div class="lines"></div><div class="mg"></div>
+    <div class="eq" style="left:90px;top:150px;font-size:96px">3x − 7 = 14</div>
+    <div class="eq" style="left:90px;top:300px;font-size:96px;color:#94a3b8">x = ?</div>
+    <div class="eq" style="left:90px;top:470px;font-size:60px;color:#cbd5e1">2(x + 4) = ...</div>
+  </div>
+  <div class="E" id="stamp">?</div>
+  <div class="E fa" id="pen" style="font-size:150px;color:#f59e0b">PENCIL</div>
+  <div class="E qf" id="q1" style="font-size:90px">?</div><div class="E qf" id="q2" style="font-size:64px">?</div><div class="E qf" id="q3" style="font-size:110px">?</div>
+
+  <!-- logo + slogan (S2, S8) -->
+  <div class="E" id="lg"><span class="fa">GRAD</span></div>
+  <div class="E sl" id="sl" style="font-size:66px">למידה חכמה מתחילה כאן</div>
+
+  <!-- phone -->
+  <div class="E" id="ph"><div id="scr">
+      <img id="i_home" src="SHOTS/home.png"><img id="i_hub" src="SHOTS/hub.png"><img id="i_scan" src="SHOTS/scan.png"><img id="i_yoni" src="SHOTS/yoni.png">
+      <div id="rings"></div>
+    </div><div id="notch"></div></div>
+  <div class="po" id="po0"></div><div class="po" id="po1"></div><div class="po" id="po2"></div><div class="po" id="po3"></div>
+
+  <!-- scan card -->
+  <div class="E card" id="sc" style="width:680px;height:560px">
+    <div class="pill" style="position:absolute;right:44px;top:38px;font-size:34px;font-weight:800;color:#0f172a"><span class="fa" style="color:#2563eb;font-size:34px">EXPAND</span>סריקת שאלה לפתרון</div>
+    <div class="vf" style="left:44px;top:110px;width:592px;height:200px"></div>
+    <div class="br" style="left:44px;top:110px;border-width:7px 0 0 7px;border-radius:28px 0 0 0"></div><div class="br" style="left:582px;top:110px;border-width:7px 7px 0 0;border-radius:0 28px 0 0"></div>
+    <div class="br" style="left:44px;top:256px;border-width:0 0 7px 7px;border-radius:0 0 0 28px"></div><div class="br" style="left:582px;top:256px;border-width:0 7px 7px 0;border-radius:0 0 28px 0"></div>
+    <div class="eq" style="left:0;width:680px;text-align:center;top:160px;font-size:80px">3x − 7 = 14</div>
+    <div id="scanline" style="left:70px;width:540px;top:120px"></div>
+    <div class="stp" id="st1" style="left:0;width:680px;text-align:center;top:342px;font-size:58px;color:#334155">3x = 21</div>
+    <div class="stp" id="st2" style="left:0;width:680px;text-align:center;top:428px;font-size:66px;color:#059669">x = 7 <span class="fa" style="font-size:52px">CHECK</span></div>
+  </div>
+
+  <!-- voice chip -->
+  <div class="E card" id="vc" style="width:640px;height:200px;border-radius:100px">
+    <div style="position:absolute;right:28px;top:28px;width:144px;height:144px;border-radius:72px;background:linear-gradient(135deg,#3b82f6,#1d4ed8);display:flex;align-items:center;justify-content:center;color:#fff;font-size:64px"><span class="fa">MIC</span></div>
+    <div style="position:absolute;right:200px;top:36px;font-size:40px;font-weight:800;color:#0f172a;direction:rtl;white-space:nowrap">שיעור פרטי קולי</div>
+    <div id="bars" style="position:absolute;right:200px;top:96px;width:380px;height:70px"></div>
+  </div>
+
+  <!-- subjects -->
+  <div id="tiles"></div>
+
+  <!-- dashboard -->
+  <div class="E card" id="db" style="width:920px;height:1000px">
+    <div style="position:absolute;right:52px;top:48px;width:96px;height:96px;border-radius:28px;background:linear-gradient(135deg,#3b82f6,#1e3a8a);display:flex;align-items:center;justify-content:center;color:#fff;font-size:46px"><span class="fa">CHART</span></div>
+    <div class="dh" style="right:172px;top:52px;font-size:46px">מעקב הורים</div>
+    <div class="dh" style="right:172px;top:110px;font-size:30px;color:#64748b;font-weight:600">דוח התקדמות</div>
+    <div class="tab" style="right:52px;top:186px;width:230px;background:#7c3aed;color:#fff">סקירה כללית</div>
+    <div class="tab" style="right:298px;top:186px;width:170px;background:#f1f5f9;color:#334155">תרגולים</div>
+    <div class="tab" style="right:484px;top:186px;width:250px;background:#f1f5f9;color:#334155">מבחנים ובחנים</div>
+    <div class="dh" style="top:292px;font-size:34px">פילוח זמן תרגול לפי מקצוע</div>
+    <div id="bars2"></div>
+    <div class="dh" style="top:796px;font-size:34px">מד התקדמות ושליטה בחומר</div>
+    <svg style="position:absolute;left:52px;top:856px" width="816" height="110" viewBox="0 0 816 110"><path d="M0 100 L816 100" stroke="#eef2f7" stroke-width="4"/>
+      <path id="ln" d="M0 96 C90 92 130 70 200 74 S320 52 400 50 S540 36 610 26 S740 14 816 8" fill="none" stroke="#2563eb" stroke-width="9" stroke-linecap="round"/></svg>
+  </div>
+  <div class="E pill" id="wa" style="height:120px;padding:0 48px;border-radius:60px;background:#25d366;color:#fff;font-size:44px;font-weight:800;box-shadow:0 24px 60px rgba(0,0,0,.4)"><span class="fab" style="font-size:58px">WA</span>תמיכה בוואטסאפ</div>
+
+  <!-- CTA -->
+  <div class="E" id="url">tirgulim.co.il</div>
+  <div class="E" id="btn">הרשמה למערכת</div>
+
+  <div id="hls"></div>
+</div><!--/world-->
+<div data-slot="shape"></div><!--/shape-->
+
+<script>
+const $=id=>document.getElementById(id);
+const S=M.S, cl=M.clamp;
+const sp=(t,t0,w=13,z=0.8)=>S(t-t0,w,z);
+const io=(t,a,b,w=13)=>sp(t,a,w,0.8)*(b==null?1:1-S(t-b,15,1));
+const put=(el,x,y,s=1,o=1,r=0,extra='')=>{el.style.transform=`translate(${x.toFixed(2)}px,${y.toFixed(2)}px) translate(-50%,-50%) scale(${s.toFixed(4)}) rotate(${r.toFixed(2)}deg)${extra}`;el.style.opacity=cl(o).toFixed(3);el.style.display=o<0.003?'none':'';};
+
+// ---- voice-over lines (the ad's transcript). [start, end, text, key words, font size]
+const L=[[0.3,2.9,'הילד שלכם תקוע בשיעורי הבית?',['תקוע'],84],
+ [3.1,6.4,'תכירו את המרכז להישגים לימודיים',['המרכז','להישגים','לימודיים'],84],
+ [6.6,9.6,'לומדים, מתרגלים ונבחנים – צעד אחר צעד',['לומדים,','מתרגלים','ונבחנים'],80],
+ [9.8,13.2,'מצלמים תרגיל – ומקבלים פתרון מיידי',['פתרון','מיידי'],84],
+ [13.4,16.6,'ומורה פרטי קולי – בשיעור חי',['מורה','פרטי','קולי'],84],
+ [16.8,20.4,'מתמטיקה, אנגלית, לשון, מדעים, ערבית וחינוך פיננסי',[],72],
+ [20.6,23.4,'ולהורים – מעקב אחר ההתקדמות',['מעקב'],84],
+ [23.6,27.8,'היכנסו עכשיו לאתר',['עכשיו'],84]];
+const T=27.8;
+const wt=(i,j)=>{const [a,b,txt]=L[i], n=txt.split(' ').length, d=Math.min(2.6,(b-a)*0.72); return a+d*j/n;};
+$('hls').innerHTML=L.map((l,i)=>`<div class="hl" id="h${i}" style="font-size:${l[4]}px">${l[2].split(' ').map((w,j)=>`<span id="h${i}w${j}" class="${l[3].includes(w)?'k':''}">${w}</span>`).join(' ')}</div>`).join('');
+
+// ---- phone geometry
+const K=560/390, PY=262;
+const SCR=(x,y)=>[-280+x*K, PY-606+y*K];   // screenshot (390x844) point -> world
+// pop-outs: [image, x,y,w,h in screenshot px, time in, time out]
+const PO=[['home',15,196,360,87,wt(2,0),wt(2,1)],['home',15,293,360,70,wt(2,1),wt(2,2)],['home',15,373,360,87,wt(2,2),9.7],['hub',65,435,261,173,10.15,10.95]];
+PO.forEach((p,i)=>{const e=$('po'+i).style; e.width=p[3]*K+'px'; e.height=p[4]*K+'px'; e.borderRadius=(18*K)+'px';
+  e.backgroundImage=`url(SHOTS/${p[0]}.png)`; e.backgroundSize=`${390*K}px auto`; e.backgroundPosition=`${-p[1]*K}px ${-p[2]*K}px`;});
+const SHOT=[['i_home',0],['i_hub',9.8],['i_scan',11.0],['i_yoni',13.4]];
+$('rings').innerHTML=[0,1,2].map(i=>`<div class="ring" id="r${i}"></div>`).join('');
+$('bars').innerHTML=Array.from({length:22},(_,i)=>`<div class="bar" id="b${i}" style="right:${i*17}px"></div>`).join('');
+
+// ---- subjects (site colours and icons)
+const SUB=[['מתמטיקה','יסודי, חטיבה ובגרות','CALC','#be123c','#fb7185',0],['אנגלית','אוצר מילים ודקדוק','LANG','#b45309','#fbbf24',1],
+ ['לשון','הבנה והבעה','PEN','#6d28d9','#a78bfa',2],['מדעים','יסודי וחטיבת ביניים','FLASK','#047857','#34d399',3],
+ ['ערבית','קריאה וכתיבה','MOSQUE','#c2410c','#fb923c',4],['חינוך פיננסי','ניהול כסף נכון','COINS','#0e7490','#22d3ee',6]];
+const ICON=window.__ICONS||{};
+$('tiles').innerHTML=SUB.map((s,i)=>`<div class="E tile" id="t${i}" style="background:linear-gradient(135deg,${s[4]},${s[3]})"><div class="bub"></div>
+  <div class="ic"><span class="fa">${s[2]}</span></div><div class="nm">${s[0]}</div><div class="sb">${s[1]}</div></div>`).join('');
+const TP=SUB.map((s,i)=>[i%2?-237:237, -300+Math.floor(i/2)*262]);
+// dashboard bars (relative lengths, illustrative)
+const BV=[0.84,0.62,0.48,0.7,0.36,0.55];
+$('bars2').innerHTML=SUB.map((s,i)=>`<div class="bl" style="top:${360+i*70}px">${s[0]}</div><div class="bt" style="top:${368+i*70}px"></div>
+  <div class="bf" id="f${i}" style="top:${368+i*70}px;background:linear-gradient(270deg,${s[3]},${s[4]})"></div>`).join('');
+const lnLen=900; $('ln').style.strokeDasharray=lnLen;
+
+M.scene({
+  W:1080,H:1920,bg:'#0a1633',T,center:[540,960],intro:null,
+  SH:{x:{w:10,h:10,r:0,bg:'#0a1633',cam:1}},start:'x',SEQ:[],
+  extra:(t)=>{
+    // background glows drift
+    const g1=$('g1').style, g2=$('g2').style;
+    g1.width=g1.height='1500px'; g1.background='radial-gradient(circle,rgba(37,99,235,.55),rgba(37,99,235,0) 62%)';
+    g1.left=(-300+160*Math.sin(t*0.35))+'px'; g1.top=(-420+200*Math.cos(t*0.28))+'px';
+    g2.width=g2.height='1200px'; g2.background='radial-gradient(circle,rgba(6,182,212,.28),rgba(6,182,212,0) 62%)';
+    g2.left=(200+140*Math.cos(t*0.31))+'px'; g2.top=(900+180*Math.sin(t*0.25))+'px';
+
+    // headlines: words rise in on their beat
+    L.forEach((l,i)=>{const el=$('h'+i), out=1-S(t-l[1],18,1), on=t>=l[0]-0.05&&t<l[1]+0.35;
+      el.style.display=on?'':'none'; if(!on) return;
+      el.style.top=(-700-l[4]*0.6)+'px';
+      l[2].split(' ').forEach((w,j)=>{const ti=wt(i,j), v=M.vis(t,ti,null,{din:0,lin:0.28,blur:14}), s=$(`h${i}w${j}`).style;
+        s.opacity=(v.o*out).toFixed(3); s.filter=v.blur>0.05?`blur(${v.blur.toFixed(1)}px)`:'none';
+        s.transform=`translateY(${((1-v.a)*36-(1-out)*30).toFixed(1)}px)`;});});
+
+    // S1 notebook
+    const nbIn=sp(t,0.1,11,0.78), nbOut=S(t-3.0,13,0.9);
+    put($('nb'),0,260+(1-nbIn)*1300-nbOut*120,0.96+0.04*nbIn-0.25*nbOut,1-nbOut,-4+2*Math.sin(t*1.3)*(1-nbOut));
+    const stI=sp(t,1.45,16,0.55);
+    put($('stamp'),190,200-60*nbOut,(2.2-1.2*stI)*(1-0.3*nbOut),(t>1.45?cl((t-1.45)/0.08):0)*(1-nbOut),-14);
+    put($('pen'),-300,600-nbOut*200+(1-nbIn)*1300,1,(1-nbOut),-30+8*Math.sin(t*5));
+    [['q1',-400,-80,0.7],['q2',410,-140,1.0],['q3',420,560,1.3]].forEach(([id,x,y,ti])=>{const a=cl((t-ti)/1.6);
+      put($(id),x+10*Math.sin(t*2+ti),y-120*a,0.6+0.5*sp(t,ti,12,0.6),(t<ti?0:Math.sin(Math.PI*a))*(1-nbOut));});
+
+    // logo + slogan: S2 and CTA
+    const lgA=io(t,3.25,6.45,12), lgB=sp(t,23.75,12,0.72);
+    const lgY=lgA>0.001&&t<15?140-240*S(t-6.45,12,1):-130;
+    put($('lg'),0,lgY,(0.5+0.58*(t<15?lgA:lgB))*(1+0.02*Math.sin(t*2)),t<15?lgA:lgB,0);
+    const slA=io(t,4.4,6.45), slB=sp(t,24.2);
+    put($('sl'),0,t<15?400:150,t<15?1:1.2,t<15?slA:slB,0,`translateY(${((1-(t<15?slA:slB))*30).toFixed(1)}px)`);
+
+    // phone
+    const phIn=sp(t,6.45,10,0.82), phOut=S(t-16.65,11,1);
+    const py=PY+(1-phIn)*1500+phOut*1500;
+    put($('ph'),0,py,1,phIn>0.002&&phOut<0.999?1:0,0);
+    for(const [id,ti] of SHOT){ $(id).style.opacity=cl((t-ti)/0.25).toFixed(3); }
+    // pop-outs lift out of the screen on their word
+    PO.forEach((p,i)=>{const a=io(t,p[5],p[6],16), [x,y]=SCR(p[1]+p[3]/2,p[2]+p[4]/2);
+      put($('po'+i),x,y+(py-PY),1+0.16*a,a>0.01?1:0,0,`translateY(${(-24*a).toFixed(1)}px)`);
+      $('po'+i).style.boxShadow=`0 ${30*a}px ${70*a}px rgba(0,0,0,${0.5*a}),0 0 0 ${3*a}px rgba(92,200,255,.9)`;});
+    // voice rings on the orb
+    const [ox,oy]=[195*K,190*K]; [0,1,2].forEach(i=>{const ph=((t-13.4)/1.3+i/3)%1, on=t>13.5&&t<16.7, d=150+260*ph, r=$('r'+i).style;
+      r.left=(ox-d/2)+'px'; r.top=(oy-d/2)+'px'; r.width=r.height=d+'px'; r.opacity=on?(0.8*(1-ph)).toFixed(3):0;});
+
+    // scan card
+    const scA=io(t,11.05,13.25,13);
+    put($('sc'),0,560+(1-scA)*200,0.9+0.1*scA,scA,0);
+    const sl=cl((t-11.4)/0.8); $('scanline').style.top=(120+180*M.eio(sl<1?sl:1))+'px'; $('scanline').style.opacity=t>11.35&&t<12.4?1:0;
+    [['st1',12.25],['st2',12.7]].forEach(([id,ti])=>{const v=M.vis(t,ti,null,{din:0,lin:0.25}),e=$(id);e.style.opacity=v.o;e.style.transform=`translateY(${(1-v.a)*16}px)`;});
+
+    // voice chip
+    const vcA=io(t,13.75,16.55,13);
+    put($('vc'),0,640+(1-vcA)*200,0.9+0.1*vcA,vcA,0);
+    for(let i=0;i<22;i++){const h=14+56*Math.abs(Math.sin(t*7.3+i*0.9)*Math.sin(t*3.1+i*0.37)); $('b'+i).style.height=h.toFixed(1)+'px';}
+
+    // subject tiles
+    SUB.forEach((s,i)=>{const ti=wt(5,s[5]), a=io(t,ti,20.5,14), [x,y]=TP[i];
+      put($('t'+i),x,y+(1-a)*90,0.85+0.15*a,a,0);});
+
+    // dashboard
+    const dbA=io(t,20.6,23.45,12);
+    put($('db'),0,60+(1-dbA)*260,0.92+0.08*dbA,dbA,0);
+    BV.forEach((v,i)=>{$('f'+i).style.width=(598*v*M.eio(cl((t-21.0-i*0.12)/0.7))).toFixed(1)+'px';});
+    $('ln').style.strokeDashoffset=(lnLen*(1-M.eio(cl((t-21.8)/0.9)))).toFixed(1);
+    const waA=io(t,22.7,23.45,15); put($('wa'),0,660+(1-waA)*60,0.8+0.2*waA,waA,0);
+
+    // CTA
+    const uA=sp(t,24.6,13,0.7), bA=sp(t,25.1,13,0.7);
+    put($('url'),0,380+(1-uA)*60,0.85+0.15*uA,uA,0);
+    const press=M.presses([26.1])(t);
+    put($('btn'),0,580+(1-bA)*60,(0.85+0.15*bA)*(1-0.05*press)*(1+0.03*Math.sin(Math.max(0,t-26.3)*4)),bA,0);
+
+    // cursor only for the final click
+    const co=t>25.4&&t<27.4?Math.min(cl((t-25.4)/0.2),cl((27.4-t)/0.3)):0; $('cursor').style.opacity=co;
+  },
+  cursor:{size:64,clicks:[26.1],keys:[[0,330,900],[25.4,330,900],[25.95,60,600],[27.8,60,600]]},
+});
+</script>
