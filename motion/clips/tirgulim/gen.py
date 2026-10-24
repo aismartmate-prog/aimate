@@ -8,7 +8,7 @@ css = (FA / 'css' / 'all.min.css').read_text()
 cp = lambda name: re.search(r"\.fa-" + name + r":before[^{]*\{content:\"\\([0-9a-f]+)\"", css).group(1)
 ICONS = {'PENCIL': 'pencil', 'GRAD': 'graduation-cap', 'EXPAND': 'expand', 'CHECK': 'check', 'MIC': 'microphone',
          'CHART': 'chart-line', 'CALC': 'calculator', 'LANG': 'language', 'PEN': 'pen-nib', 'FLASK': 'flask-vial',
-         'MOSQUE': 'mosque', 'COINS': 'coins', 'WA': 'whatsapp', 'USERPLUS': 'user-plus', 'LOCK': 'lock'}
+         'MOSQUE': 'mosque', 'COINS': 'coins', 'WA': 'whatsapp', 'USERPLUS': 'user-plus', 'LOCK': 'lock', 'WALLET': 'wallet', 'CLOCK': 'clock', 'USERS': 'users', 'PIN': 'location-dot'}
 b64 = lambda p: base64.b64encode(p.read_bytes()).decode()
 fonts = (f"@font-face{{font-family:'FA6';font-weight:900;src:url(data:font/woff2;base64,{b64(FA/'webfonts'/'fa-solid-900.woff2')}) format('woff2')}}"
          f"@font-face{{font-family:'FA6B';font-weight:400;src:url(data:font/woff2;base64,{b64(FA/'webfonts'/'fa-brands-400.woff2')}) format('woff2')}}")

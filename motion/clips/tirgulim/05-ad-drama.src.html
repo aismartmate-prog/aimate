@@ -1,0 +1,262 @@
+<title>Tirgulim ad drama</title>
+<style>
+/*FONTS*/
+.fa{font-family:'FA6';font-weight:900;font-style:normal;line-height:1;display:inline-block}
+.fab{font-family:'FA6B';font-weight:400;font-style:normal;line-height:1;display:inline-block}
+#shape{display:none}
+.E{position:absolute;left:0;top:0}
+#bg{position:absolute;left:-540px;top:-960px;width:1080px;height:1920px;overflow:hidden}
+#bgN{position:absolute;inset:0;background:radial-gradient(120% 70% at 50% 35%,#1a2033,#07090f 70%)}
+#bgD{position:absolute;inset:0;background:radial-gradient(120% 70% at 50% 30%,#1d4ed8,#0a1633 72%)}
+#grain{position:absolute;inset:0;background-image:radial-gradient(rgba(255,255,255,.035) 1px,transparent 1.2px);background-size:5px 5px}
+#vig{position:absolute;inset:0;background:radial-gradient(90% 60% at 50% 45%,transparent 55%,rgba(0,0,0,.6))}
+.ln{position:absolute;left:-500px;width:1000px;text-align:center;direction:rtl;color:#f1f5f9;font-weight:800;line-height:1.15;white-space:normal}
+.ln span{display:inline-block;margin:0 .12em}
+.ln .k{color:#5cc8ff}.ln .r{color:#fb7185}
+#svgwrap{position:absolute;left:-540px;top:-430px;width:1080px;height:1100px}
+#lap{width:940px}
+#lscr{position:absolute;left:30px;top:26px;width:880px;height:550px;border-radius:10px;overflow:hidden;background:#0b1220}
+#lscr img{position:absolute;left:0;top:0;width:880px}
+.big{direction:rtl;white-space:nowrap;font-weight:900;color:#fff}
+#lg{width:200px;height:200px;border-radius:56px;background:linear-gradient(135deg,#3b82f6,#1e3a8a);display:flex;align-items:center;justify-content:center;color:#fff;font-size:98px;box-shadow:0 0 0 2px rgba(255,255,255,.18) inset,0 30px 80px rgba(37,99,235,.6)}
+.chip{height:76px;padding:0 34px;border-radius:38px;display:flex;align-items:center;gap:16px;direction:rtl;white-space:nowrap;font-size:36px;font-weight:800}
+.ck{display:flex;align-items:center;gap:18px;direction:rtl;white-space:nowrap;color:#fff;font-size:40px;font-weight:700}
+.ck i{width:52px;height:52px;border-radius:26px;background:#10b981;display:flex;align-items:center;justify-content:center;font-size:26px;color:#fff;font-style:normal}
+#wa{height:150px;padding:0 56px;border-radius:75px;background:#25d366;color:#fff;display:flex;align-items:center;gap:26px;direction:rtl;white-space:nowrap;box-shadow:0 26px 70px rgba(37,211,102,.45)}
+#form{width:640px;border-radius:30px;box-shadow:0 40px 100px rgba(0,0,0,.55)}
+.pin{color:#5cc8ff;font-size:46px}
+.bill{position:absolute;width:150px;height:84px;border-radius:8px;background:#e9ecef;box-shadow:0 6px 16px rgba(0,0,0,.35)}
+.bill b{position:absolute;right:14px;top:14px;font-size:30px;color:#6b7280;font-weight:800}
+.bill i{position:absolute;left:14px;height:6px;border-radius:3px;background:#cbd5e1}
+#cal{width:860px;height:760px;border-radius:36px;background:#f8fafc;box-shadow:0 40px 100px rgba(0,0,0,.6);overflow:hidden}
+.cell{position:absolute;width:110px;height:104px;border-radius:14px;background:#eef2f7}
+.cell b{position:absolute;right:10px;top:6px;font-size:22px;color:#94a3b8;font-weight:700}
+.les{position:absolute;left:6px;right:6px;bottom:8px;height:40px;border-radius:10px;background:#fb7185;color:#fff;font-size:17px;font-weight:800;display:flex;align-items:center;justify-content:center;direction:rtl}
+.coin{position:absolute;width:44px;height:44px;border-radius:22px;background:radial-gradient(circle at 35% 30%,#fde68a,#f59e0b 60%,#b45309);color:#7c2d12;font-size:24px;font-weight:900;display:flex;align-items:center;justify-content:center}
+#flash{position:absolute;left:-540px;top:-960px;width:1080px;height:1920px;background:#fff;pointer-events:none}
+</style>
+
+<div data-slot="world">
+  <div id="bg"><div id="bgN"></div><div id="bgD"></div><div id="grain"></div><div id="vig"></div></div>
+
+  <!-- the kitchen: night (stress) and day (relief) are the same room -->
+  <div id="svgwrap"><svg width="1080" height="1100" viewBox="0 0 1080 1100">
+    <defs>
+      <radialGradient id="cone" cx="50%" cy="0%" r="100%"><stop offset="0" stop-color="#ffd58a" stop-opacity=".55"/><stop offset="1" stop-color="#ffd58a" stop-opacity="0"/></radialGradient>
+      <linearGradient id="skyN" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#0b1330"/><stop offset="1" stop-color="#1e2a55"/></linearGradient>
+      <linearGradient id="skyD" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#7dd3fc"/><stop offset="1" stop-color="#e0f2fe"/></linearGradient>
+    </defs>
+    <rect id="wall" x="40" y="40" width="1000" height="1020" rx="48" fill="#161c2c"/>
+    <!-- window -->
+    <rect x="120" y="140" width="330" height="380" rx="14" fill="url(#skyN)" id="skyn"/>
+    <rect x="120" y="140" width="330" height="380" rx="14" fill="url(#skyD)" id="skyd" opacity="0"/>
+    <circle id="moon" cx="350" cy="220" r="34" fill="#f8fafc"/><circle cx="364" cy="210" r="30" fill="#152049" id="moonc"/>
+    <circle id="sun" cx="350" cy="230" r="44" fill="#fde047" opacity="0"/>
+    <path d="M285 140 V520 M120 330 H450" stroke="#2a3350" stroke-width="12"/>
+    <rect x="110" y="130" width="350" height="400" rx="18" fill="none" stroke="#2a3350" stroke-width="16"/>
+    <!-- clock: 11 o'clock -->
+    <g id="clock" transform="translate(830 230)"><circle r="92" fill="#f1f5f9"/><circle r="92" fill="none" stroke="#2a3350" stroke-width="12"/>
+      <g stroke="#334155" stroke-width="6" stroke-linecap="round"><path d="M0 -76 V-64"/><path d="M0 76 V64"/><path d="M76 0 H64"/><path d="M-76 0 H-64"/></g>
+      <path id="hh" d="M0 0 L-24 -40" stroke="#0f172a" stroke-width="10" stroke-linecap="round"/><path d="M0 0 V-66" stroke="#0f172a" stroke-width="7" stroke-linecap="round"/>
+      <path id="sh" d="M0 12 V-72" stroke="#ef4444" stroke-width="3"/><circle r="8" fill="#0f172a"/></g>
+    <!-- lamp -->
+    <path d="M600 40 V250" stroke="#475569" stroke-width="5"/>
+    <polygon id="lcone" points="530,300 670,300 900,860 300,860" fill="url(#cone)"/>
+    <path d="M540 300 Q600 225 660 300 Z" fill="#f59e0b"/><ellipse cx="600" cy="300" rx="60" ry="10" fill="#fde68a"/>
+    <!-- chair -->
+    <rect x="760" y="520" width="34" height="420" rx="16" fill="#3b2f2a"/><rect x="640" y="790" width="190" height="26" rx="12" fill="#3b2f2a"/>
+    <!-- mother -->
+    <g id="mom">
+      <path d="M640 800 Q630 640 690 590 Q740 560 770 610 Q800 690 790 800 Z" fill="#6b7aa6"/>
+      <path d="M660 800 L650 960 M770 800 L800 960" stroke="#334155" stroke-width="34" stroke-linecap="round"/>
+      <circle cx="700" cy="520" r="56" fill="#d9a37e"/>
+      <path d="M650 520 Q648 450 708 448 Q768 452 760 520 Q752 486 712 482 Q676 486 668 540 Z" fill="#2b1d16"/>
+      <circle cx="762" cy="478" r="26" fill="#2b1d16"/>
+      <path id="armN" d="M700 610 Q610 660 600 760 M600 760 Q610 640 655 535" stroke="#6b7aa6" stroke-width="40" stroke-linecap="round" fill="none"/>
+      <circle id="handN" cx="655" cy="530" r="22" fill="#d9a37e"/>
+      <path id="armD" d="M700 610 Q640 690 560 740" stroke="#6b7aa6" stroke-width="40" stroke-linecap="round" fill="none" opacity="0"/>
+      <circle id="handD" cx="552" cy="744" r="22" fill="#d9a37e" opacity="0"/>
+    </g>
+    <!-- child (day) -->
+    <g id="kid" opacity="0">
+      <path d="M330 810 Q322 700 368 664 Q400 645 424 676 Q446 730 440 810 Z" fill="#f59e0b"/>
+      <circle cx="384" cy="610" r="42" fill="#c98b62"/><path d="M344 604 Q346 556 388 556 Q430 558 426 606 Q412 584 386 584 Q360 586 344 604 Z" fill="#1f140f"/>
+      <path d="M420 690 Q470 720 500 748" stroke="#f59e0b" stroke-width="30" stroke-linecap="round" fill="none"/>
+    </g>
+    <!-- table -->
+    <rect x="140" y="800" width="780" height="34" rx="14" fill="#4a3a33"/><rect x="200" y="834" width="26" height="200" fill="#3b2f2a"/><rect x="834" y="834" width="26" height="200" fill="#3b2f2a"/>
+    <!-- night props: calculator, mug -->
+    <g id="props"><rect x="250" y="752" width="90" height="50" rx="8" fill="#1f2937" transform="rotate(-6 295 777)"/><rect x="262" y="760" width="66" height="14" rx="3" fill="#86efac" transform="rotate(-6 295 777)"/>
+      <path d="M380 740 h44 v60 h-44 z" fill="#e2e8f0"/><path d="M424 752 q22 4 0 30" stroke="#e2e8f0" stroke-width="8" fill="none"/></g>
+    <!-- day prop: laptop with the site -->
+    <g id="dlap" opacity="0"><path d="M470 800 L520 690 L700 690 L670 800 Z" fill="#cbd5e1"/><path d="M482 794 L527 698 L690 698 L662 794 Z" fill="#1d4ed8"/>
+      <path d="M540 730 h110 M534 750 h100 M528 770 h84" stroke="#93c5fd" stroke-width="8" stroke-linecap="round"/></g>
+  </svg></div>
+  <div id="bills"></div>
+
+  <!-- calendar of private lessons -->
+  <div class="E" id="cal"><div style="position:absolute;right:40px;top:30px;font-size:44px;font-weight:900;color:#0f172a;direction:rtl">שיעורים פרטיים</div><div id="cells"></div></div>
+  <div class="E" id="wallet"><span class="fa" style="font-size:150px;color:#b45309">WALLET</span></div>
+  <div id="coins"></div>
+  <div id="rain"></div>
+
+  <!-- brand -->
+  <div class="E" id="lg"><span class="fa">GRAD</span></div>
+  <div class="E big" id="bn" style="font-size:78px">המרכז להישגים לימודיים</div>
+
+  <!-- laptop with the real site -->
+  <div class="E" id="lap"><svg width="940" height="640" viewBox="0 0 940 640" style="position:absolute;left:0;top:0">
+      <rect x="10" y="6" width="920" height="590" rx="26" fill="#0b0f19" stroke="#2b3446" stroke-width="3"/><path d="M-20 600 H960 L920 636 H20 Z" fill="#b8c2d3"/><rect x="400" y="600" width="140" height="10" rx="5" fill="#8b97ab"/></svg>
+    <div id="lscr"><img id="s_idx" src="DESK/index_top.png"><img id="s_sys" src="DESK/sys_home.png"><img id="s_tut" src="DESK/tutors.png"><img id="s_yoni" src="DESK/yoni.png">
+      <img id="s_hint" src="DESK/q_hint.png"><img id="s_sol" src="DESK/q_sol2.png"><img id="s_ok" src="DESK/q_ok.png"></div></div>
+  <div class="E" id="clk2"><svg width="300" height="300" viewBox="-110 -110 220 220"><circle r="100" fill="#f1f5f9"/><circle r="100" fill="none" stroke="#1e3a8a" stroke-width="12"/>
+    <g stroke="#334155" stroke-width="6" stroke-linecap="round"><path d="M0 -84 V-70"/><path d="M0 84 V70"/><path d="M84 0 H70"/><path d="M-84 0 H-70"/></g>
+    <path d="M0 0 L-26 -44" stroke="#0f172a" stroke-width="11" stroke-linecap="round"/><path d="M0 0 V-72" stroke="#0f172a" stroke-width="8" stroke-linecap="round"/><path id="sh2" d="M0 12 V-78" stroke="#ef4444" stroke-width="3"/><circle r="9" fill="#0f172a"/></svg></div>
+  <div class="E chip" id="c247" style="background:#fff;color:#1e3a8a"><span class="fa" style="font-size:32px;color:#2563eb">CLOCK</span>זמין 24/7</div>
+  <div class="E chip" id="cfam" style="background:#fff;color:#1e3a8a"><span class="fa" style="font-size:32px;color:#2563eb">USERS</span>מנוי אחד לכל ילדי המשפחה</div>
+
+  <!-- nationwide -->
+  <div id="pins"></div>
+  <div class="E big" id="nat" style="font-size:110px">בפריסה ארצית</div>
+  <div class="E big" id="nat2" style="font-size:52px;color:#5cc8ff;font-weight:800">להורים לילדים בכיתות א׳–יב׳</div>
+
+  <!-- CTA -->
+  <img class="E" id="form" src="DESK/form.png">
+  <div class="E ck" id="k1"><i class="fa">CHECK</i>ייעוץ חינם והתאמת מסלול אישי</div>
+  <div class="E ck" id="k2"><i class="fa">CHECK</i>חוזרים אליכם באותו היום</div>
+  <div class="E ck" id="k3"><i class="fa">CHECK</i>ללא שום התחייבות מצידכם</div>
+  <div class="E" id="wa"><span class="fab" style="font-size:84px">WA</span><div style="display:flex;flex-direction:column;align-items:flex-start;gap:2px"><span style="font-size:34px;font-weight:700;opacity:.95">שלחו הודעה לפגישת ייעוץ</span><span style="font-size:64px;font-weight:900;direction:ltr;letter-spacing:.02em">074-7060104</span></div></div>
+
+  <div id="lines"></div>
+  <div id="flash"></div>
+</div><!--/world-->
+<div data-slot="shape"></div><!--/shape-->
+
+<script>
+const $=id=>document.getElementById(id);
+const S=M.S, cl=M.clamp;
+const sp=(t,t0,w=13,z=0.8)=>S(t-t0,w,z);
+const io=(t,a,b,w=13)=>sp(t,a,w,0.8)*(b==null?1:1-S(t-b,15,1));
+const put=(el,x,y,s=1,o=1,extra='')=>{el.style.transform=`translate(${x.toFixed(2)}px,${y.toFixed(2)}px) translate(-50%,-50%) scale(${s.toFixed(4)})${extra}`;el.style.opacity=cl(o).toFixed(3);el.style.display=o<0.003?'none':'';};
+const T=47;
+const TURN=14.0;
+
+// ---- the voice-over script, shown on screen. [start,end,text,keys,size,style] style: 'type' = typewriter (act 1)
+const L=[[0.6,4.8,'עוד ערב של שיעורי בית...',[],80,'type'],
+ [5.2,7.6,'עוד שיעור פרטי. ועוד אחד.',[],80,'type'],
+ [7.8,9.9,'והחשבון רק גדל.',['גדל.'],86,'type'],
+ [10.1,13.5,'אלפי שקלים בחודש על מורים פרטיים?',['אלפי','שקלים','בחודש'],96,'hit'],
+ [14.5,17.0,'יש דרך אחרת.',['אחרת.'],96,'pop'],
+ [17.2,21.4,'מערכת למידה מתקדמת – מכיתה א׳ ועד הבגרות',['מתקדמת'],74,'pop'],
+ [21.6,23.7,'נתקעתם ב-11 בלילה?',['11'],90,'pop'],
+ [23.8,26.0,'מורה פרטי מבוסס AI – זמין 24/7',['מורה','פרטי'],78,'pop'],
+ [26.2,30.0,'פתרונות מלאים, צעד אחר צעד',['צעד','אחר'],80,'pop'],
+ [30.2,32.6,'במקום לשלם אלפי שקלים בחודש למורים פרטיים',[],70,'pop'],
+ [32.7,35.0,'קבלו את הכל במערכת אחת מתקדמת.',['אחת'],80,'pop'],
+ [37.6,41.5,'פגישת ייעוץ ללא עלות וללא התחייבות',['ללא','עלות'],76,'pop'],
+ [41.6,47,'השאירו פרטים ונחזור אליכם',['השאירו','פרטים'],78,'pop']];
+$('lines').innerHTML=L.map((l,i)=>`<div class="ln" id="l${i}" style="font-size:${l[4]}px">${l[2].split(' ').map((w,j)=>`<span id="l${i}w${j}" class="${l[3].includes(w)?(l[5]==='hit'?'r':'k'):''}">${l[5]==='type'?[...w].map((c,m)=>`<em id="l${i}w${j}c${m}" style="font-style:normal">${c}</em>`).join(''):w}</span>`).join(' ')}</div>`).join('');
+
+// ---- bills that pile up on the table (act 1), rain (act 1 climax), coins from the wallet
+const BILL=Array.from({length:9},(_,i)=>({x:-250+((i*137)%380),y:335-i*14,r:((i*53)%30)-15,t:1.2+i*0.42}));
+$('bills').innerHTML=BILL.map((b,i)=>`<div class="bill" id="b${i}"><b>₪</b><i style="top:50px;width:80px"></i><i style="top:64px;width:54px"></i></div>`).join('');
+const RAIN=Array.from({length:26},(_,i)=>({x:-500+((i*211)%1000),d:(i*0.37)%2.6,r:((i*71)%60)-30,v:700+((i*97)%400)}));
+$('rain').innerHTML=RAIN.map((b,i)=>`<div class="bill" id="rn${i}" style="opacity:.9"><b>₪</b><i style="top:50px;width:80px"></i><i style="top:64px;width:54px"></i></div>`).join('');
+// calendar: 5 weeks x 7 days, lessons pop on 12 days
+const LES=[2,4,6,9,11,13,16,18,20,23,25,27];
+$('cells').innerHTML=Array.from({length:35},(_,i)=>{const c=i%7,r=Math.floor(i/7);return `<div class="cell" style="right:${30+c*116}px;top:110px;transform:translateY(${r*124}px)"><b>${i<30?i+1:''}</b>${LES.includes(i)?`<div class="les" id="le${i}">שיעור פרטי</div>`:''}</div>`}).join('');
+const LT=LES.map((d,k)=>5.4+k*0.36);
+$('coins').innerHTML=LES.map((d,k)=>`<div class="coin" id="co${k}">₪</div>`).join('');
+const cellPos=i=>{const c=i%7,r=Math.floor(i/7);return [430-30-c*116-55, -380+110+r*124+52-60];}; // world coords of a cell centre (cal centred at 0,-60)
+// pins for "nationwide"
+const PINS=Array.from({length:14},(_,i)=>({x:-360+((i*263)%720),y:-260+((i*149)%520),t:35.4+i*0.08}));
+$('pins').innerHTML=PINS.map((p,i)=>`<div class="E pin fa" id="pn${i}">PIN</div>`).join('');
+
+const SHOTS=[['s_idx',17.3],['s_sys',19.2],['s_tut',21.6],['s_yoni',23.8],['s_hint',26.2],['s_sol',27.5],['s_ok',28.8]];
+
+M.scene({
+  W:1080,H:1920,bg:'#07090f',T,center:[540,960],intro:null,
+  SH:{x:{w:10,h:10,r:0,bg:'#07090f',cam:1}},start:'x',SEQ:[],
+  extra:(t)=>{
+    // night -> day background at the turn
+    const day=cl((t-TURN)/0.6); $('bgD').style.opacity=day.toFixed(3);
+    const fl=t>=TURN-0.05&&t<TURN+0.7?Math.max(0,1-(t-TURN)/0.7):0; $('flash').style.opacity=fl.toFixed(3);
+    const black=t>13.55&&t<TURN?1:0;
+
+    // lines
+    L.forEach((l,i)=>{const el=$('l'+i), on=t>=l[0]-0.05&&t<l[1]+0.35; el.style.display=on?'':'none'; if(!on) return;
+      const out=1-S(t-l[1],16,1); el.style.top=(-760-l[4]*0.6)+'px';
+      if(l[5]==='hit'){const sh=t<l[0]+0.6?Math.sin(t*90)*14*(1-(t-l[0])/0.6):0; el.style.transform=`translateX(${sh.toFixed(1)}px)`;}
+      else el.style.transform='';
+      const ws=l[2].split(' '); const total=[...l[2].replace(/ /g,'')].length; let ci=0;
+      ws.forEach((w,j)=>{const s=$(`l${i}w${j}`).style;
+        if(l[5]==='type'){[...w].forEach((c,m)=>{const ti=l[0]+ci*0.055; ci++; $(`l${i}w${j}c${m}`).style.opacity=(t>=ti?1:0)*out;}); s.opacity=1; return;}
+        const d=l[5]==='hit'?0.5:Math.min(1.5,(l[1]-l[0])*0.55), ti=l[0]+d*j/ws.length;
+        const v=M.vis(t,ti,null,{din:0,lin:l[5]==='hit'?0.12:0.24,blur:12}); s.opacity=(v.o*out).toFixed(3); s.filter=v.blur>0.05?`blur(${v.blur.toFixed(1)}px)`:'none';
+        s.transform=l[5]==='hit'?`scale(${(1+0.5*(1-v.a)).toFixed(3)})`:`translateY(${((1-v.a)*30).toFixed(1)}px)`;});
+      el.style.opacity=black?0:1;});
+
+    // kitchen scene: night 0-10, back as day 30-35
+    const kN=io(t,0.05,5.0,9), kD=io(t,30.1,35.2,9);
+    const k=Math.max(kN,kD), sw=$('svgwrap').style; sw.opacity=k.toFixed(3); sw.display=k<0.003?'none':'';
+    sw.transform=`translateY(${((1-k)*80).toFixed(1)}px) scale(${(0.96+0.04*k+0.02*Math.sin(t*0.4)).toFixed(4)})`;
+    const isDay=t>20; $('skyd').style.opacity=isDay?1:0; $('moon').style.opacity=isDay?0:1; $('moonc').style.opacity=isDay?0:1; $('sun').style.opacity=isDay?1:0;
+    $('wall').setAttribute('fill',isDay?'#e8eef7':'#161c2c');
+    $('lcone').style.opacity=isDay?0:(0.85+0.15*Math.sin(t*23)*Math.sin(t*7));
+    $('armN').style.opacity=isDay?0:1; $('handN').style.opacity=isDay?0:1; $('armD').style.opacity=isDay?1:0; $('handD').style.opacity=isDay?1:0;
+    $('kid').style.opacity=isDay?cl((t-30.6)/0.4):0; $('dlap').style.opacity=isDay?cl((t-30.4)/0.4):0; $('props').style.opacity=isDay?0:1;
+    $('sh').setAttribute('transform',`rotate(${Math.floor(t)*6})`);
+    $('hh').setAttribute('d',isDay?'M0 0 L36 -24':'M0 0 L-24 -40');
+    $('mom').setAttribute('transform',`translate(0 ${(isDay?0:2*Math.sin(t*1.4)).toFixed(2)})`);
+    // bills land on the table (night), fly away (day)
+    BILL.forEach((b,i)=>{const e=$('b'+i); const a=sp(t,b.t,12,0.7); const away=t>30?S(t-30.3-i*0.05,9,1):0;
+      const on=(t<10.2&&t>b.t)||(t>30&&away<0.999);
+      put(e,b.x+away*(600+i*40),b.y-(1-a)*500-away*700,1,on?(t<30?Math.min(1,kN*2):1-away):0,` rotate(${(b.r+away*200).toFixed(1)}deg)`);});
+
+    // calendar + wallet + coins
+    const cA=io(t,5.05,10.0,12);
+    put($('cal'),0,-60+(1-cA)*120,0.9+0.1*cA,cA);
+    LES.forEach((d,kk)=>{const e=$('le'+d); const a=sp(t,LT[kk],18,0.6); e.style.opacity=t>LT[kk]?1:0; e.style.transform=`scale(${(0.4+0.6*a).toFixed(3)})`;
+      const ct=t-LT[kk]+0.35, c=$('co'+kk), [tx,ty]=cellPos(d);
+      if(ct<0||ct>0.35||cA<0.5){c.style.display='none';} else {const u=M.eio(ct/0.35); c.style.display=''; c.style.transform=`translate(${(0+(tx-0)*u-22).toFixed(1)}px,${(560+(ty-560)*u-140*Math.sin(Math.PI*u)-22).toFixed(1)}px)`;}});
+    const nCoins=LT.filter(x=>t>x).length;
+    put($('wallet'),0,560,(0.75+0.5*cA)*(1-0.025*nCoins),cA);
+
+    // bill rain behind the big line
+    RAIN.forEach((b,i)=>{const e=$('rn'+i), u=t-10.1-b.d*0.35; if(u<0||t>13.55){e.style.display='none';return;} e.style.display='';
+      e.style.transform=`translate(${(b.x).toFixed(1)}px,${(-1000+b.v*u).toFixed(1)}px) rotate(${(b.r+u*120).toFixed(1)}deg)`;});
+
+    // brand reveal
+    const bA=io(t,TURN+0.1,17.1,11);
+    put($('lg'),0,-120,(0.5+0.5*bA)*(1+0.02*Math.sin(t*2)),bA);
+    put($('bn'),0,90,1,io(t,TURN+0.4,17.1),` translateY(${((1-io(t,TURN+0.4,17.1))*30).toFixed(1)}px)`);
+
+    // laptop with the site
+    const lA=io(t,17.15,30.0,10);
+    put($('lap'),0,-70+(1-lA)*400,(0.98+0.1*lA),lA);
+    SHOTS.forEach(([id,ti],kk)=>{const nx=SHOTS[kk+1]; const a=kk?cl((t-ti)/0.25):1, b=nx?cl((t-nx[1]-0.25)/0.01):0; $(id).style.opacity=(a*(1-b)).toFixed(3);});
+    // slow scroll on the index, gentle zoom on modals
+    const ZM=[['s_tut',21.7,2.25,720,490],['s_yoni',23.9,1.7,600,440],['s_hint',26.3,2.6,720,440],['s_sol',27.6,1.6,720,480],['s_ok',28.9,1.5,820,560]];
+    ZM.forEach(([id,ti,z,fx,fy])=>{const a=M.eio(cl((t-ti)/0.9)), zz=1+(z-1)*a, e=$(id).style; e.transformOrigin=`${fx*880/1440}px ${fy*880/1440}px`; e.transform=`scale(${zz.toFixed(4)})`;});
+    const k2=io(t,21.65,23.75,14); put($('clk2'),0,-420+(1-k2)*-60,0.7+0.3*k2,k2); $('sh2').setAttribute('transform',`rotate(${Math.floor(t)*6})`);
+    $('s_idx').style.transform=`translateY(${(-Math.max(0,t-17.6)*60).toFixed(1)}px)`;
+    const c1=io(t,23.9,26.1,12); put($('c247'),260,420+(1-c1)*40,0.9+0.1*c1,c1);
+    const c2=io(t,32.9,35.2,12); put($('cfam'),0,640+(1-c2)*40,0.9+0.1*c2,c2);
+    // the clock comes back at 11pm
+    const ck=io(t,21.6,23.75,14);
+    $('clock').setAttribute('transform',`translate(830 230)`);
+
+    // nationwide
+    const nA=io(t,35.25,37.5,12);
+    put($('nat'),0,-40,0.9+0.1*nA,nA); put($('nat2'),0,110,1,io(t,35.7,37.5),` translateY(${((1-io(t,35.7,37.5))*20).toFixed(1)}px)`);
+    PINS.forEach((p,i)=>{const a=io(t,p.t,37.5,16); put($('pn'+i),p.x,p.y+(p.y>-80&&p.y<180?(p.y<50?-190:190):0),0.6+0.4*a,a*0.85,` translateY(${((1-a)*-40).toFixed(1)}px)`);});
+
+    // CTA
+    const fA=sp(t,37.8,11,0.8);
+    put($('form'),0,-90+(1-fA)*300,(0.9+0.1*fA)*1.12,fA);
+    [['k1',38.7],['k2',39.1],['k3',39.5]].forEach(([id,ti],kk)=>{const a=sp(t,ti,14,0.75); put($(id),0,420+kk*78+(1-a)*30,1,a*(t<41.4?1:1-cl((t-41.4)/0.3)));});
+    const wA=sp(t,41.6,12,0.7), pulse=1+0.035*Math.max(0,Math.sin((t-42.2)*4.2));
+    put($('wa'),0,500+(1-wA)*120,(0.85+0.15*wA)*(t>42.2?pulse:1),wA);
+  },
+});
+</script>
