@@ -1,0 +1,162 @@
+<title>Tirgulim ad cinema</title>
+<style>
+/*FONTS*/
+.fa{font-family:'FA6';font-weight:900;font-style:normal;line-height:1;display:inline-block}
+.fab{font-family:'FA6B';font-weight:400;font-style:normal;line-height:1;display:inline-block}
+#shape{display:none}
+.E{position:absolute;left:0;top:0}
+#frame{position:absolute;left:-540px;top:-960px;width:1080px;height:1920px;overflow:hidden;background:#000}
+.ph{position:absolute;inset:-4%;background-size:cover;background-repeat:no-repeat;opacity:0;will-change:auto}
+#cold{position:absolute;inset:0;background:linear-gradient(180deg,rgba(20,40,80,.22),rgba(10,20,45,.34));mix-blend-mode:multiply}
+#warm{position:absolute;inset:0;background:radial-gradient(80% 60% at 50% 30%,rgba(255,190,120,.18),rgba(0,0,0,0) 70%);mix-blend-mode:screen}
+#shade{position:absolute;inset:0;background:linear-gradient(180deg,rgba(0,0,0,.55) 0%,rgba(0,0,0,0) 22%,rgba(0,0,0,0) 52%,rgba(0,0,0,.82) 100%)}
+#vig{position:absolute;inset:0;background:radial-gradient(85% 60% at 50% 45%,transparent 50%,rgba(0,0,0,.65))}
+#grain{position:absolute;inset:-50%;background-image:radial-gradient(rgba(255,255,255,.06) 1px,transparent 1.3px);background-size:4px 4px;mix-blend-mode:overlay}
+#bars{position:absolute;left:-540px;top:-960px;width:1080px;height:1920px;pointer-events:none}
+#bars i{position:absolute;left:0;right:0;height:0;background:#000}
+#blk{position:absolute;inset:0;background:#000}
+#flash{position:absolute;inset:0;background:#fff}
+/* typography */
+.tl{position:absolute;left:-480px;width:960px;text-align:center;direction:rtl;color:#fff;font-weight:900;line-height:1.08;text-shadow:0 6px 30px rgba(0,0,0,.55)}
+.tl span{display:inline-block;margin:0 .11em;overflow:hidden;vertical-align:bottom;padding:0 .02em .06em}
+.tl span em{display:inline-block;font-style:normal}
+.tl .c{color:#ff7a8a}.tl .k{color:#62d2ff}
+.kick{position:absolute;left:-300px;width:600px;text-align:center;color:rgba(255,255,255,.85);font-size:34px;font-weight:700;letter-spacing:.32em;font-family:'Geist',sans-serif}
+.rule{position:absolute;left:-60px;width:120px;height:5px;border-radius:3px;background:#62d2ff}
+/* product */
+.scr{width:980px;height:612px;border-radius:26px;overflow:hidden;background:#0b1220;box-shadow:0 0 0 2px rgba(255,255,255,.22),0 50px 120px rgba(0,0,0,.65)}
+.scr img{position:absolute;left:0;top:0;width:980px}
+#lg{width:190px;height:190px;border-radius:54px;background:linear-gradient(135deg,#3b82f6,#1e3a8a);display:flex;align-items:center;justify-content:center;color:#fff;font-size:92px;box-shadow:0 0 0 2px rgba(255,255,255,.2) inset,0 30px 80px rgba(37,99,235,.6)}
+.big{direction:rtl;white-space:nowrap;font-weight:900;color:#fff;text-shadow:0 6px 30px rgba(0,0,0,.5)}
+.chip{height:78px;padding:0 34px;border-radius:39px;display:flex;align-items:center;gap:16px;direction:rtl;white-space:nowrap;font-size:36px;font-weight:800;background:rgba(255,255,255,.95);color:#1e3a8a;box-shadow:0 20px 50px rgba(0,0,0,.35)}
+.ck{display:flex;align-items:center;gap:18px;direction:rtl;white-space:nowrap;color:#fff;font-size:40px;font-weight:700;text-shadow:0 3px 14px rgba(0,0,0,.6)}
+.ck i{width:52px;height:52px;border-radius:26px;background:#10b981;display:flex;align-items:center;justify-content:center;font-size:26px;color:#fff;font-style:normal}
+#wa{height:156px;padding:0 58px;border-radius:78px;background:#25d366;color:#fff;display:flex;align-items:center;gap:26px;direction:rtl;white-space:nowrap;box-shadow:0 26px 70px rgba(37,211,102,.5)}
+#form{width:600px;border-radius:30px;box-shadow:0 0 0 2px rgba(255,255,255,.15),0 40px 100px rgba(0,0,0,.6)}
+</style>
+
+<div data-slot="world">
+  <div id="frame">
+    <div class="ph" id="p_night" style="background-image:url(PHOTO/night.jpg);background-position:22% 50%"></div>
+    <div class="ph" id="p_kid" style="background-image:url(PHOTO/kid.jpg);background-position:50% 40%"></div>
+    <div class="ph" id="p_tutor" style="background-image:url(PHOTO/tutor.jpg);background-position:44% 50%"></div>
+    <div class="ph" id="p_papers" style="background-image:url(PHOTO/papers.jpg);background-position:62% 50%"></div>
+    <div class="ph" id="p_wallet" style="background-image:url(PHOTO/wallet.jpg);background-position:46% 50%"></div>
+    <div class="ph" id="p_despair" style="background-image:url(PHOTO/despair.jpg);background-position:34% 0%"></div>
+    <div class="ph" id="p_momlap" style="background-image:url(PHOTO/momlap.jpg);background-position:46% 50%"></div>
+    <div class="ph" id="p_blur" style="background-image:url(PHOTO/momlap.jpg);background-position:46% 50%;filter:blur(28px) brightness(.55) saturate(1.2)"></div>
+    <div class="ph" id="p_bedlap" style="background-image:url(PHOTO/bedlap.jpg);background-position:52% 50%"></div>
+    <div class="ph" id="p_family" style="background-image:url(PHOTO/family.jpg);background-position:50% 50%"></div>
+    <div class="ph" id="p_fblur" style="background-image:url(PHOTO/family.jpg);background-position:50% 50%;filter:blur(30px) brightness(.45) saturate(1.1)"></div>
+    <div class="ph" id="p_phone" style="background-image:url(PHOTO/phone.jpg);background-position:40% 50%"></div>
+    <div id="cold"></div><div id="warm"></div><div id="shade"></div><div id="vig"></div><div id="grain"></div>
+  </div>
+  <div class="E kick" id="kk">23:00</div>
+  <div class="E" id="lg"><span class="fa">GRAD</span></div>
+  <div class="E big" id="bn" style="font-size:74px">המרכז להישגים לימודיים</div>
+  <div class="E scr" id="sc1"><img id="a_idx" src="DESK/index_top.png"><img id="a_sys" src="DESK/sys_home.png"></div>
+  <div class="E scr" id="sc2"><img id="b_tut" src="DESK/tutors.png"><img id="b_yoni" src="DESK/yoni.png"></div>
+  <div class="E scr" id="sc3"><img id="c_hint" src="DESK/q_hint.png"><img id="c_sol" src="DESK/q_sol2.png"><img id="c_ok" src="DESK/q_ok.png"></div>
+  <div class="E chip" id="c247"><span class="fa" style="font-size:32px;color:#2563eb">CLOCK</span>זמין 24/7</div>
+  <div class="E chip" id="cfam"><span class="fa" style="font-size:32px;color:#2563eb">USERS</span>מנוי אחד לכל ילדי המשפחה</div>
+  <div class="E big" id="nat" style="font-size:118px">בפריסה ארצית</div>
+  <div class="E big" id="nat2" style="font-size:52px;color:#62d2ff;font-weight:800">להורים לילדים בכיתות א׳–יב׳</div>
+  <div class="E rule" id="ru"></div>
+  <img class="E" id="form" src="DESK/form.png">
+  <div class="E ck" id="k1"><i class="fa">CHECK</i>ייעוץ חינם והתאמת מסלול אישי</div>
+  <div class="E ck" id="k2"><i class="fa">CHECK</i>חוזרים אליכם באותו היום</div>
+  <div class="E ck" id="k3"><i class="fa">CHECK</i>ללא שום התחייבות מצידכם</div>
+  <div class="E" id="wa"><span class="fab" style="font-size:86px">WA</span><div style="display:flex;flex-direction:column;align-items:flex-start;gap:2px"><span style="font-size:34px;font-weight:700">שלחו הודעה לפגישת ייעוץ</span><span style="font-size:66px;font-weight:900;direction:ltr;letter-spacing:.02em">074-7060104</span></div></div>
+  <div id="lines"></div>
+  <div id="bars"><i id="bt" style="top:0"></i><i id="bb" style="bottom:0"></i></div>
+  <div class="E" id="ov" style="left:-540px;top:-960px;width:1080px;height:1920px;pointer-events:none"><div id="blk"></div><div id="flash"></div></div>
+</div><!--/world-->
+<div data-slot="shape"></div><!--/shape-->
+
+<script>
+const $=id=>document.getElementById(id);
+const S=M.S, cl=M.clamp;
+const sp=(t,t0,w=13,z=0.8)=>S(t-t0,w,z);
+const io=(t,a,b,w=13)=>sp(t,a,w,0.8)*(b==null?1:1-S(t-b,15,1));
+const put=(el,x,y,s=1,o=1,extra='')=>{el.style.transform=`translate(${x.toFixed(2)}px,${y.toFixed(2)}px) translate(-50%,-50%) scale(${s.toFixed(4)})${extra}`;el.style.opacity=cl(o).toFixed(3);el.style.display=o<0.003?'none':'';};
+const T=47, TURN=15.6;
+
+// ---- shots: [id, in, out, fade-in, kenburns: [scale0,scale1,dx,dy]]
+const SH=[['p_night',0,3.3,0.8,[1.06,1.16,0,-20]],['p_kid',3.3,5.7,0,[1.14,1.06,0,0]],['p_tutor',5.7,8.2,0,[1.05,1.14,-30,0]],
+ ['p_papers',8.2,10.6,0,[1.12,1.04,20,0]],['p_wallet',10.6,12.7,0,[1.04,1.2,0,10]],['p_despair',12.7,15.25,0,[1.08,1.22,0,-10]],
+ ['p_momlap',TURN,18.7,0,[1.03,1.12,0,-10]],['p_blur',18.6,22.9,0.4,[1.1,1.1,0,0]],['p_bedlap',22.8,26.9,0.35,[1.04,1.13,0,0]],['p_blur',26.8,30.7,0.35,[1.1,1.1,0,0]],
+ ['p_family',30.6,35.5,0.4,[1.04,1.14,0,-10]],['p_fblur',35.4,37.8,0.4,[1.1,1.1,0,0]],['p_phone',37.7,47,0.5,[1.04,1.12,0,-10]]];
+
+// ---- voice-over script on screen: [start,end,text,coloured words,size,y,colour class]
+const L=[[0.5,3.2,'עוד ערב של שיעורי בית...',[],80,560,'c'],
+ [3.5,5.6,'ושוב צריך עזרה.',[],92,560,'c'],
+ [5.9,8.1,'עוד שיעור פרטי.',['פרטי.'],92,560,'c'],
+ [8.4,10.5,'ועוד אחד.',[],110,560,'c'],
+ [10.8,12.6,'והחשבון רק גדל.',['גדל.'],94,560,'c'],
+ [12.9,15.2,'אלפי שקלים בחודש על מורים פרטיים?',['אלפי','שקלים','בחודש'],92,500,'c'],
+ [16.0,18.6,'יש דרך אחרת.',['אחרת.'],110,620,'k'],
+ [18.8,22.8,'מערכת למידה מתקדמת מכיתה א׳ ועד הבגרות',['מתקדמת'],78,-640,'k'],
+ [23.0,24.9,'נתקעתם ב-11 בלילה?',['11'],86,560,'k'],
+ [25.0,26.8,'מורה פרטי מבוסס AI – זמין 24/7',['מורה','פרטי'],76,560,'k'],
+ [27.0,30.6,'פתרונות מלאים, צעד אחר צעד',['צעד','אחר'],86,-640,'k'],
+ [30.9,33.0,'במקום לשלם אלפי שקלים בחודש למורים פרטיים',['אלפי','שקלים'],72,520,'k'],
+ [33.1,35.4,'קבלו את הכל במערכת אחת מתקדמת.',['אחת'],86,520,'k'],
+ [38.0,41.8,'פגישת ייעוץ ללא עלות וללא התחייבות',['ללא','עלות'],82,-660,'k'],
+ [41.9,47,'השאירו פרטים ונחזור אליכם',['השאירו','פרטים'],80,-660,'k']];
+$('lines').innerHTML=L.map((l,i)=>`<div class="tl" id="l${i}" style="font-size:${l[4]}px;${l[2].length<=24?'white-space:nowrap':''}">${l[2].split(' ').map((w,j)=>`<span><em id="l${i}w${j}" class="${l[3].includes(w)?l[6]:''}">${w}</em></span>`).join(' ')}</div>`).join('');
+
+const SC=[['sc1',18.75,22.85,[['a_idx',0],['a_sys',20.7]]],['sc2',23.0,26.85,[['b_tut',0],['b_yoni',25.0]]],['sc3',26.95,30.65,[['c_hint',0],['c_sol',28.2],['c_ok',29.5]]]];
+const ZM={b_tut:[2.0,720,490],b_yoni:[1.55,600,440],c_hint:[2.3,720,440],c_sol:[1.5,720,480],c_ok:[1.35,820,560]};
+
+M.scene({
+  W:1080,H:1920,bg:'#000',T,center:[540,960],intro:null,
+  SH:{x:{w:10,h:10,r:0,bg:'#000',cam:1}},start:'x',SEQ:[],
+  extra:(t)=>{
+    const act1=t<TURN;
+    // photos with ken burns; hard cuts in act 1, soft dissolves in act 2
+    const vis={};
+    SH.forEach(([id,a,b,f,kb])=>{const on=t>=a&&t<b+ (f||0.001); if(!on) return; const u=cl((t-a)/(b-a)), o=f?Math.min(cl((t-a)/f),1):1;
+      const s=kb[0]+(kb[1]-kb[0])*M.eio(u), x=kb[2]*u, y=kb[3]*u; vis[id]=Math.max(vis[id]||0,o);
+      const e=$(id).style; e.transform=`translate(${x.toFixed(1)}px,${y.toFixed(1)}px) scale(${s.toFixed(4)})`; });
+    ['p_night','p_kid','p_tutor','p_papers','p_wallet','p_despair','p_momlap','p_blur','p_bedlap','p_family','p_fblur','p_phone'].forEach(id=>{$(id).style.opacity=(vis[id]||0).toFixed(3);});
+    // grade: cold & desaturated for the problem, warm after the turn
+    const g=act1?'grayscale(.4) contrast(1.1) brightness(1.0)':'saturate(1.12) contrast(1.04) brightness(1.04)';
+    $('frame').style.filter=g;
+    $('cold').style.opacity=act1?1:0; $('warm').style.opacity=act1?0:1;
+    $('grain').style.transform=`translate(${(Math.sin(t*37)*20).toFixed(0)}px,${(Math.cos(t*29)*20).toFixed(0)}px)`;
+    // letterbox bars during act 1
+    const lb=(act1?io(t,0,15.2,6):0)*130; $('bt').style.height=lb+'px'; $('bb').style.height=lb+'px';
+    // black beat before the turn, white flash on it
+    $('blk').style.opacity=(t>15.25&&t<TURN)?1:(t<0.5?1-t/0.5:0);
+    $('flash').style.opacity=(t>=TURN&&t<TURN+0.8)?(1-(t-TURN)/0.8).toFixed(3):0;
+    put($('kk'),0,-700,1,io(t,0.6,3.1)*0.9);
+
+    // lines: words rise out of a mask
+    L.forEach((l,i)=>{const el=$('l'+i), on=t>=l[0]-0.05&&t<l[1]+0.3; el.style.display=on?'':'none'; if(!on) return;
+      const out=1-S(t-l[1],18,1); el.style.top=(l[5]-l[4]*0.6)+'px';
+      const big=i===5; el.style.transform=big&&t<l[0]+0.5?`translateX(${(Math.sin(t*80)*12*(1-(t-l[0])/0.5)).toFixed(1)}px)`:'';
+      const ws=l[2].split(' '), d=Math.min(1.3,(l[1]-l[0])*0.45);
+      ws.forEach((w,j)=>{const ti=l[0]+d*j/ws.length, a=M.eo(cl((t-ti)/0.45)), s=$(`l${i}w${j}`).style;
+        s.transform=`translateY(${((1-a)*110+(1-out)*-30).toFixed(1)}%)`; s.opacity=(out).toFixed(3);});});
+
+    // brand reveal at the turn
+    const bA=io(t,TURN+0.25,18.65,11);
+    put($('lg'),0,180,(0.6+0.4*bA)*(1+0.015*Math.sin(t*2)),bA); put($('bn'),0,360,1,io(t,TURN+0.6,18.65),` translateY(${((1-io(t,TURN+0.6,18.65))*30).toFixed(1)}px)`);
+    // product screens float in (slight 3D tilt)
+    SC.forEach(([id,a,b,imgs])=>{const A=io(t,a,b,10), tilt=(1-A)*14; put($(id),0,40+(1-A)*240,0.86+0.14*A,A,` perspective(1600px) rotateX(${tilt.toFixed(2)}deg)`);
+      imgs.forEach(([im,ti],k)=>{const nx=imgs[k+1], T0=a+ti*0+ (ti||0), st=k?cl((t-ti)/0.25):1, en=nx?cl((t-nx[1]-0.25)/0.01):0; const e=$(im).style; e.opacity=(st*(1-en)).toFixed(3);
+        const z=ZM[im]; if(z){const ts=k?ti:a, q=M.eio(cl((t-ts-0.2)/0.9)), zz=1+(z[0]-1)*q; e.transformOrigin=`${z[1]*980/1440}px ${z[2]*980/1440}px`; e.transform=`scale(${zz.toFixed(4)})`;}});});
+    $('a_idx').style.transform=`translateY(${(-Math.max(0,t-19.3)*55).toFixed(1)}px)`;
+    const c1=io(t,25.1,26.85,12); put($('c247'),0,300+(1-c1)*40,0.9+0.1*c1,c1);
+    const c2=io(t,33.3,35.45,12); put($('cfam'),0,330+(1-c2)*40,0.9+0.1*c2,c2);
+    // nationwide
+    const nA=io(t,35.5,37.8,12); put($('nat'),0,-60,0.92+0.08*nA,nA); put($('ru'),0,50,1,nA,` scaleX(${nA.toFixed(3)})`);
+    put($('nat2'),0,130,1,io(t,35.9,37.8),` translateY(${((1-io(t,35.9,37.8))*20).toFixed(1)}px)`);
+    // CTA
+    const fA=sp(t,38.2,11,0.8); put($('form'),0,-210+(1-fA)*260,0.9+0.1*fA,fA);
+    [['k1',39.1],['k2',39.5],['k3',39.9]].forEach(([id,ti],kk)=>{const a=sp(t,ti,14,0.75); put($(id),0,250+kk*76+(1-a)*30,1,a*(t<41.7?1:1-cl((t-41.7)/0.3)));});
+    const wA=sp(t,41.9,12,0.7), pulse=1+0.035*Math.max(0,Math.sin((t-42.5)*4.2));
+    put($('wa'),0,430+(1-wA)*140,(0.85+0.15*wA)*(t>42.5?pulse:1),wA);
+  },
+});
+</script>

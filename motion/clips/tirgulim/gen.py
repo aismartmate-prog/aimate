@@ -14,7 +14,7 @@ fonts = (f"@font-face{{font-family:'FA6';font-weight:900;src:url(data:font/woff2
          f"@font-face{{font-family:'FA6B';font-weight:400;src:url(data:font/woff2;base64,{b64(FA/'webfonts'/'fa-brands-400.woff2')}) format('woff2')}}")
 name = sys.argv[1] if len(sys.argv) > 1 else '02-ad-pro'
 src = (HERE / f'{name}.src.html').read_text(encoding='utf-8')
-src = src.replace('/*FONTS*/', fonts).replace('SHOTS/', (SITE / 'shots').as_uri() + '/').replace('LIVE/', (SITE / 'live').as_uri() + '/').replace('DESK/', (SITE / 'desk').as_uri() + '/')
+src = src.replace('/*FONTS*/', fonts).replace('SHOTS/', (SITE / 'shots').as_uri() + '/').replace('LIVE/', (SITE / 'live').as_uri() + '/').replace('DESK/', (SITE / 'desk').as_uri() + '/').replace('PHOTO/', (SITE / 'photos').as_uri() + '/')
 for tok in sorted(ICONS, key=len, reverse=True):
     src = re.sub(r'\b' + tok + r'\b', f'&#x{cp(ICONS[tok])};', src)
 (HERE / f'{name}.html').write_text(src, encoding='utf-8')
