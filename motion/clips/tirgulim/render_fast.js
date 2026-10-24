@@ -2,7 +2,7 @@
 // NODE_PATH=motion/node_modules node render_fast.js page.html out.mp4 fps startFrame endFrame
 const {chromium}=require('playwright');const {spawn}=require('child_process');const path=require('path');
 (async()=>{const [html,out,fps,a,b]=process.argv.slice(2);const FPS=+fps,F0=+a;
- const br=await chromium.launch();const p=await br.newPage({viewport:{width:1080,height:1920}});
+ const br=await chromium.launch();const p=await br.newPage({viewport:{width:+(process.env.VW||1080),height:+(process.env.VH||1920)}});
  await p.goto('file://'+path.resolve(html)+'?render');await p.evaluate(()=>document.fonts.ready);await p.waitForTimeout(500);
  const N=Math.min(+b,Math.round(await p.evaluate(()=>window.DURATION)*FPS));
  const ff=spawn('ffmpeg',['-loglevel','error','-y','-f','image2pipe','-framerate',String(FPS),'-c:v','mjpeg','-i','-','-c:v','libx264','-crf','14','-preset','medium','-pix_fmt','yuv420p',out]);

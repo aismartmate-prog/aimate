@@ -8,13 +8,13 @@ css = (FA / 'css' / 'all.min.css').read_text()
 cp = lambda name: re.search(r"\.fa-" + name + r":before[^{]*\{content:\"\\([0-9a-f]+)\"", css).group(1)
 ICONS = {'PENCIL': 'pencil', 'GRAD': 'graduation-cap', 'EXPAND': 'expand', 'CHECK': 'check', 'MIC': 'microphone',
          'CHART': 'chart-line', 'CALC': 'calculator', 'LANG': 'language', 'PEN': 'pen-nib', 'FLASK': 'flask-vial',
-         'MOSQUE': 'mosque', 'COINS': 'coins', 'WA': 'whatsapp', 'USERPLUS': 'user-plus'}
+         'MOSQUE': 'mosque', 'COINS': 'coins', 'WA': 'whatsapp', 'USERPLUS': 'user-plus', 'LOCK': 'lock'}
 b64 = lambda p: base64.b64encode(p.read_bytes()).decode()
 fonts = (f"@font-face{{font-family:'FA6';font-weight:900;src:url(data:font/woff2;base64,{b64(FA/'webfonts'/'fa-solid-900.woff2')}) format('woff2')}}"
          f"@font-face{{font-family:'FA6B';font-weight:400;src:url(data:font/woff2;base64,{b64(FA/'webfonts'/'fa-brands-400.woff2')}) format('woff2')}}")
 name = sys.argv[1] if len(sys.argv) > 1 else '02-ad-pro'
 src = (HERE / f'{name}.src.html').read_text(encoding='utf-8')
-src = src.replace('/*FONTS*/', fonts).replace('SHOTS/', (SITE / 'shots').as_uri() + '/').replace('LIVE/', (SITE / 'live').as_uri() + '/')
+src = src.replace('/*FONTS*/', fonts).replace('SHOTS/', (SITE / 'shots').as_uri() + '/').replace('LIVE/', (SITE / 'live').as_uri() + '/').replace('DESK/', (SITE / 'desk').as_uri() + '/')
 for tok in sorted(ICONS, key=len, reverse=True):
     src = re.sub(r'\b' + tok + r'\b', f'&#x{cp(ICONS[tok])};', src)
 (HERE / f'{name}.html').write_text(src, encoding='utf-8')
