@@ -16801,6 +16801,8 @@ window.__PR_DOC_CSS="\n\n\n.pr{--ink:#0B1D4D;--ink2:#1F3170;--mut:#5A6385;--pape
 <script>
 (function () {
   'use strict';
+  // כבוי כברירת מחדל: נדלק רק עם ?loops=1 בכתובת או window.YONI_TEACHER_LOOPS = true (לניסוי)
+  if (!(window.YONI_TEACHER_LOOPS === true || /[?&]loops=1/.test(location.search))) return;
   if (window.__yoniLoopsLoaded) return; window.__yoniLoopsLoaded = true;
   var STATES = ['idle', 'listen', 'think', 'talk'];
   var IDS = { yoni: 1, maya: 1, ido: 1, noa: 1 };
