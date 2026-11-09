@@ -16789,5 +16789,110 @@ window.__PR_DOC_CSS="\n\n\n.pr{--ink:#0B1D4D;--ink2:#1F3170;--mut:#5A6385;--pape
 
 <style id="touch-no-sticky-hover">html{-webkit-tap-highlight-color:transparent}</style>
 <script>(function(){try{if(window.matchMedia&&!matchMedia("(hover:hover) and (pointer:fine)").matches){document.querySelectorAll("[onmouseover],[onmouseout]").forEach(function(el){el.removeAttribute("onmouseover");el.removeAttribute("onmouseout");});}}catch(e){}})();</script>
+<!-- ═══ מורה אמיתי בסרטוני לופ: מחליף את התמונה הסטטית בקליפים קצרים לפי מצב השיחה ═══
+     קבצים לכל מורה בתיקייה images/teachers/ (mp4, קצרים, בלי סאונד):
+       yoni_idle.mp4 / yoni_listen.mp4 / yoni_think.mp4 / yoni_talk.mp4   (וכך גם maya, ido, noa)
+     קובץ חסר = נשארת התמונה (או הקליפ ה"idle"). בלי שום קובץ - הכול עובד כמו קודם. -->
+<style id="yoni-loops-css">
+.tr-cam .tl-vid{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:50% 22%;opacity:0;transition:opacity .45s ease;z-index:1;pointer-events:none;background:#1B2238}
+.tr-cam .tl-vid.on{opacity:1}
+.tr-cam .tr-name{z-index:3}
+</style>
+<script>
+(function () {
+  'use strict';
+  if (window.__yoniLoopsLoaded) return; window.__yoniLoopsLoaded = true;
+  var STATES = ['idle', 'listen', 'think', 'talk'];
+  var IDS = { yoni: 1, maya: 1, ido: 1, noa: 1 };
+  var cam = null, vids = {}, curId = null, curState = '', lastSwitch = 0, buf = null;
+
+  function src(id, s) { return 'images/teachers/' + id + '_' + s + '.mp4'; }
+  function level() {
+    var an = window.__tutorAnalyser; if (!an) return null;
+    try {
+      if (!buf || buf.length !== an.fftSize) buf = new Float32Array(an.fftSize);
+      an.getFloatTimeDomainData(buf); var s = 0;
+      for (var i = 0; i < buf.length; i++) s += buf[i] * buf[i];
+      return Math.min(1, Math.max(0, (Math.sqrt(s / buf.length) - .008) * 9));
+    } catch (e) { return null; }
+  }
+  function mount(id) {
+    Object.keys(vids).forEach(function (k) { try { vids[k].pause(); vids[k].remove(); } catch (e) {} });
+    vids = {}; curId = id; curState = '';
+    STATES.forEach(function (s) {
+      var v = document.createElement('video');
+      v.className = 'tl-vid'; v.muted = true; v.loop = true; v.playsInline = true; v.autoplay = false;
+      v.setAttribute('playsinline', ''); v.setAttribute('muted', ''); v.setAttribute('aria-hidden', 'true');
+      v.preload = 'auto'; v.dataset.ok = '0';
+      v.addEventListener('canplay', function () { v.dataset.ok = '1'; });
+      v.addEventListener('error', function () { v.dataset.ok = 'bad'; });
+      cam.insertBefore(v, cam.firstChild.nextSibling || null);
+      vids[s] = v;
+    });
+    // קודם הקליפים החשובים (idle, talk); השאר אחרי רגע כדי לא לחנוק את הרשת בתחילת השיעור
+    vids.idle.src = src(id, 'idle'); vids.talk.src = src(id, 'talk');
+    setTimeout(function () { if (curId === id) { vids.listen.src = src(id, 'listen'); vids.think.src = src(id, 'think'); } }, 2500);
+  }
+  function pick(state) {
+    var order = state === 'talk' ? ['talk', 'idle'] : state === 'listen' ? ['listen', 'idle'] : state === 'think' ? ['think', 'idle'] : ['idle'];
+    for (var i = 0; i < order.length; i++) { var v = vids[order[i]]; if (v && v.dataset.ok === '1') return order[i]; }
+    return null;
+  }
+  function show(name) {
+    STATES.forEach(function (s) {
+      var v = vids[s]; if (!v) return;
+      if (s === name) {
+        v.classList.add('on');
+        if (v.paused) { var p = v.play(); if (p && p.catch) p.catch(function () {}); }
+      } else {
+        v.classList.remove('on');
+        (function (vv) { setTimeout(function () { if (!vv.classList.contains('on')) { try { vv.pause(); } catch (e) {} } }, 520); })(v);
+      }
+    });
+  }
+  function tick() {
+    var overlay = document.getElementById('yoni-modal-overlay');
+    if (!cam || !overlay || overlay.style.display === 'none' || !overlay.classList.contains('active')) {
+      STATES.forEach(function (s) { if (vids[s] && !vids[s].paused) { try { vids[s].pause(); } catch (e) {} } });
+      return;
+    }
+    var t = window.yoniActiveTeacher || (window.YONI_TEACHERS || [])[0];
+    var id = (t && IDS[t.id]) ? t.id : 'yoni';
+    if (id !== curId) mount(id);
+
+    var mic = document.getElementById('yoni-mic-btn');
+    var speaking = !!(mic && mic.classList.contains('yoni-speaking'));
+    var rec = !!(mic && mic.classList.contains('recording'));
+    var thinking = !speaking && !!window._yoniAwaitingResponseSince;
+    var want = speaking ? 'talk' : (thinking ? 'think' : (rec ? 'listen' : 'idle'));
+
+    // לא מחליפים קליפ יותר מפעם ב-700ms, כדי שלא יהבהב בין מצבים בהפסקות קצרות של הדיבור
+    var now = Date.now();
+    var chosen = pick(want);
+    if (chosen !== curState && (now - lastSwitch > 700 || want === 'talk')) { curState = chosen; lastSwitch = now; if (chosen) show(chosen); }
+    if (!chosen && curState) { curState = ''; show(''); }
+
+    // קצב ההשמעה של קליפ הדיבור עוקב אחרי עוצמת הקול: בהפסקות הפה כמעט נח, בהדגשה זז מהר יותר
+    if (curState === 'talk' && vids.talk) {
+      var lv = level();
+      var rate = lv === null ? 1 : (0.55 + lv * 0.95);
+      try { vids.talk.playbackRate = Math.max(0.5, Math.min(1.5, rate)); } catch (e) {}
+    }
+  }
+  function init() {
+    cam = document.querySelector('#yoni-modal-body .tr-cam') || document.querySelector('.tr-cam');
+    if (!cam) return false;
+    mount('yoni');
+    setInterval(tick, 120);
+    return true;
+  }
+  var tries = 0;
+  (function wait() {
+    try { if (init()) return; } catch (e) { console.warn('teacher loops init failed:', e); return; }
+    if (++tries < 80) setTimeout(wait, 150);
+  })();
+})();
+</script>
+
 </body>
 </html>
