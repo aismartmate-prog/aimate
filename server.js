@@ -116,11 +116,11 @@ async function saveLessonProgress(studentId, entry) {
         if (!Array.isArray(p.lessons)) p.lessons = [];
 
         if (entry.name) p.name = entry.name;
-        if (entry.grade) p.grade = entry.grade;
-        if (entry.gender) p.gender = entry.gender;
+        if (entry.grade && gradeToNumber(entry.grade)) p.grade = entry.grade;
+        if (cleanGender(entry.gender)) p.gender = cleanGender(entry.gender);
         // רמה וקצב הם מאפיינים של התלמיד/ה (לא של שיעור בודד) - מתעדכנים תמיד לערך האחרון
-        if (entry.level) p.level = entry.level;
-        if (entry.pace) p.pace = entry.pace;
+        if (cleanLevelPace(entry.level)) p.level = cleanLevelPace(entry.level);
+        if (cleanLevelPace(entry.pace)) p.pace = cleanLevelPace(entry.pace);
 
         if (entry.subject || entry.summary || entry.strengths || entry.difficulties || entry.nextStep) {
             p.lessons.push({
@@ -190,6 +190,22 @@ function guessGenderFromName(rawName) {
 // שיעור נחשב "משמעותי" רק אם יש לו נושא ספציפי וסיכום של ממש. בלי זה, שיעורים
 // ישנים עם נושא כללי/ריק (למשל "כללי") הוזרקו לזיכרון והמורה אמר לתלמיד
 // "בפעם הקודמת עבדנו על כללי" ודיבר בקול רם על זה שהזיכרון לא ברור.
+// ערכים לא תקינים (למשל "Unknown" שנשמר בפרופיל מהלקוח/מהמודל) נחשבים "לא ידוע"
+// ולעולם לא מוצגים לתלמיד או מוזרקים להנחיה.
+const GRADE_LETTERS_BY_NUM = ['', 'א', 'ב', 'ג', 'ד', 'ה', 'ו', 'ז', 'ח', 'ט', 'י', 'יא', 'יב'];
+function gradeLabel(raw) {            // "ה'" / "יא'" או '' אם לא תקין
+    const n = gradeToNumber(raw);
+    return n ? GRADE_LETTERS_BY_NUM[n] + "'" : '';
+}
+function cleanGender(g) {
+    const v = String(g || '').trim().toLowerCase();
+    return (v === 'm' || v === 'f') ? v : null;
+}
+function cleanLevelPace(v) {
+    const t = String(v || '').trim();
+    return (!t || /^(unknown|none|null|undefined|לא ידוע)$/i.test(t)) ? '' : t;
+}
+
 const GENERIC_SUBJECTS = new Set(['', 'כללי', 'לא ידוע', 'לא הוגדר', 'general', 'unknown', 'none']);
 function isMeaningfulLesson(l) {
     if (!l) return false;
@@ -221,6 +237,11 @@ async function ensureStudentProfileBasicsImpl(studentId, name) {
     let changed = false;
     if (!db[studentId]) { db[studentId] = { name: '', grade: '', gender: null, lessons: [] }; changed = true; }
     if (name && db[studentId].name !== name) { db[studentId].name = name; changed = true; }
+    // ניקוי ערכים ישנים/פגומים שנשמרו בעבר (למשל כיתה "Unknown", מגדר "U")
+    if (db[studentId].grade && !gradeToNumber(db[studentId].grade)) { db[studentId].grade = ''; changed = true; }
+    if (db[studentId].gender && !cleanGender(db[studentId].gender)) { db[studentId].gender = null; changed = true; }
+    if (db[studentId].level && !cleanLevelPace(db[studentId].level)) { db[studentId].level = ''; changed = true; }
+    if (db[studentId].pace && !cleanLevelPace(db[studentId].pace)) { db[studentId].pace = ''; changed = true; }
     if (!db[studentId].gender) {
         const guessed = guessGenderFromName(name || db[studentId].name);
         if (guessed) { db[studentId].gender = guessed; changed = true; }
@@ -240,8 +261,10 @@ function buildOpeningLine(name, gender, knownGrade, teacherName, teacherGender, 
         return `שלום, אני ${tName}, ${tRole}. איך קוראים לך?`;
     }
     const intro = `שלום ${name}, אני ${tName}, ${tRole}.`;
+    gender = cleanGender(gender);
     if (!gender) return `${intro} כדי שאדע איך לפנות אליך - את תלמידה או אתה תלמיד?`;
-    if (!knownGrade) return `${intro} באיזו כיתה ${gender === 'f' ? 'את לומדת' : 'אתה לומד'}?`;
+    const gLabel = gradeLabel(knownGrade);
+    if (!gLabel) return `${intro} באיזו כיתה ${gender === 'f' ? 'את לומדת' : 'אתה לומד'}?`;
     const f = gender === 'f';
     // תלמיד חוזר עם שיעור קודם משמעותי: המורה קובע את הכיוון ולא שואל תפריט
     if (isMeaningfulLesson(lastLesson)) {
@@ -250,13 +273,13 @@ function buildOpeningLine(name, gender, knownGrade, teacherName, teacherGender, 
                `אם יש ${f ? 'לך' : 'לך'} מבחן או שיעורי בית דחופים, ${f ? 'תגידי' : 'תגיד'} לי עכשיו ונשנה כיוון.`;
     }
     // תלמיד חדש (או בלי היסטוריה משמעותית): הוראה ברורה וקצרה, בלי תפריט של שלוש אפשרויות
-    return `${intro} אנחנו עובדים לפי תוכנית הלימודים של כיתה ${knownGrade}. ` +
+    return `${intro} אנחנו עובדים לפי תוכנית הלימודים של כיתה ${gLabel}. ` +
            `${f ? 'תגידי' : 'תגיד'} לי על איזה מקצוע ואיזה נושא עובדים היום, ונתחיל.`;
 }
 
 function buildPersonalizationBlock(profile, fallbackName, teacherProfile, chatTail) {
     const name = (profile && profile.name) || (fallbackName || '').trim();
-    const gender = profile && profile.gender ? profile.gender : null;
+    const gender = profile ? cleanGender(profile.gender) : null;
     const weakPoint = deriveWeakPoint(profile);
 
     const lastLesson = getMeaningfulLessons(profile).slice(-1)[0] || null;
@@ -282,12 +305,12 @@ function buildPersonalizationBlock(profile, fallbackName, teacherProfile, chatTa
         block += `\nהמגדר שלך (המורה עצמך): אתה גבר. התייחס לעצמך תמיד בלשון זכר בגוף ראשון - לדוגמה "אני חושב", "אני אסביר לך", "אני בטוח". זה בנוסף ובנפרד לחלוטין מהמגדר של התלמיד/ה.\n`;
     }
     
-    block += profile && profile.grade ? `כיתה: ${profile.grade}.\n` : `כיתה: לא ידועה - הסק אותה מהשיחה או שאל פעם אחת בטבעיות, ובינתיים התחל ברמה בינונית.\n`;
-    if (profile && profile.level) block += `הרמה שהערכת בשיעורים קודמים: ${profile.level}.\n`;
-    if (profile && profile.pace) block += `הקצב המתאים לו/לה: ${profile.pace}.\n`;
+    block += (profile && gradeLabel(profile.grade)) ? `כיתה: ${gradeLabel(profile.grade)}.\n` : `כיתה: לא ידועה - הסק אותה מהשיחה או שאל פעם אחת בטבעיות, ובינתיים התחל ברמה בינונית.\n`;
+    if (profile && cleanLevelPace(profile.level)) block += `הרמה שהערכת בשיעורים קודמים: ${profile.level}.\n`;
+    if (profile && cleanLevelPace(profile.pace)) block += `הקצב המתאים לו/לה: ${profile.pace}.\n`;
 
     // תוכנית הלימודים של הכיתה (רק הכיתה הרלוונטית - כדי לא להאריך את ההנחיה)
-    if (profile && profile.grade) block += buildCurriculumBlock(profile.grade);
+    if (profile && gradeToNumber(profile.grade)) block += buildCurriculumBlock(profile.grade);
 
     // זיכרון: עד 3 שיעורים אחרונים בצורה דחוסה. מוזכר בשקט, לא בכל רגע.
     const recent = getMeaningfulLessons(profile).slice(-3);
@@ -477,8 +500,8 @@ const YONI_TOOLS = [
                         nextStep: { type: 'STRING', description: 'הצעד הבא המתוכנן לשיעור הבא' },
                         level: { type: 'STRING', description: 'הערכת רמה: מתקשה / בינוני / מתקדם' },
                         pace: { type: 'STRING', description: 'קצב מתאים: איטי / רגיל / מהיר' },
-                        grade: { type: 'STRING', description: 'כיתה' },
-                        gender: { type: 'STRING', description: 'מגדר התלמיד (m/f)' }
+                        grade: { type: 'STRING', description: 'כיתה (למשל ה או 5). מלא רק אם התלמיד אמר אותה בפירוש - אחרת השמט את השדה. לעולם אל תכתוב Unknown.' },
+                        gender: { type: 'STRING', description: 'מגדר התלמיד: m או f בלבד. מלא רק אם ידוע בוודאות - אחרת השמט את השדה.' }
                     },
                     required: []
                 }
@@ -603,8 +626,8 @@ app.get('/live-tutor/api/token', async (req, res) => {
         const personalizedInstruction = TUTOR_SYSTEM_INSTRUCTION.replace('אתה "יוני", מורה פרטי.', identityClause) + personalization;
 
         const displayName = (profile && profile.name) || studentName || '';
-        const gender = profile ? profile.gender : null;
-        const grade = profile ? profile.grade : '';
+        const gender = profile ? cleanGender(profile.gender) : null;
+        const grade = (profile && gradeToNumber(profile.grade)) ? profile.grade : '';
         const openingLine = buildOpeningLine(displayName, gender, grade, teacherProfile.name, teacherProfile.gender, lastLessonForOpening);
 
         const expireTime = new Date(Date.now() + 60 * 60 * 1000).toISOString(); 
@@ -1139,7 +1162,7 @@ app.post('/live-tutor/api/quick-action', async (req, res) => {
         // אם התלמיד כבר סיפק מגדר בשיחה קודמת, או שניתן לנחש אותו מהשם, נשתמש בו כאן
         // כדי שרמז/פתרון/דוגמה תמיד ידברו בלשון הנכונה, בלי לשאול את התלמיד שוב.
         const profile = studentId ? await ensureStudentProfileBasics(studentId, studentName) : null;
-        const gender = profile ? profile.gender : null;
+        const gender = profile ? cleanGender(profile.gender) : null;
         // תשובה נכונה ידועה מראש (אם דף התרגול שולח אותה - למשל בתרגילי אמריקאיות
         // שכבר יש להם תשובה מסומנת) - "עוגן אמת" שמונע מהמודל "לגלוש" לתשובה שגויה
         // משלו בעקבות טעות חישוב/היגיון קטנה תוך כדי ההסבר.
