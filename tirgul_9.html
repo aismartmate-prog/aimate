@@ -13133,6 +13133,7 @@ registerProcessor('yoni-recorder-processor', YoniRecorderProcessor);
         yoniPendingGender = tokenData.gender || null;
         yoniPendingVoiceName = tokenData.voiceName || 'Charon';
         yoniPendingVad = tokenData.vad || null;
+        window.yoniPendingThinkingLevel = tokenData.thinkingLevel || "";
         yoniPendingSystemInstruction = tokenData.systemInstruction || null;
         yoniPendingTools = tokenData.tools || null;
 
@@ -13150,7 +13151,9 @@ registerProcessor('yoni-recorder-processor', YoniRecorderProcessor);
                             responseModalities: ["AUDIO"],
                             // הקול מגיע מהשרת (server.js) - לא מוגדר כאן בנפרד, כדי שלעולם
                             // לא יהיו שני קבצים עם שני קולות שונים שיכולים לסטות זה מזה.
-                            speechConfig: { voiceConfig: { prebuiltVoiceConfig: { voiceName: yoniPendingVoiceName } } }
+                            speechConfig: { voiceConfig: { prebuiltVoiceConfig: { voiceName: yoniPendingVoiceName } } },
+                            // רמת חשיבה אופציונלית מהשרת (LIVE_THINKING_LEVEL) - ריקה כברירת מחדל
+                            ...(window.yoniPendingThinkingLevel ? { thinkingConfig: { thinkingLevel: window.yoniPendingThinkingLevel } } : {})
                         },
                         // כוונון זיהוי הדיבור (VAD) מגיע גם הוא מהשרת - מקור אמת יחיד לקצב השיחה.
                         // אם server.js לא הצליח לספק ערכים מכל סיבה, יש כאן ברירת מחדל בטוחה וזהה לשרת.
