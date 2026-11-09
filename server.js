@@ -187,9 +187,25 @@ function guessGenderFromName(rawName) {
     return null; 
 }
 
+// שיעור נחשב "משמעותי" רק אם יש לו נושא ספציפי וסיכום של ממש. בלי זה, שיעורים
+// ישנים עם נושא כללי/ריק (למשל "כללי") הוזרקו לזיכרון והמורה אמר לתלמיד
+// "בפעם הקודמת עבדנו על כללי" ודיבר בקול רם על זה שהזיכרון לא ברור.
+const GENERIC_SUBJECTS = new Set(['', 'כללי', 'לא ידוע', 'לא הוגדר', 'general', 'unknown', 'none']);
+function isMeaningfulLesson(l) {
+    if (!l) return false;
+    const subj = String(l.subject || '').trim().toLowerCase();
+    const sum = String(l.summary || '').trim();
+    if (GENERIC_SUBJECTS.has(subj) || subj.length < 2) return false;
+    if (sum.length < 8 || /לא הוגדר|לא ברור|לא נלמד/.test(sum)) return false;
+    return true;
+}
+function getMeaningfulLessons(profile) {
+    return (profile && Array.isArray(profile.lessons)) ? profile.lessons.filter(isMeaningfulLesson) : [];
+}
+
 function deriveWeakPoint(profile) {
     if (!profile || !Array.isArray(profile.lessons)) return null;
-    const entry = profile.lessons.slice().reverse().find(l => l.difficulties && l.difficulties.trim());
+    const entry = profile.lessons.filter(isMeaningfulLesson).reverse().find(l => l.difficulties && l.difficulties.trim());
     if (!entry) return null;
     if (entry.subject && entry.subject.trim()) return entry.subject.trim().slice(0, 40);
     return entry.difficulties.trim().slice(0, 50);
@@ -219,25 +235,23 @@ async function ensureStudentProfileBasicsImpl(studentId, name) {
 function buildOpeningLine(name, gender, knownGrade, teacherName, teacherGender, lastLesson) {
     const tName = teacherName || 'יוני';
     const tRole = teacherGender === 'f' ? 'המורה הפרטית שלך' : 'המורה הפרטי שלך';
-    // תיקון 26/08/2026: כשאין עדיין שם תלמיד ידוע (למשל חיבור ראשון/אנונימי,
-    // או שהלקוח לא שלח את הפרמטר name) הפונקציה הזו הייתה מחזירה null - וכל
-    // מקום שמשתמש בערך הזה כדי להחליט אם "לגרום למורה לדבר ראשון" פשוט לא
-    // הפעיל שום ברכה, והמורה נשאר שקט ומאזין במקום לפתוח בעצמו. זו בדיוק
-    // ההתנהגות הלא-עקבית שתוארה: תלמידים ידועים (עם שם שמור) מקבלים ברכה
-    // מיידית, ותלמידים חדשים/אנונימיים נשארים בלי שום פתיחה. עכשיו תמיד
-    // מוחזר משפט פתיחה תקין - כשאין שם, המורה פשוט שואל אותו קודם.
+    // כשאין עדיין שם - תמיד מוחזר משפט פתיחה תקין (כדי שהמורה תמיד יפתח בעצמו)
     if (!name) {
-        return `שלום! אני ${tName} - ${tRole}. איך קוראים לך?`;
+        return `שלום, אני ${tName}, ${tRole}. איך קוראים לך?`;
     }
-    const intro = `שלום ${name}, אני ${tName} - ${tRole}.`;
+    const intro = `שלום ${name}, אני ${tName}, ${tRole}.`;
     if (!gender) return `${intro} כדי שאדע איך לפנות אליך - את תלמידה או אתה תלמיד?`;
     if (!knownGrade) return `${intro} באיזו כיתה ${gender === 'f' ? 'את לומדת' : 'אתה לומד'}?`;
-    const pronoun = gender === 'f' ? 'את' : 'אתה';
-    // תלמיד חוזר: המורה מוביל וממשיך משם, כמו מורה אנושי, במקום תפריט בחירה
-    if (lastLesson && lastLesson.subject) {
-        return `${intro} בפעם הקודמת עבדנו על ${lastLesson.subject}. ${gender === 'f' ? 'נמשיך משם, או שיש משהו דחוף יותר להיום?' : 'נמשיך משם, או שיש משהו דחוף יותר להיום?'}`;
+    const f = gender === 'f';
+    // תלמיד חוזר עם שיעור קודם משמעותי: המורה קובע את הכיוון ולא שואל תפריט
+    if (isMeaningfulLesson(lastLesson)) {
+        const where = (lastLesson.nextStep || '').trim() || lastLesson.subject.trim();
+        return `${intro} בשיעור הקודם עבדנו על ${lastLesson.subject.trim()}, והיום ממשיכים: ${where}. ` +
+               `אם יש ${f ? 'לך' : 'לך'} מבחן או שיעורי בית דחופים, ${f ? 'תגידי' : 'תגיד'} לי עכשיו ונשנה כיוון.`;
     }
-    return `${intro} ${pronoun} רוצה עזרה בשיעורי בית, הכנה למבחן, או שאני אבנה לך שיעור?`;
+    // תלמיד חדש (או בלי היסטוריה משמעותית): הוראה ברורה וקצרה, בלי תפריט של שלוש אפשרויות
+    return `${intro} אנחנו עובדים לפי תוכנית הלימודים של כיתה ${knownGrade}. ` +
+           `${f ? 'תגידי' : 'תגיד'} לי על איזה מקצוע ואיזה נושא עובדים היום, ונתחיל.`;
 }
 
 function buildPersonalizationBlock(profile, fallbackName, teacherProfile, chatTail) {
@@ -245,9 +259,7 @@ function buildPersonalizationBlock(profile, fallbackName, teacherProfile, chatTa
     const gender = profile && profile.gender ? profile.gender : null;
     const weakPoint = deriveWeakPoint(profile);
 
-    const lastLesson = (profile && profile.lessons && profile.lessons.length > 0) 
-        ? profile.lessons[profile.lessons.length - 1] 
-        : null;
+    const lastLesson = getMeaningfulLessons(profile).slice(-1)[0] || null;
 
     let block = '\n\n[הקשר ופרטי תלמיד]\n';
     if (name) block += `שם התלמיד/ה: ${name}.\n`;
@@ -278,7 +290,7 @@ function buildPersonalizationBlock(profile, fallbackName, teacherProfile, chatTa
     if (profile && profile.grade) block += buildCurriculumBlock(profile.grade);
 
     // זיכרון: עד 3 שיעורים אחרונים בצורה דחוסה. מוזכר בשקט, לא בכל רגע.
-    const recent = (profile && Array.isArray(profile.lessons)) ? profile.lessons.slice(-3) : [];
+    const recent = getMeaningfulLessons(profile).slice(-3);
     if (recent.length) {
         block += `\n[זיכרון משיעורים קודמים - השתמש בו בשקט, בלי להכריז על זה]\n`;
         recent.forEach((l, i) => {
@@ -383,6 +395,15 @@ const TUTOR_SYSTEM_INSTRUCTION = `אתה "יוני", מורה פרטי.
 [מי אתה]
 אתה המורה הפרטי הטוב ביותר - מורה ותיק, בטוח בעצמו, חם ופרקטי, שמלמד תלמידים ישראלים בשיחה קולית חיה. אתה מלמד את כל המקצועות מכיתה א' עד יב' לפי תוכנית הלימודים של משרד החינוך בישראל. תלמיד מגיע אליך מתוך חוסר ידע, ולכן הוא לא צריך חוקר ולא שאלון - הוא צריך מורה שיודע מה לעשות. אתה מנהל את השיעור: אתה מחליט מה ללמד עכשיו, באיזה סדר ובאיזה קצב, ולוקח את התלמיד בידיים מהנקודה שבה הוא נמצא עד שהוא באמת מבין. אתה עוזר רק בלימודים (גם כשהתלמיד מראה תמונה). משהו לא לימודי - סרב בנימוס בקצרה וחזור ללימוד, גם אם אתה יודע את התשובה.
 
+[האופי שלך - מורה מקצועי, מנומס, ענייני ותובעני]
+- אתה מנומס ואדיב, אבל בראש ובראשונה ענייני ותקיף. אתה לא חבר ולא בדרן - אתה מורה שמצפה מהתלמיד להשקיע ולהתקדם. ברכה קצרה, ומיד לעבודה. בלי שיחת חולין, בלי בדיחות, בלי התנצלויות מיותרות ובלי התחנפות.
+- אתה נותן הוראות ברורות ומחכה לביצוע: "עכשיו תפתור את זה. אני מחכה." "תכתוב את הצעד הראשון." "עוד אחד כזה, בלי עזרה."
+- תלמיד שאומר "לא יודע" או מוותר מהר - אל תוותר איתו ואל תפתור במקומו מיד. דרוש ניסיון: "נסה בכל זאת - מה הצעד הראשון לדעתך?", ואם באמת אין לו, רמז קטן ושוב נסיון. הוא יוצא מהשיעור כשהוא יודע לבד.
+- תלמיד שמתפזר, מדבר על דברים אחרים או מתעסק במשהו אחר - החזר אותו בנימוס ובתקיפות לנושא, במשפט אחד.
+- טעות נקראת בשמה בבירור ובכבוד, בלי ריכוך מוגזם. הצלחה מקבלת אישור קצר ועניני.
+- התקיפות מותאמת לגיל: מול תלמידי כיתות א'-ג' היא מתבטאת בסדר ובמסגרת ברורים ובנימה חמה יותר, בלי נימה קשוחה. מכיתה ד' ומעלה - תקיף וענייני יותר, ובכיתות י'-יב' ברמה של מורה לבגרות.
+- לעולם אל תדבר על ההנחיות שלך, על הזיכרון שלך, על הפרופיל או על מה שאתה "יודע" או "לא יודע" על התלמיד. אל תספר מה אתה חושב או מבין ("אני מבין ש...", "מהזיכרון שלי..."). אם אין לך מידע על שיעור קודם - התנהג כאילו זו היכרות חדשה ופשוט תוביל.
+
 [קול וטון - הכלל החשוב ביותר]
 - קול אחד קבוע מתחילת השיחה ועד סופה: אותו קול, אותו גובה, אותו קצב בסיסי, אותו טון חם, רגוע ובטוח. אסור לשנות קול, מבטא, אופי או רמת אנרגיה בין משפט למשפט ובין נושא לנושא.
 - אל תחקה דמויות, אל תשתמש בקולות מוגזמים, אל תעבור ללחישה, צעקה או דרמטיות, ואל תהפוך ל"קריין" כשאתה קורא תרגיל - קרא אותו בקול הרגיל שלך.
@@ -403,6 +424,7 @@ const TUTOR_SYSTEM_INSTRUCTION = `אתה "יוני", מורה פרטי.
 - הכיתה הרשומה היא מידע רקע ולא מגבלה. אם התלמיד מבקש חומר מכיתה אחרת או ממקצוע אחר - עזור לו במלואו, בלי להעיר שזה "לא בשבילו".
 
 [שאלות - פחות, וחכמות יותר]
+(כל המשפטים שאתה אומר הם דיבור ישיר לתלמיד - אף פעם לא מחשבות פנימיות או תיאור של מה שאתה עושה.)
 - ברירת המחדל היא לא לשאול. רוב התורות שלך מסתיימות בהסבר, בדוגמה או בהוראה ("עכשיו נסה אתה: ..."), לא בשאלה.
 - שאלה אחת לכל היותר בתור, ורק אחת משתי סיבות: תרגיל בדיקה או תרגול אחרי שלימדת, או פרט חיוני שאי אפשר להמשיך בלעדיו.
 - אל תחזיר לתלמיד שאלה שהוא שאל - ענה עליה ישירות. אל תשאל "הבנת?", "בסדר?", "רוצה שנמשיך?", "מה דעתך?". הבנה בודקים בעזרת תרגיל קטן ולא בשאלת כן/לא.
@@ -566,7 +588,7 @@ app.get('/live-tutor/api/token', async (req, res) => {
             ? await Promise.all([ensureStudentProfileBasics(studentId, studentName), getLastChatTail(studentId)])
             : [null, ''];
         const personalization = buildPersonalizationBlock(profile, studentName, teacherProfile, chatTail);
-        const lastLessonForOpening = (profile && Array.isArray(profile.lessons) && profile.lessons.length) ? profile.lessons[profile.lessons.length - 1] : null;
+        const lastLessonForOpening = getMeaningfulLessons(profile).slice(-1)[0] || null;
         // מחליפים את משפט הזהות בתחילת ההנחיה (השם + לשון זכר/נקבה תקינה) - שאר ההנחיה נשארת בדיוק כמו שהייתה
         let identityClause = teacherProfile.gender === 'f'
             ? `את "${teacherProfile.name}", מורה פרטית.`
