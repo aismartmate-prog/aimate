@@ -12919,30 +12919,188 @@ registerProcessor('yoni-recorder-processor', YoniRecorderProcessor);
     // הטקסט המתמלל מצטרף לאותה בועה עד שהתור מסתיים, בדיוק כמו בצ'אט אמיתי
     let yoniStreamBubble = { role: null, textEl: null, rawText: '' };
     const YONI_HEBREW_CHAR_RE = /[\u0590-\u05FF]/;
-    // ─── "לוח": ביטויים מתמטיים שהמורה אמר בקול מוצגים כתובים ומסודרים (MathJax) מתחת לבועה.
-    // נוצר בקריאה נפרדת לשרת *אחרי* סוף התור - לא נוגע בשיחה החיה ולא מאט את הקול.
-    const YONI_BOARD_TRIGGER = /[0-9=+×÷]|שווה|פלוס|מינוס|פחות|ועוד|כפול|חלקי|איקס|אקס|וואי|בריבוע|שורש|שבר/;
+    // ─── ממיר דטרמיניסטי: דיבור מתמטי בעברית -> ביטויי LaTeX (רץ בדפדפן, מיידי, בלי שרת ובלי מודל) ───
+    // "וואי שווה לאיקס בריבוע פחות ארבע" -> y = x^{2} - 4
+    const YM_UNITS = { 'אפס': 0, 'אחד': 1, 'אחת': 1, 'שניים': 2, 'שתיים': 2, 'שני': 2, 'שתי': 2, 'שלוש': 3, 'שלושה': 3, 'ארבע': 4, 'ארבעה': 4, 'חמש': 5, 'חמישה': 5, 'שש': 6, 'שישה': 6, 'ששה': 6, 'שבע': 7, 'שבעה': 7, 'שמונה': 8, 'תשע': 9, 'תשעה': 9 };
+    const YM_TENS = { 'עשרים': 20, 'שלושים': 30, 'ארבעים': 40, 'חמישים': 50, 'שישים': 60, 'שבעים': 70, 'שמונים': 80, 'תשעים': 90 };
+    const YM_VARS = { 'איקס': 'x', 'אקס': 'x', 'וואי': 'y', 'זד': 'z', 'x': 'x', 'y': 'y', 'z': 'z', 'a': 'a', 'b': 'b', 'n': 'n' };
+    const YM_OPS = { 'פלוס': '+', 'ועוד': '+', 'מינוס': '-', 'פחות': '-', 'כפול': '\\cdot ', 'חלקי': '/', 'שווה': '=', 'שווים': '=', '=': '=', '+': '+', '−': '-', '-': '-', '×': '\\cdot ', '÷': '/', '*': '\\cdot ' };
+    const YM_FRACS = { 'חצי': '\\frac{1}{2}', 'שליש': '\\frac{1}{3}', 'רבע': '\\frac{1}{4}', 'שלישים': 3, 'רבעים': 4 };
+    const YM_PREFIX = /^(?:כש|[ולבהש])/;
+
+    function ymNorm(w) {
+        return w.replace(/[״"'׳]/g, '').replace(/[.,:;!?()…]+$/g, '').replace(/^[(]+/, '');
+    }
+    // מסווג מילה אחת (אחרי הסרת קידומת אפשרית) -> {t:'num'|'var'|'op'|'pow'|'sqrt'|'frac'|'teen'|'tens'|'hund'|'thou'|'of'|'dot', v}
+    function ymClassifyBase(w) {
+        if (/^[-−]?\d+(?:[.,]\d+)?$/.test(w)) return { t: 'digits', v: w.replace('−', '-').replace(',', '.') };
+        if (w in YM_UNITS) return { t: 'unit', v: YM_UNITS[w] };
+        if (w in YM_TENS) return { t: 'tens', v: YM_TENS[w] };
+        if (w === 'עשר' || w === 'עשרה') return { t: 'ten', v: 10 };
+        if (w === 'מאה') return { t: 'hund', v: 100 };
+        if (w === 'מאתיים') return { t: 'hund2', v: 200 };
+        if (w === 'מאות') return { t: 'hunds', v: 100 };
+        if (w === 'אלף') return { t: 'thou', v: 1000 };
+        if (w === 'אלפיים') return { t: 'thou2', v: 2000 };
+        if (w in YM_VARS) return { t: 'var', v: YM_VARS[w] };
+        if (w in YM_OPS) return { t: 'op', v: YM_OPS[w] };
+        if (w === 'בריבוע' || w === 'ריבוע') return { t: 'pow', v: '2' };
+        if (w === 'בשלישית' || w === 'בשלישי') return { t: 'pow', v: '3' };
+        if (w === 'בחזקת') return { t: 'powof' };
+        if (w === 'שורש') return { t: 'sqrt' };
+        if (w === 'של') return { t: 'of' };
+        if (w in YM_FRACS) return { t: 'frac', v: YM_FRACS[w], plural: typeof YM_FRACS[w] === 'number' };
+        if (w === 'נקודה') return { t: 'dot' };
+        return null;
+    }
+    function ymClassify(raw) {
+        const w = ymNorm(raw);
+        if (!w) return null;
+        let c = ymClassifyBase(w);
+        if (c) return c;
+        // קידומת ו/ל/ב/ה/ש: "לאיקס", "ושלוש", "ל-40", "ב-5"
+        const pm = w.match(YM_PREFIX);
+        if (pm && w.length > pm[0].length) {
+            const rest = w.slice(pm[0].length).replace(/^-/, '');
+            c = ymClassifyBase(rest);
+            if (c && c.t !== 'of') return c;
+        }
+        return null;
+    }
+    // ממיר רצף מילות מספר (טוקנים מסווגים) למספר אחד. מחזיר {value, used} או null
+    function ymParseNumber(toks, i) {
+        if (toks[i] && toks[i].c.t === 'digits') {
+            let s = toks[i].c.v, j = i + 1;
+            if (toks[j] && toks[j].c.t === 'dot' && toks[j + 1] && toks[j + 1].c.t === 'digits') { s += '.' + toks[j + 1].c.v.replace(/^-/, ''); j += 2; }
+            return { value: s, next: j };
+        }
+        let val = 0, cur = 0, j = i, any = false, lastUnit = false;
+        for (; j < toks.length; j++) {
+            const c = toks[j].c;
+            if (c.t === 'unit') { if (lastUnit) break; cur += c.v; lastUnit = true; any = true; continue; }
+            if (c.t === 'ten') { if (lastUnit && cur >= 1 && cur <= 9) cur += 10; else cur += 10; lastUnit = false; any = true; continue; }
+            if (c.t === 'tens') { cur += c.v; lastUnit = false; any = true; continue; }
+            if (c.t === 'hund') { val += (cur || 1) * 100; cur = 0; lastUnit = false; any = true; continue; }
+            if (c.t === 'hunds') { val += (cur || 1) * 100; cur = 0; lastUnit = false; any = true; continue; }
+            if (c.t === 'hund2') { val += 200; lastUnit = false; any = true; continue; }
+            if (c.t === 'thou') { val += (cur || 1) * 1000; cur = 0; lastUnit = false; any = true; continue; }
+            if (c.t === 'thou2') { val += 2000; lastUnit = false; any = true; continue; }
+            break;
+        }
+        if (!any) return null;
+        let s = String(val + cur);
+        if (toks[j] && toks[j].c.t === 'dot' && toks[j + 1] && (toks[j + 1].c.t === 'unit' || toks[j + 1].c.t === 'digits')) {
+            const d = toks[j + 1].c.t === 'unit' ? String(toks[j + 1].c.v) : toks[j + 1].c.v.replace(/^-/, '');
+            s += '.' + d; j += 2;
+        }
+        return { value: s, next: j };
+    }
+    // atom: [sqrt] [num] [var] [pow] | frac | var pow ...  -> {tex, next} או null
+    function ymParseAtom(toks, i) {
+        if (i >= toks.length) return null;
+        const c = toks[i].c;
+        if (c.t === 'sqrt') {
+            let j = i + 1;
+            if (toks[j] && toks[j].c.t === 'of') j++;
+            const inner = ymParseAtom(toks, j);
+            if (!inner) return null;
+            return { tex: '\\sqrt{' + inner.tex + '}', next: inner.next };
+        }
+        if (c.t === 'frac' && !c.plural) return { tex: c.v, next: i + 1 };
+        let tex = '', j = i;
+        const n = ymParseNumber(toks, i);
+        if (n) { tex = n.value; j = n.next; }
+        // "שלושה רבעים" / "שני שליש" -> \frac{3}{4} / \frac{2}{3}
+        if (n && toks[j] && toks[j].c.t === 'frac') {
+            const fc = toks[j].c;
+            const den = fc.plural ? fc.v : ({ '\\frac{1}{2}': 2, '\\frac{1}{3}': 3, '\\frac{1}{4}': 4 })[fc.v];
+            if (den) return { tex: '\\frac{' + n.value + '}{' + den + '}', next: j + 1 };
+        }
+        if (toks[j] && toks[j].c.t === 'var') { tex += toks[j].c.v; j++; }
+        else if (!n) return null;
+        if (toks[j] && toks[j].c.t === 'pow') { tex = (n && !/[a-z]$/.test(tex) ? tex : tex) + '^{' + toks[j].c.v + '}'; j++; }
+        else if (toks[j] && toks[j].c.t === 'powof') {
+            const e = ymParseNumber(toks, j + 1);
+            if (e) { tex += '^{' + e.value + '}'; j = e.next; }
+        }
+        return { tex, next: j };
+    }
+    function ymParseExpr(toks, i) {
+        const parts = [];
+        let j = i, relation = false, ops = 0, terms = 0, expectAtom = true;
+        while (j < toks.length) {
+            const c = toks[j].c;
+            if (expectAtom) {
+                // מינוס אונרי
+                let neg = '';
+                if (c.t === 'op' && c.v === '-') { neg = '-'; j++; }
+                const a = ymParseAtom(toks, j);
+                if (!a) { if (neg) j--; break; }
+                parts.push(neg + a.tex); terms++; j = a.next; expectAtom = false;
+                if (toks[j - 1] && /[.!?]$/.test(toks[j - 1].raw)) break;
+            } else {
+                if (c.t !== 'op') break;
+                if (c.v === '/') {
+                    const nxt = ymParseAtom(toks, j + 1);
+                    if (!nxt || !parts.length) break;
+                    const last = parts.pop();
+                    parts.push('\\frac{' + last + '}{' + nxt.tex + '}');
+                    j = nxt.next; ops++;
+                    if (toks[j - 1] && /[.!?]$/.test(toks[j - 1].raw)) break;
+                    continue;
+                }
+                if (c.v === '=') relation = true;
+                parts.push(c.v); ops++; j++; expectAtom = true;
+            }
+        }
+        if (expectAtom && parts.length) { parts.pop(); ops--; }
+        if (!parts.length) return null;
+        return { tex: parts.join(' ').replace(/\s+/g, ' ').replace(/\\cdot\s*/g, '\\cdot ').trim(), next: j, relation, ops, terms };
+    }
+    function yoniSpokenToMath(text) {
+        const out = [];
+        const raws = String(text || '').split(/\s+/).filter(Boolean);
+        const toks = raws.map(r => ({ raw: r, c: ymClassify(r) }));
+        let i = 0;
+        while (i < toks.length) {
+            if (!toks[i].c) { i++; continue; }
+            // מתחילים רק מטוקן שיכול לפתוח ביטוי
+            const t0 = toks[i].c.t;
+            if (t0 === 'op' && toks[i].c.v !== '-') { i++; continue; }
+            const sub = [];
+            for (let k = i; k < toks.length && toks[k].c; k++) {
+                sub.push(toks[k]);
+                if (/[.!?:]$/.test(toks[k].raw)) break;
+            }
+            const e = ymParseExpr(sub, 0);
+            if (e && (e.relation || e.ops >= 1) && e.terms >= 2) {
+                // לא להציג ביטוי שכולו מילות ספירה רגילות בלי משמעות מתמטית
+                if (!out.includes(e.tex)) out.push(e.tex);
+                i += Math.max(1, e.next);
+            } else {
+                i += 1;
+            }
+        }
+        return out.slice(0, 8);
+    }
+
+    // ─── "לוח": ביטויים מתמטיים שהמורה אמר בקול מוצגים כתובים ומסודרים (MathJax) בתוך הבועה.
+    // שלב 1 (מיידי, תוך כדי דיבור): ממיר מקומי בדפדפן. שלב 2 (אחרי סוף התור): שדרוג אופציונלי מהשרת.
     function yoniEnsureBoardStyle() {
         if (document.getElementById('yoni-board-style')) return;
         const st = document.createElement('style');
         st.id = 'yoni-board-style';
-        st.textContent = '.yoni-board{direction:ltr;margin:8px 0 4px;padding:10px 14px;background:#eef4ff;border:1px solid #c7d7fe;border-radius:12px;text-align:center;color:#12306b}' +
-            '.yoni-board-line{padding:3px 0;font-size:1.2rem;overflow-x:auto;overflow-y:hidden}';
+        st.textContent = '.yoni-board{direction:ltr;margin:10px 0 4px;padding:10px 14px;background:#eef4ff;border:1px solid #c7d7fe;border-radius:12px;text-align:center;color:#12306b}' +
+            '.yoni-board-line{padding:3px 0;font-size:1.25rem;overflow-x:auto;overflow-y:hidden}';
         document.head.appendChild(st);
     }
-    async function yoniRequestBoard(bubbleEl) {
+    function yoniSetBoard(bubbleEl, lines) {
         try {
-            if (!bubbleEl) return;
-            const text = (bubbleEl.textContent || '').trim();
-            if (text.length < 5 || !YONI_BOARD_TRIGGER.test(text)) return;
-            const res = await fetch('/live-tutor/api/board', {
-                method: 'POST', headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ text })
-            });
-            if (!res.ok) return;
-            const data = await res.json();
-            const lines = (data && Array.isArray(data.lines)) ? data.lines : [];
-            if (!lines.length || !bubbleEl.isConnected) return;
+            if (!bubbleEl || !bubbleEl.isConnected || !lines || !lines.length) return;
+            const msg = bubbleEl.closest('.yoni-msg') || bubbleEl.parentNode;
+            if (!msg) return;
+            const sig = lines.join('\n');
+            if (msg._yoniBoardSig === sig) return;        // בלי שינוי - לא מרנדרים שוב (מונע הבהוב)
             yoniEnsureBoardStyle();
             const board = document.createElement('div');
             board.className = 'yoni-board';
@@ -12952,17 +13110,41 @@ registerProcessor('yoni-recorder-processor', YoniRecorderProcessor);
                 d.textContent = '\\(\\displaystyle ' + String(l) + '\\)';
                 board.appendChild(d);
             });
-            const msg = bubbleEl.closest('.yoni-msg') || bubbleEl.parentNode;
-            // הלוח נשמר על ההודעה כדי שעיצוב-מחדש של הכרטיס (render) יחזיר אותו ולא ימחק אותו
+            if (msg._yoniBoard && msg._yoniBoard.parentNode) msg._yoniBoard.parentNode.removeChild(msg._yoniBoard);
             msg._yoniBoard = board;
+            msg._yoniBoardSig = sig;
             const rich = msg.querySelector('.yt-rich');
             (rich || msg).appendChild(board);
-            if (window.MathJax && MathJax.typesetPromise) {
-                MathJax.typesetPromise([board]).catch(() => {});
-            }
+            if (window.MathJax && MathJax.typesetPromise) MathJax.typesetPromise([board]).catch(() => {});
             const feed = document.getElementById('yoni-chat-messages');
             if (feed) feed.scrollTop = feed.scrollHeight;
         } catch (e) { /* הלוח הוא בונוס - אסור שיפיל משהו */ }
+    }
+    // עדכון מקומי תוך כדי דיבור (debounce קצר) - הלוח "נכתב" יחד עם הדיבור
+    function yoniScheduleLocalBoard(bubbleEl) {
+        if (!bubbleEl) return;
+        clearTimeout(bubbleEl._yoniBoardTimer);
+        bubbleEl._yoniBoardTimer = setTimeout(() => {
+            try { yoniSetBoard(bubbleEl, yoniSpokenToMath(bubbleEl.textContent || '')); } catch (e) {}
+        }, 350);
+    }
+    const YONI_BOARD_TRIGGER = /[0-9=+×÷]|שווה|פלוס|מינוס|פחות|ועוד|כפול|חלקי|איקס|אקס|וואי|בריבוע|שורש|שבר/;
+    async function yoniRequestBoard(bubbleEl) {
+        try {
+            if (!bubbleEl) return;
+            clearTimeout(bubbleEl._yoniBoardTimer);
+            const text = (bubbleEl.textContent || '').trim();
+            if (text.length < 5 || !YONI_BOARD_TRIGGER.test(text)) return;
+            yoniSetBoard(bubbleEl, yoniSpokenToMath(text));          // גרסה מקומית סופית מיד
+            const res = await fetch('/live-tutor/api/board', {
+                method: 'POST', headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ text })
+            });
+            if (!res.ok) return;
+            const data = await res.json();
+            const lines = (data && Array.isArray(data.lines)) ? data.lines : [];
+            if (lines.length) yoniSetBoard(bubbleEl, lines);          // שדרוג מהשרת אם הצליח
+        } catch (e) { /* ללא השפעה */ }
     }
 
     function yoniAddChatBubble(role, text, finalize) {
@@ -12992,6 +13174,7 @@ registerProcessor('yoni-recorder-processor', YoniRecorderProcessor);
                 yoniStreamBubble.textEl.textContent = text;
             }
             feed.scrollTop = feed.scrollHeight;
+            yoniScheduleLocalBoard(yoniStreamBubble.textEl);
             if (finalize) yoniStreamBubble = { role: null, textEl: null, rawText: '' };
             return;
         }
