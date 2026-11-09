@@ -12919,7 +12919,57 @@ registerProcessor('yoni-recorder-processor', YoniRecorderProcessor);
     // הטקסט המתמלל מצטרף לאותה בועה עד שהתור מסתיים, בדיוק כמו בצ'אט אמיתי
     let yoniStreamBubble = { role: null, textEl: null, rawText: '' };
     const YONI_HEBREW_CHAR_RE = /[\u0590-\u05FF]/;
+    // ─── "לוח": ביטויים מתמטיים שהמורה אמר בקול מוצגים כתובים ומסודרים (MathJax) מתחת לבועה.
+    // נוצר בקריאה נפרדת לשרת *אחרי* סוף התור - לא נוגע בשיחה החיה ולא מאט את הקול.
+    const YONI_BOARD_TRIGGER = /[0-9=+×÷]|שווה|פלוס|מינוס|פחות|ועוד|כפול|חלקי|איקס|אקס|וואי|בריבוע|שורש|שבר/;
+    function yoniEnsureBoardStyle() {
+        if (document.getElementById('yoni-board-style')) return;
+        const st = document.createElement('style');
+        st.id = 'yoni-board-style';
+        st.textContent = '.yoni-board{direction:ltr;margin:8px 0 4px;padding:10px 14px;background:#eef4ff;border:1px solid #c7d7fe;border-radius:12px;text-align:center;color:#12306b}' +
+            '.yoni-board-line{padding:3px 0;font-size:1.2rem;overflow-x:auto;overflow-y:hidden}';
+        document.head.appendChild(st);
+    }
+    async function yoniRequestBoard(bubbleEl) {
+        try {
+            if (!bubbleEl) return;
+            const text = (bubbleEl.textContent || '').trim();
+            if (text.length < 5 || !YONI_BOARD_TRIGGER.test(text)) return;
+            const res = await fetch('/live-tutor/api/board', {
+                method: 'POST', headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ text })
+            });
+            if (!res.ok) return;
+            const data = await res.json();
+            const lines = (data && Array.isArray(data.lines)) ? data.lines : [];
+            if (!lines.length || !bubbleEl.isConnected) return;
+            yoniEnsureBoardStyle();
+            const board = document.createElement('div');
+            board.className = 'yoni-board';
+            lines.forEach(l => {
+                const d = document.createElement('div');
+                d.className = 'yoni-board-line';
+                d.textContent = '\\(\\displaystyle ' + String(l) + '\\)';
+                board.appendChild(d);
+            });
+            const msg = bubbleEl.closest('.yoni-msg') || bubbleEl.parentNode;
+            // הלוח נשמר על ההודעה כדי שעיצוב-מחדש של הכרטיס (render) יחזיר אותו ולא ימחק אותו
+            msg._yoniBoard = board;
+            const rich = msg.querySelector('.yt-rich');
+            (rich || msg).appendChild(board);
+            if (window.MathJax && MathJax.typesetPromise) {
+                MathJax.typesetPromise([board]).catch(() => {});
+            }
+            const feed = document.getElementById('yoni-chat-messages');
+            if (feed) feed.scrollTop = feed.scrollHeight;
+        } catch (e) { /* הלוח הוא בונוס - אסור שיפיל משהו */ }
+    }
+
     function yoniAddChatBubble(role, text, finalize) {
+        // סוף תור של המורה (נקרא ללא role): מבקשים לוח למה שהוא אמר, ורק אז מאפסים את הבועה
+        if (finalize && !role && yoniStreamBubble.role === 'teacher' && yoniStreamBubble.textEl) {
+            yoniRequestBoard(yoniStreamBubble.textEl);
+        }
         if (!text && !finalize) return;
         const feed = document.getElementById('yoni-chat-messages');
         if (!feed) return;
@@ -15646,6 +15696,7 @@ html body #yoni-modal-overlay .yt-eq{background:linear-gradient(135deg,#1e3a8a,#
       if(!r){r=document.createElement('div');r.className='yt-rich';b.insertAdjacentElement('afterend',r);}
       var t=window.yoniActiveTeacher,speaking=msg===lastMsg&&mic.classList.contains('yoni-speaking');
       r.innerHTML='<span class="yt-who">'+esc((t&&t.name)||'המורה')+'</span>'+format(b.textContent||'',speaking);
+      if(msg._yoniBoard)r.appendChild(msg._yoniBoard);
     });
     pending.clear();if(feed&&nearBottom)feed.scrollTop=feed.scrollHeight;
   }
