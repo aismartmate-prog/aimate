@@ -13651,6 +13651,9 @@ registerProcessor('yoni-recorder-processor', YoniRecorderProcessor);
     // תמיד עוברים דרכה, כדי שלעולם לא יישאר חיבור/שיעור ישן "רדום" ברקע.
     function yoniFullTeardown() {
         yoniIsRecording = false;
+        // סיום שיחה יזום: מאפסים את אסימון ההמשך, כדי שהשיחה הבאה תתחיל נקייה עם הנחיה וזיכרון
+        // עדכניים ולא תמשיך הקשר ישן (כולל כיתה/תלמיד קודמים) מהשיחה שנסגרה.
+        yoniSessionResumeHandle = null;
 
         if (yoniWatchdogInterval) { clearInterval(yoniWatchdogInterval); yoniWatchdogInterval = null; }
         if (yoniProcessor) { try { yoniProcessor.disconnect(); } catch (e) {} yoniProcessor = null; }
@@ -14157,6 +14160,10 @@ registerProcessor('yoni-recorder-processor', YoniRecorderProcessor);
                     sid,
                     name,
                     grade: args.grade || '',
+                    gender: args.gender || '',
+                    level: args.level || '',
+                    pace: args.pace || '',
+                    nextStep: args.nextStep || '',
                     subject: args.subject || '',
                     summary: args.summary || '',
                     strengths: args.strengths || '',
