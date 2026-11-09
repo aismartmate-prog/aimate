@@ -16789,5 +16789,243 @@ window.__PR_DOC_CSS="\n\n\n.pr{--ink:#0B1D4D;--ink2:#1F3170;--mut:#5A6385;--pape
 
 <style id="touch-no-sticky-hover">html{-webkit-tap-highlight-color:transparent}</style>
 <script>(function(){try{if(window.matchMedia&&!matchMedia("(hover:hover) and (pointer:fine)").matches){document.querySelectorAll("[onmouseover],[onmouseout]").forEach(function(el){el.removeAttribute("onmouseover");el.removeAttribute("onmouseout");});}}catch(e){}})();</script>
+<!-- ═══ מורה מצויר ומונפש: מחליף את התמונה הסטטית בחדר השיעור. סנכרון שפתיים לפי עוצמת הקול האמיתית ═══ -->
+<style id="yoni-toon-css">
+.tr-cam .tc-toon{position:absolute;inset:0;z-index:0;overflow:hidden}
+.tr-cam .tc-toon svg{width:100%;height:100%;display:block}
+.tr-cam.has-toon > img{display:none !important}
+.tr-cam.has-toon::after{background:linear-gradient(180deg,transparent 62%,rgba(10,14,28,.5) 100%) !important}
+.tc-toon .tc-sym{opacity:0;font:700 26px Heebo,Arial,sans-serif;fill:#fff;paint-order:stroke;stroke:rgba(0,0,0,.18);stroke-width:3px}
+.tr-cam.speaking .tc-sym{animation:tcRise 3.2s linear infinite}
+.tr-cam.speaking .tc-sym:nth-of-type(2){animation-delay:.8s}
+.tr-cam.speaking .tc-sym:nth-of-type(3){animation-delay:1.6s}
+.tr-cam.speaking .tc-sym:nth-of-type(4){animation-delay:2.4s}
+@keyframes tcRise{0%{opacity:0;transform:translateY(40px) scale(.7)}15%{opacity:.95}80%{opacity:.8}100%{opacity:0;transform:translateY(-70px) scale(1.15)}}
+.tc-toon .tc-think{opacity:0;transition:opacity .25s}
+.tr-cam.tc-thinking .tc-think{opacity:1}
+</style>
+<script>
+(function () {
+  'use strict';
+  if (window.__yoniToonLoaded) return; window.__yoniToonLoaded = true;
+  var LOOKS = {
+    yoni: { skin: '#E3AC82', hair: '#2B2118', cloth: '#2563eb', collar: '#ffffff', hairStyle: 'short', beard: true,  glasses: false, bg: ['#E6EEFF', '#B9CCFF'] },
+    maya: { skin: '#F0C6A2', hair: '#3A2620', cloth: '#7c3aed', collar: '#f3e8ff', hairStyle: 'long',  beard: false, glasses: false, bg: ['#F0E8FF', '#CDBBFF'] },
+    ido:  { skin: '#F1CFB0', hair: '#6A4828', cloth: '#16a34a', collar: '#dcfce7', hairStyle: 'quiff', beard: false, glasses: true,  bg: ['#E3F8EA', '#B4E8C6'] },
+    noa:  { skin: '#EBBE98', hair: '#B98A4E', cloth: '#f59e0b', collar: '#fff7e0', hairStyle: 'bun',   beard: false, glasses: false, bg: ['#FFF1D6', '#FFD99A'] }
+  };
+  var SYMS = ['π', '∑', 'x²', '✓', '+', '★', '÷', '√'];
+
+  function hairBack(l) {
+    if (l.hairStyle === 'long') return '<path d="M118 175 C100 265 112 335 148 358 L252 358 C288 335 300 265 282 175 C282 88 118 88 118 175 Z" fill="' + l.hair + '"/>';
+    if (l.hairStyle === 'bun') return '<circle cx="200" cy="74" r="30" fill="' + l.hair + '"/><circle cx="200" cy="74" r="30" fill="none" stroke="rgba(0,0,0,.12)" stroke-width="3"/>';
+    return '';
+  }
+  function hairFront(l) {
+    var c = l.hair;
+    if (l.hairStyle === 'long') return '<path d="M124 172 C124 98 188 82 232 92 C264 102 278 140 276 176 C264 142 238 122 198 128 C160 134 138 150 124 172 Z" fill="' + c + '"/>';
+    if (l.hairStyle === 'bun') return '<path d="M126 172 C124 100 168 84 202 84 C240 84 278 102 274 172 C262 138 238 120 202 120 C164 120 138 138 126 172 Z" fill="' + c + '"/>';
+    if (l.hairStyle === 'quiff') return '<path d="M124 170 C112 112 140 78 192 74 C232 66 270 88 276 170 C268 140 250 122 226 118 C214 108 196 106 182 114 C150 118 132 140 124 170 Z" fill="' + c + '"/><path d="M176 84 C190 62 226 62 240 84 C222 76 196 76 176 84 Z" fill="' + c + '"/>';
+    return '<path d="M124 172 C116 104 160 80 202 80 C244 80 284 100 276 172 C266 138 244 118 202 118 C160 118 136 138 124 172 Z" fill="' + c + '"/>';
+  }
+  function buildSvg(id) {
+    var l = LOOKS[id] || LOOKS.yoni, sk = l.skin, shade = 'rgba(120,60,20,.18)';
+    var sy = '';
+    for (var i = 0; i < 4; i++) sy += '<text class="tc-sym" x="' + (46 + i * 90) + '" y="' + (150 + (i % 2) * 40) + '" text-anchor="middle">' + SYMS[(i * 2 + (id.length)) % SYMS.length] + '</text>';
+    return '' +
+    '<svg viewBox="0 0 400 400" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" style="direction:ltr">' +
+    '<defs><linearGradient id="tcbg_' + id + '" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="' + l.bg[0] + '"/><stop offset="1" stop-color="' + l.bg[1] + '"/></linearGradient></defs>' +
+    '<rect width="400" height="400" fill="url(#tcbg_' + id + ')"/>' +
+    // לוח כיתה ברקע
+    '<g opacity=".95"><rect x="22" y="26" width="170" height="104" rx="10" fill="#1f3a34"/><rect x="22" y="26" width="170" height="104" rx="10" fill="none" stroke="#b98b55" stroke-width="6"/>' +
+    '<text x="107" y="68" text-anchor="middle" font-family="Heebo,Arial" font-size="24" fill="#e8f5ee" opacity=".9">2 + 3 = 5</text>' +
+    '<text x="107" y="104" text-anchor="middle" font-family="Heebo,Arial" font-size="20" fill="#bfe8d4" opacity=".8">x² · π · ∑</text></g>' +
+    // חלון
+    '<rect x="290" y="34" width="86" height="96" rx="8" fill="#ffffff" opacity=".55"/><path d="M333 34 V130 M290 82 H376" stroke="#ffffff" stroke-width="5" opacity=".8"/>' +
+    sy +
+    // גוף
+    '<g id="tc-body">' +
+      hairBack(l) +
+      '<path d="M62 410 C62 336 118 304 200 304 C282 304 338 336 338 410 Z" fill="' + l.cloth + '"/>' +
+      '<path d="M62 410 C62 336 118 304 200 304 C282 304 338 336 338 410 Z" fill="none" stroke="rgba(0,0,0,.10)" stroke-width="3"/>' +
+      '<rect x="176" y="246" width="48" height="64" rx="20" fill="' + sk + '"/><rect x="176" y="246" width="48" height="26" rx="12" fill="' + shade + '"/>' +
+      '<path d="M166 304 L200 346 L234 304 Z" fill="' + l.collar + '"/><path d="M166 304 L200 346 L234 304" fill="none" stroke="rgba(0,0,0,.12)" stroke-width="3" stroke-linejoin="round"/>' +
+      // ידיים
+      '<path id="tc-armL" d="" stroke="' + l.cloth + '" stroke-width="34" stroke-linecap="round" fill="none"/><circle id="tc-handL" r="17" fill="' + sk + '"/>' +
+      '<path id="tc-armR" d="" stroke="' + l.cloth + '" stroke-width="34" stroke-linecap="round" fill="none"/><circle id="tc-handR" r="17" fill="' + sk + '"/>' +
+      // ראש
+      '<g id="tc-head">' +
+        '<ellipse cx="127" cy="190" rx="10" ry="15" fill="' + sk + '"/><ellipse cx="273" cy="190" rx="10" ry="15" fill="' + sk + '"/>' +
+        '<ellipse cx="200" cy="180" rx="73" ry="84" fill="' + sk + '"/>' +
+        (l.beard ? '<path d="M128 200 C134 268 166 288 200 289 C234 288 266 268 272 200 C256 242 236 254 200 254 C164 254 144 242 128 200 Z" fill="' + l.hair + '" opacity=".92"/>' : '') +
+        hairFront(l) +
+        '<ellipse cx="152" cy="214" rx="15" ry="9" fill="#ff7a7a" opacity=".22"/><ellipse cx="248" cy="214" rx="15" ry="9" fill="#ff7a7a" opacity=".22"/>' +
+        // עיניים
+        '<ellipse cx="168" cy="180" rx="15" ry="16" fill="#fff"/><ellipse cx="232" cy="180" rx="15" ry="16" fill="#fff"/>' +
+        '<g id="tc-pupils"><circle class="tc-p" cx="168" cy="181" r="7.5" fill="#2d2118"/><circle class="tc-p" cx="232" cy="181" r="7.5" fill="#2d2118"/>' +
+        '<circle class="tc-pl" cx="171" cy="178" r="2.4" fill="#fff"/><circle class="tc-pl" cx="235" cy="178" r="2.4" fill="#fff"/></g>' +
+        '<ellipse id="tc-lidL" cx="168" cy="164" rx="16.5" ry="0" fill="' + sk + '"/><ellipse id="tc-lidR" cx="232" cy="164" rx="16.5" ry="0" fill="' + sk + '"/>' +
+        '<path d="M154 164 Q168 157 182 164" fill="none" stroke="rgba(0,0,0,.14)" stroke-width="2.2" stroke-linecap="round"/><path d="M218 164 Q232 157 246 164" fill="none" stroke="rgba(0,0,0,.14)" stroke-width="2.2" stroke-linecap="round"/>' +
+        '<g id="tc-brows" stroke="' + l.hair + '" stroke-width="6" stroke-linecap="round" fill="none"><path id="tc-browL" d="M150 152 Q168 144 186 152"/><path id="tc-browR" d="M214 152 Q232 144 250 152"/></g>' +
+        (l.glasses ? '<g fill="rgba(255,255,255,.18)" stroke="#1f2937" stroke-width="4"><circle cx="168" cy="180" r="24"/><circle cx="232" cy="180" r="24"/><path d="M192 178 Q200 172 208 178" fill="none"/><path d="M144 176 L128 172 M256 176 L272 172" fill="none"/></g>' : '') +
+        '<path d="M200 188 Q194 208 205 211" fill="none" stroke="rgba(120,60,20,.45)" stroke-width="3.5" stroke-linecap="round"/>' +
+        '<path id="tc-mouth" d="" fill="#8a2e3b" stroke="#6e1f2c" stroke-width="2.5" stroke-linejoin="round"/>' +
+        '<path id="tc-teeth" d="" fill="#fff"/>' +
+        '<ellipse id="tc-tongue" cx="200" cy="244" rx="10" ry="0" fill="#e9707f"/>' +
+      '</g>' +
+    '</g>' +
+    '</g>' +
+    // בועת חשיבה
+    '<g class="tc-think"><circle cx="318" cy="150" r="7" fill="#fff" opacity=".95"/><circle cx="338" cy="126" r="10" fill="#fff" opacity=".95"/>' +
+    '<rect x="320" y="52" width="68" height="52" rx="22" fill="#fff" opacity=".97"/><text x="354" y="88" text-anchor="middle" font-size="30" font-family="Heebo,Arial" font-weight="800" fill="#475569">?</text></g>' +
+    '</svg>';
+  }
+
+  var cam, wrap, curId = null, els = null;
+  var st = { blink: 0, nextBlink: 0, lv: 0, wide: .5, mood: 'idle', waveUntil: 0, waved: false, lastSpoke: 0, tilt: 0, gazeX: 0, gazeY: 0, bobY: 0 };
+  var buf = null, fbuf = null;
+
+  function audioLevel() {
+    var an = window.__tutorAnalyser; if (!an) return null;
+    try {
+      if (!buf || buf.length !== an.fftSize) { buf = new Float32Array(an.fftSize); fbuf = new Uint8Array(an.frequencyBinCount); }
+      an.getFloatTimeDomainData(buf); var s = 0, i;
+      for (i = 0; i < buf.length; i++) s += buf[i] * buf[i];
+      var rms = Math.sqrt(s / buf.length);
+      an.getByteFrequencyData(fbuf); var lo = 0, hi = 0, n = fbuf.length;
+      for (i = 2; i < n * .12; i++) lo += fbuf[i]; for (i = Math.floor(n * .12); i < n * .4; i++) hi += fbuf[i];
+      return { level: Math.min(1, Math.max(0, (rms - .008) * 9)), wide: hi / (lo + hi + 1) };
+    } catch (e) { return null; }
+  }
+  function grab() {
+    var q = function (id) { return wrap.querySelector('#' + id); };
+    els = { body: q('tc-body'), head: q('tc-head'), mouth: q('tc-mouth'), teeth: q('tc-teeth'), tongue: q('tc-tongue'), lidL: q('tc-lidL'), lidR: q('tc-lidR'),
+      browL: q('tc-browL'), browR: q('tc-browR'), pupils: q('tc-pupils'), armL: q('tc-armL'), armR: q('tc-armR'), handL: q('tc-handL'), handR: q('tc-handR') };
+  }
+  function mount(id) {
+    wrap.innerHTML = buildSvg(id); curId = id; grab(); st.waved = false;
+  }
+  function setLids(c) {          // c: 0 פתוח .. 1 סגור
+    var ry = 17 * c, cy = 164 + ry - 1;
+    els.lidL.setAttribute('ry', ry.toFixed(2)); els.lidL.setAttribute('cy', cy.toFixed(2));
+    els.lidR.setAttribute('ry', ry.toFixed(2)); els.lidR.setAttribute('cy', cy.toFixed(2));
+  }
+  function setMouth(open, wide, smile) {
+    // פה: סגור = חיוך; פתוח = אליפסה לפי עוצמת הקול. open: 0..1, wide: 0..1
+    var cx = 200, cy = 236, w = 20 + wide * 14 + open * 4;
+    if (open < .06) {
+      var s = 6 + smile * 10;
+      els.mouth.setAttribute('d', 'M' + (cx - w) + ' ' + (cy - 2) + ' Q' + cx + ' ' + (cy + s) + ' ' + (cx + w) + ' ' + (cy - 2) + ' Q' + cx + ' ' + (cy + s - 5) + ' ' + (cx - w) + ' ' + (cy - 2) + ' Z');
+      els.teeth.setAttribute('d', ''); els.tongue.setAttribute('ry', 0); return;
+    }
+    var h = 4 + open * 26;
+    els.mouth.setAttribute('d', 'M' + (cx - w) + ' ' + cy + ' Q' + cx + ' ' + (cy - 5) + ' ' + (cx + w) + ' ' + cy + ' Q' + (cx + w * .8) + ' ' + (cy + h * 1.5) + ' ' + cx + ' ' + (cy + h * 1.55) + ' Q' + (cx - w * .8) + ' ' + (cy + h * 1.5) + ' ' + (cx - w) + ' ' + cy + ' Z');
+    var th = Math.min(7, h * .38);
+    els.teeth.setAttribute('d', 'M' + (cx - w * .72) + ' ' + (cy - 1) + ' Q' + cx + ' ' + (cy - 4) + ' ' + (cx + w * .72) + ' ' + (cy - 1) + ' L' + (cx + w * .66) + ' ' + (cy + th) + ' Q' + cx + ' ' + (cy + th - 2) + ' ' + (cx - w * .66) + ' ' + (cy + th) + ' Z');
+    els.tongue.setAttribute('cy', cy + h * 1.15); els.tongue.setAttribute('rx', w * .45); els.tongue.setAttribute('ry', Math.max(0, h * .38));
+  }
+  function arm(a, hand, sx, sy, hx, hy) {
+    var mx = (sx + hx) / 2 + (sx < 200 ? -18 : 18), my = (sy + hy) / 2 + 22;
+    a.setAttribute('d', 'M' + sx + ' ' + sy + ' Q' + mx + ' ' + my + ' ' + hx + ' ' + hy);
+    hand.setAttribute('cx', hx); hand.setAttribute('cy', hy);
+  }
+
+  function frame(ts) {
+    requestAnimationFrame(frame);
+    var overlay = document.getElementById('yoni-modal-overlay');
+    if (!cam || !overlay || overlay.style.display === 'none' || !overlay.classList.contains('active')) return;
+    var t = window.yoniActiveTeacher || (window.YONI_TEACHERS || [])[0];
+    var id = (t && LOOKS[t.id]) ? t.id : 'yoni';
+    if (id !== curId) mount(id);
+    if (!els || !els.head) return;
+
+    var mic = document.getElementById('yoni-mic-btn');
+    var speaking = !!(mic && mic.classList.contains('yoni-speaking'));
+    var rec = !!(mic && mic.classList.contains('recording'));
+    var thinking = !speaking && !!window._yoniAwaitingResponseSince;
+    var mood = speaking ? 'speaking' : (thinking ? 'thinking' : (rec ? 'listening' : 'idle'));
+    cam.classList.toggle('tc-thinking', mood === 'thinking');
+    var now = ts || performance.now(), k = now / 1000;
+
+    // עוצמת קול -> פה
+    var a = speaking ? audioLevel() : null;
+    var target = speaking ? (a ? a.level : .35 + .3 * Math.abs(Math.sin(now / 110))) : 0;
+    st.lv += (target - st.lv) * (target > st.lv ? .55 : .3);
+    if (a) st.wide += (a.wide - st.wide) * .3;
+    var open = Math.min(1, st.lv * 1.25);
+
+    // לחיצת-יד לברכה בתחילת השיעור: פעם אחת כשהמורה מתחיל לדבר בפעם הראשונה
+    if (speaking && !st.waved) { st.waved = true; st.waveUntil = now + 1900; }
+    var waving = now < st.waveUntil;
+
+    // מצמוץ
+    if (now > st.nextBlink) { st.blink = now; st.nextBlink = now + 2200 + Math.random() * 3200 + (mood === 'listening' ? -600 : 0); }
+    var bt = now - st.blink, closed = bt < 150 ? Math.sin(bt / 150 * Math.PI) : 0;
+    setLids(Math.max(closed, mood === 'listening' ? .0 : 0));
+
+    // גוף: נשימה + נדנוד קל
+    var sway = Math.sin(k * 1.1) * 2.5, breath = Math.sin(k * 1.6) * 1.8;
+    els.body.setAttribute('transform', 'translate(' + sway.toFixed(2) + ' ' + breath.toFixed(2) + ')');
+
+    // ראש: דיבור = ניעור קל לפי עוצמה; האזנה = הטיה ונהנהון; חשיבה = הטיה למעלה הצידה
+    var rot = 0, dy = 0, dx = 0;
+    if (mood === 'speaking') { rot = Math.sin(k * 3.2) * (1.2 + st.lv * 3.4); dy = Math.abs(Math.sin(k * 6.4)) * -st.lv * 4; dx = Math.sin(k * 1.7) * 3; }
+    else if (mood === 'listening') { rot = 5 + Math.sin(k * 1.4) * 1.5; dy = Math.sin(k * 1.9) * 2.5 - 1; }
+    else if (mood === 'thinking') { rot = -7; dy = -2; dx = -4; }
+    else { rot = Math.sin(k * .8) * 1.5; dy = Math.sin(k * 1.2) * 1.2; }
+    st.tilt += (rot - st.tilt) * .12; st.bobY += (dy - st.bobY) * .25;
+    els.head.setAttribute('transform', 'translate(' + dx.toFixed(2) + ' ' + st.bobY.toFixed(2) + ') rotate(' + st.tilt.toFixed(2) + ' 200 262)');
+
+    // מבט
+    var gx = 0, gy = 0;
+    if (mood === 'thinking') { gx = -4; gy = -4.5; }
+    else if (mood === 'speaking') { gx = Math.sin(k * .9) * 2.2; gy = Math.sin(k * 1.3) * 1.2; }
+    else { gx = Math.sin(k * .5) * 1.2; }
+    st.gazeX += (gx - st.gazeX) * .15; st.gazeY += (gy - st.gazeY) * .15;
+    els.pupils.setAttribute('transform', 'translate(' + st.gazeX.toFixed(2) + ' ' + st.gazeY.toFixed(2) + ')');
+
+    // גבות: מתרוממות בהדגשה/חשיבה/האזנה
+    var br = 0;
+    if (mood === 'speaking') br = -2 - st.lv * 7; else if (mood === 'thinking') br = -9; else if (mood === 'listening') br = -4;
+    els.browL.setAttribute('transform', 'translate(0 ' + (br + (mood === 'thinking' ? 1 : 0)).toFixed(2) + ')');
+    els.browR.setAttribute('transform', 'translate(0 ' + (br + (mood === 'thinking' ? -3 : 0)).toFixed(2) + ')');
+
+    // פה
+    setMouth(open, st.wide, mood === 'listening' ? 1 : (mood === 'idle' ? .6 : .2));
+
+    // ידיים: רגיעה / מחוות בזמן דיבור / ברכה / יד לסנטר בחשיבה
+    var lx = 150, ly = 384, rx = 250, ry = 384;
+    if (mood === 'speaking') {
+      var g1 = Math.max(.25, st.lv);
+      lx = 146 + Math.sin(k * 2.6) * 16 * g1; ly = 372 - Math.abs(Math.sin(k * 3.1)) * 58 * g1;
+      rx = 254 - Math.sin(k * 2.2 + 1) * 16 * g1; ry = 372 - Math.abs(Math.cos(k * 2.7)) * 64 * g1;
+    } else if (mood === 'thinking') { rx = 262; ry = 268; }
+    else if (mood === 'listening') { ly = 380 + Math.sin(k * 1.3) * 2; ry = ly; }
+    if (waving) { rx = 308 + Math.sin(now / 95) * 20; ry = 236 + Math.sin(now / 190) * 8; }
+    arm(els.armL, els.handL, 112, 346, lx, ly);
+    arm(els.armR, els.handR, 288, 346, rx, ry);
+  }
+
+  function init() {
+    cam = document.querySelector('#yoni-modal-body .tr-cam') || document.querySelector('.tr-cam');
+    if (!cam) return false;
+    wrap = document.createElement('div'); wrap.className = 'tc-toon';
+    cam.insertBefore(wrap, cam.firstChild);
+    cam.classList.add('has-toon');
+    mount('yoni');
+    requestAnimationFrame(frame);
+    var ov = document.getElementById('yoni-modal-overlay');
+    if (ov) new MutationObserver(function () { if (!ov.classList.contains('active')) st.waved = false; }).observe(ov, { attributes: true, attributeFilter: ['class'] });
+    return true;
+  }
+  // מחכים שחדר השיעור (נבנה בסקריפט אחר) יהיה קיים; אם משהו נכשל - נשארת התמונה המקורית
+  var tries = 0;
+  (function wait() {
+    try { if (init()) return; } catch (e) { if (cam) cam.classList.remove('has-toon'); console.warn('toon avatar failed:', e); return; }
+    if (++tries < 80) setTimeout(wait, 150);
+  })();
+})();
+</script>
+
 </body>
 </html>
