@@ -245,3 +245,29 @@ html:root { background: var(--cl-bg) !important; background-color: var(--cl-bg) 
 @media (max-width: 850px) {
     :root body .voice-orb { min-height: 84px !important; align-self: stretch !important; }
 }
+/* ---------- נוסחאות (MathJax) ---------- */
+/* כללים ישנים בדף ("‎.question-title *‎", "‎#q-text *‎") דרסו את גופני המתמטיקה בגופן טקסט רגיל, ולכן חזקות ושברים
+   יצאו עקומים. מחזירים לכל תו בנוסחה את הגופן הנכון של MathJax. */
+:root body mjx-container mjx-c { font-family: MJXZERO, MJXTEX !important; }
+:root body mjx-container mjx-c.TEX-B { font-family: MJXZERO, MJXTEX-B !important; }
+:root body mjx-container mjx-c.TEX-I { font-family: MJXZERO, MJXTEX-I !important; }
+:root body mjx-container mjx-c.TEX-MI { font-family: MJXZERO, MJXTEX-MI !important; }
+:root body mjx-container mjx-c.TEX-BI { font-family: MJXZERO, MJXTEX-BI !important; }
+:root body mjx-container mjx-c.TEX-S1 { font-family: MJXZERO, MJXTEX-S1 !important; }
+:root body mjx-container mjx-c.TEX-S2 { font-family: MJXZERO, MJXTEX-S2 !important; }
+:root body mjx-container mjx-c.TEX-S3 { font-family: MJXZERO, MJXTEX-S3 !important; }
+:root body mjx-container mjx-c.TEX-S4 { font-family: MJXZERO, MJXTEX-S4 !important; }
+:root body mjx-container mjx-c.TEX-A { font-family: MJXZERO, MJXTEX-A !important; }
+:root body mjx-container mjx-c.TEX-C { font-family: MJXZERO, MJXTEX-C !important; }
+:root body mjx-container mjx-c.TEX-CB { font-family: MJXZERO, MJXTEX-CB !important; }
+:root body mjx-container mjx-c.TEX-FR { font-family: MJXZERO, MJXTEX-FR !important; }
+:root body mjx-container mjx-c.TEX-FRB { font-family: MJXZERO, MJXTEX-FRB !important; }
+:root body mjx-container mjx-c.TEX-SS { font-family: MJXZERO, MJXTEX-SS !important; }
+:root body mjx-container mjx-c.TEX-SSB { font-family: MJXZERO, MJXTEX-SSB !important; }
+:root body mjx-container mjx-c.TEX-SSI { font-family: MJXZERO, MJXTEX-SSI !important; }
+:root body mjx-container mjx-c.TEX-SC { font-family: MJXZERO, MJXTEX-SC !important; }
+:root body mjx-container mjx-c.TEX-T { font-family: MJXZERO, MJXTEX-T !important; }
+:root body mjx-container mjx-c.TEX-V { font-family: MJXZERO, MJXTEX-V !important; }
+:root body mjx-container mjx-c.TEX-VB { font-family: MJXZERO, MJXTEX-VB !important; }
+/* נוסחה בשורה נפרדת ($$...$$) נחתכה באמצע בגלל overflow:hidden ישן - נותנים לה מקום */
+:root body #q-text mjx-container[display="true"], :root body .question-title mjx-container[display="true"] { overflow: visible !important; margin: 14px 0 !important; line-height: normal !important; }

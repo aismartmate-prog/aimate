@@ -10,6 +10,8 @@ import os, re, sys
 HERE = os.path.dirname(os.path.abspath(__file__))
 CSS = open(os.path.join(HERE, 'app-theme.css'), encoding='utf-8').read().strip()
 TAG = '<style id="classroom-theme-2026">\n' + CSS + '\n</style>\n'
+JS = open(os.path.join(HERE, 'app-theme.js'), encoding='utf-8').read().strip()
+JS_TAG = '<script id="classroom-theme-2026-js">\n' + JS + '\n</script>\n'
 
 
 def apply(path):
@@ -18,6 +20,9 @@ def apply(path):
     body = re.search(r'^<body[ >]', src, re.M)                  # תג ה-body האמיתי (לא בתוך מחרוזת JS)
     head_end = src.rindex('</head>', 0, body.start())
     src = src[:head_end] + TAG + src[head_end:]
+    src = re.sub(r'<script id="classroom-theme-2026-js">.*?</script>\n', '', src, count=1, flags=re.S)
+    end = src.rindex('</body>')                                  # סוף העמוד האמיתי (המופע האחרון)
+    src = src[:end] + JS_TAG + src[end:]
     return src
 
 
