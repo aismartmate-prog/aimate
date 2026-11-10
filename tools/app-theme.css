@@ -107,3 +107,102 @@
 :root body mjx-container mjx-c.TEX-VB { font-family: MJXZERO, MJXTEX-VB !important; }
 /* נוסחה בשורה נפרדת ($$...$$) נחתכה באמצע בגלל overflow:hidden ישן - נותנים לה מקום */
 :root body #q-text mjx-container[display="true"], :root body .question-title mjx-container[display="true"] { overflow: visible !important; margin: 14px 0 !important; line-height: normal !important; }
+
+/* =====================================================================
+   המחברת הדיגיטלית - עיצוב חדש (תרגול + מבחן).
+   כריכה כחולה-לילה שעוטפת דף נייר שמנת עם ספירלה למעלה וקו שוליים,
+   סרגל כלים צף ולבן עם כלים גדולים וברורים. רק עיצוב - הציור, הדפים
+   והשמירה עובדים בדיוק כמו קודם.
+   ===================================================================== */
+#notebook-overlay { background: rgba(5,9,22,.72) !important; backdrop-filter: blur(10px) !important; -webkit-backdrop-filter: blur(10px) !important; padding: 18px !important; }
+#notebook-window {
+    width: min(1240px, 96vw) !important; height: 92vh !important; border-radius: 30px !important; overflow: hidden !important;
+    background: radial-gradient(700px 300px at 85% -10%, rgba(59,130,246,.35), transparent 60%), radial-gradient(600px 300px at 0% 110%, rgba(124,58,237,.25), transparent 60%), linear-gradient(160deg, #16224a, #0b1226) !important;
+    border: 1px solid rgba(255,255,255,.1) !important; box-shadow: 0 60px 140px -30px rgba(0,0,0,.85), inset 0 1px 0 rgba(255,255,255,.08) !important;
+    padding-bottom: 14px !important;
+}
+#notebook-window::before { display: none !important; }
+
+/* כותרת על הכריכה */
+#notebook-window .nb-header { background: transparent !important; padding: 16px 22px 10px !important; gap: 14px !important; }
+#notebook-window .nb-header-icon { width: 46px !important; height: 46px !important; border-radius: 14px !important; background: linear-gradient(135deg, #f5c862, #d99a1c) !important; color: #1a1205 !important; font-size: 1.15rem !important; box-shadow: 0 12px 26px -12px rgba(245,184,61,.9) !important; }
+#notebook-window .nb-header-title strong { font-family: 'Frank Ruhl Libre', Georgia, serif !important; font-size: 1.5rem !important; font-weight: 900 !important; letter-spacing: -.01em; color: #fff !important; }
+#notebook-window .nb-header-title small { font-size: .84rem !important; font-weight: 500 !important; color: #b7c2e0 !important; }
+#notebook-window .nb-hbtn { width: 42px !important; height: 42px !important; background: rgba(255,255,255,.1) !important; border: 1px solid rgba(255,255,255,.14) !important; font-size: 1rem !important; }
+#notebook-window .nb-hbtn:hover { background: rgba(255,255,255,.2) !important; transform: none !important; }
+#notebook-window .nb-hbtn.nb-close:hover { background: #ef4444 !important; border-color: #ef4444 !important; }
+
+/* סרגל הכלים: מעגן לבן וצף */
+#notebook-window .nb-toolbar {
+    margin: 4px 22px 10px !important; padding: 8px 10px !important; gap: 6px !important; border: 0 !important; border-radius: 20px !important;
+    background: #fff !important; box-shadow: 0 18px 40px -20px rgba(0,0,0,.8), 0 0 0 1px rgba(255,255,255,.6) !important; justify-content: center !important;
+}
+#notebook-window .nb-group { gap: 4px !important; }
+#notebook-window .nb-sep { width: 1px !important; height: 30px !important; margin: 0 6px !important; background: #e2e8f0 !important; }
+#notebook-window .nb-tool { width: 42px !important; height: 42px !important; border-radius: 13px !important; border: 0 !important; background: transparent !important; color: #334155 !important; font-size: 1.02rem !important; box-shadow: none !important; }
+#notebook-window .nb-tool:hover { background: #eff6ff !important; color: #1d4ed8 !important; transform: none !important; }
+#notebook-window .nb-tool.active { background: linear-gradient(135deg, #3b82f6, #1d4ed8) !important; color: #fff !important; box-shadow: 0 10px 20px -10px rgba(37,99,235,.9) !important; }
+#notebook-window .nb-tool[data-tip]::after { top: calc(100% + 9px) !important; font-family: 'Heebo', sans-serif !important; font-size: .76rem !important; padding: 5px 11px !important; border-radius: 8px !important; background: #0b1226 !important; }
+#notebook-window .nb-color { width: 28px !important; height: 28px !important; border: 3px solid #fff !important; outline: 1px solid #cbd5e1 !important; box-shadow: 0 2px 6px rgba(15,23,42,.18) !important; }
+#notebook-window .nb-color:hover { transform: scale(1.12) !important; }
+#notebook-window .nb-color.active { outline: 2.5px solid #1d4ed8 !important; transform: scale(1.12) !important; }
+#notebook-window .nb-color-custom { width: 28px !important; height: 28px !important; border: 3px solid #fff !important; outline: 1px solid #cbd5e1; }
+#notebook-window #nb-size { width: 96px !important; height: 6px !important; -webkit-appearance: none; appearance: none; border-radius: 3px; background: linear-gradient(90deg, #1d4ed8, #93c5fd) !important; }
+#notebook-window #nb-size::-webkit-slider-thumb { -webkit-appearance: none; width: 20px; height: 20px; border-radius: 50%; background: #fff; border: 3px solid #1d4ed8; box-shadow: 0 2px 6px rgba(15,23,42,.3); cursor: pointer; }
+#notebook-window #nb-size::-moz-range-thumb { width: 16px; height: 16px; border-radius: 50%; background: #fff; border: 3px solid #1d4ed8; cursor: pointer; }
+#notebook-window .nb-size-preview { width: 34px !important; height: 34px !important; border: 0 !important; background: #f1f5f9 !important; }
+
+/* שורת הדפים - על הכריכה */
+#notebook-window .nb-pagebar { background: transparent !important; border: 0 !important; padding: 0 22px 10px !important; gap: 8px !important; }
+#notebook-window .nb-page-btn { min-height: 36px !important; padding: 6px 14px !important; border-radius: 999px !important; background: rgba(255,255,255,.08) !important; border: 1px solid rgba(255,255,255,.14) !important; color: #e6ecff !important; font-weight: 700 !important; font-size: .86rem !important; box-shadow: none !important; }
+#notebook-window .nb-page-btn:hover:not(:disabled) { background: rgba(255,255,255,.18) !important; color: #fff !important; }
+#notebook-window .nb-page-btn:disabled { opacity: .35 !important; }
+#notebook-window .nb-page-btn.nb-page-add { background: #fff !important; color: #0b1226 !important; border-color: #fff !important; }
+#notebook-window .nb-page-btn.nb-page-del { color: #fca5a5 !important; }
+#notebook-window .nb-page-btn.nb-page-del:hover { background: #ef4444 !important; color: #fff !important; border-color: #ef4444 !important; }
+#notebook-window .nb-page-label { color: #fff !important; font-weight: 800 !important; font-size: .9rem !important; background: none !important; border: 0 !important; }
+
+/* הדף: נייר שמנת עם ספירלה למעלה */
+#notebook-window .nb-question, #notebook-window #notebook-question-container {
+    position: relative; margin: 0 22px !important; padding: 34px 26px 14px !important; border: 0 !important; border-radius: 22px 22px 0 0 !important;
+    background: #fffdf6 !important; box-shadow: none !important; color: #0f172a !important; font-size: 1.12rem !important; font-weight: 600 !important; text-align: center !important;
+    top: 0 !important; width: auto !important; max-width: none !important;
+    border-bottom: 1.5px solid #f4b4b4 !important;
+}
+#notebook-window .nb-question::before { content: ""; position: absolute; top: 8px; left: 30px; right: 30px; height: 14px;
+    background: radial-gradient(circle at 9px 7px, #0b1226 0 4px, transparent 4.5px) 0 0 / 30px 14px repeat-x; opacity: .85; pointer-events: none; }
+#notebook-window .nb-question::after { content: "התרגיל"; position: absolute; top: 30px; left: 22px; font-size: .74rem; font-weight: 800; color: #2563eb; background: #eff6ff; padding: 3px 10px; border-radius: 999px; }
+#notebook-window .nb-canvas-area {
+    margin: 0 22px !important; flex: 1 1 auto; border: 0 !important; border-radius: 0 0 22px 22px !important; background-color: #fffdf6 !important;
+    box-shadow: 0 30px 60px -30px rgba(0,0,0,.8) !important;
+}
+#notebook-window .nb-question:empty { display: block !important; padding: 26px 0 0 !important; min-height: 0; }
+#notebook-window .nb-question:empty::after { display: none; }
+#notebook-window .nb-canvas-area.bg-grid {
+    background-image: linear-gradient(rgba(59,130,246,.13) 1px, transparent 1px), linear-gradient(90deg, rgba(59,130,246,.13) 1px, transparent 1px) !important;
+    background-size: 26px 26px !important; background-position: -1px -1px !important;
+}
+#notebook-window .nb-canvas-area.bg-lines {
+    background-image: linear-gradient(270deg, transparent 54px, rgba(239,68,68,.45) 54px, rgba(239,68,68,.45) 56px, transparent 56px), linear-gradient(rgba(59,130,246,.2) 1px, transparent 1px) !important;
+    background-size: 100% 100%, 100% 32px !important; background-repeat: no-repeat, repeat !important;
+}
+
+@media (max-width: 760px) {
+    #notebook-overlay { padding: 0 !important; }
+    #notebook-window { width: 100vw !important; height: 100dvh !important; border-radius: 0 !important; padding-bottom: 8px !important; }
+    #notebook-window .nb-header { padding: 12px 14px 8px !important; }
+    #notebook-window .nb-header-icon { width: 38px !important; height: 38px !important; }
+    #notebook-window .nb-header-title strong { font-size: 1.2rem !important; }
+    #notebook-window .nb-toolbar { margin: 2px 10px 8px !important; flex-wrap: nowrap !important; justify-content: flex-start !important; overflow-x: auto !important; scroll-snap-type: x proximity;
+        -webkit-mask-image: linear-gradient(90deg, transparent 0, #000 18px, #000 calc(100% - 18px), transparent 100%); mask-image: linear-gradient(90deg, transparent 0, #000 18px, #000 calc(100% - 18px), transparent 100%); }
+    #notebook-window .nb-group { flex-shrink: 0; }
+    #notebook-window .nb-tool { width: 44px !important; height: 44px !important; }
+    #notebook-window .nb-tool[data-tip]::after { display: none !important; }
+    #notebook-window .nb-pagebar { padding: 0 10px 8px !important; overflow-x: auto; }
+    #notebook-window .nb-question, #notebook-window .nb-canvas-area { margin-inline: 10px !important; }
+    #notebook-window .nb-question { padding: 30px 16px 12px !important; font-size: 1rem !important; }
+    #notebook-window .nb-question::after { display: none; }
+}
+/* פתיחה בלי שינוי גודל: הקנבס נמדד ברגע הפתיחה, ואנימציית scale גרמה לקו להופיע בהיסט מהעט */
+@keyframes nbIn2026 { from { opacity: 0; } to { opacity: 1; } }
+#notebook-window { animation: nbIn2026 .25s ease-out !important; }
