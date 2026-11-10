@@ -1,0 +1,78 @@
+/* =====================================================================
+   home-cards-2026 — כרטיסיות דף הבית (בחירת מקצוע + "איך זה עובד").
+   אותה שפה של דפי המקצועות: אריחים גדולים ומעוגלים בגרדיאנטים העמוקים
+   של האתר, בלי בועות וקישוטים. עיצוב בלבד - הלחיצות והקישורים כמו קודם.
+   מקור: tools/home-theme.css · מוחל עם tools/apply-home-theme.py
+   ===================================================================== */
+:root body .fin-main { max-width: 1180px !important; }
+
+/* ---------- "איך זה עובד": שלושה צעדים על זכוכית כחולה-לילה ---------- */
+:root body .fin-how { width: 100%; box-sizing: border-box; max-width: 1100px !important; gap: 12px !important; margin: 0 auto 26px !important; counter-reset: none; }
+:root body .fin-how-step {
+    position: relative; align-items: center !important; gap: 14px !important; padding: 16px 18px !important; border-radius: 22px !important;
+    background: linear-gradient(160deg, rgba(22,34,74,.9), rgba(11,18,38,.92)) !important; border: 1px solid rgba(147,180,255,.18) !important;
+    box-shadow: inset 0 1px 0 rgba(255,255,255,.08), 0 20px 40px -24px rgba(5,9,22,.8) !important;
+    -webkit-backdrop-filter: blur(12px) !important; backdrop-filter: blur(12px) !important;
+}
+:root body .fin-how-step .hs-ico { width: 44px !important; height: 44px !important; border-radius: 14px !important; font-size: 1.1rem !important; color: #fff !important; box-shadow: inset 0 1px 0 rgba(255,255,255,.25), 0 10px 22px -12px rgba(0,0,0,.8); }
+:root body .fin-how-step:nth-child(1) .hs-ico { background: linear-gradient(135deg, #1fb880, #0a5c46) !important; }
+:root body .fin-how-step:nth-child(2) .hs-ico { background: linear-gradient(135deg, #1a84ff, #003f8a) !important; }
+:root body .fin-how-step:nth-child(3) .hs-ico { background: linear-gradient(135deg, #9b3ff0, #4c1d95) !important; }
+:root body .fin-how-step b { color: #fff !important; font-size: 1.05rem !important; font-weight: 800 !important; margin-bottom: 3px !important; }
+:root body .fin-how-step span.hs-t { color: #b7c2e0 !important; font-size: .82rem !important; line-height: 1.45 !important; }
+
+/* ---------- כרטיסיות המקצועות: אריחים גדולים ---------- */
+:root body .fin-grid { display: grid !important; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 18px !important; width: 100%; max-width: 1100px; margin: 0 auto; box-sizing: border-box; }
+:root body .fin-card {
+    --g1: #1a84ff; --g2: #003f8a; --glow: rgba(0,114,255,.55);
+    width: auto !important; min-height: 196px !important; padding: 22px 24px !important; gap: 4px !important; isolation: isolate;
+    align-items: flex-start !important; justify-content: flex-start !important; text-align: right !important;
+    border-radius: 26px !important; border: 1px solid rgba(255,255,255,.14) !important;
+    background: linear-gradient(155deg, var(--g1) 0%, var(--g2) 100%) !important;
+    box-shadow: inset 0 1px 0 rgba(255,255,255,.22), 0 24px 48px -26px var(--glow) !important;
+    transition: transform .35s cubic-bezier(.22,1,.36,1), box-shadow .35s ease !important;
+}
+/* בלי בועות: רק הברקה עדינה מלמעלה */
+:root body .fin-card::before { background: linear-gradient(180deg, rgba(255,255,255,.14), transparent 50%) !important; z-index: -1 !important; }
+:root body .fin-card::after { display: none !important; }
+:root body .fin-card:focus-visible { outline: 3px solid #fff !important; outline-offset: 3px; }
+@media (hover: hover) and (pointer: fine) {
+    :root body .fin-card:hover { transform: translateY(-5px) !important; filter: none !important; box-shadow: inset 0 1px 0 rgba(255,255,255,.26), 0 32px 60px -26px var(--glow) !important; }
+    :root body .fin-card:hover .fc-icon { transform: none !important; background: rgba(255,255,255,.24) !important; }
+    :root body .fin-card:hover .fc-go { transform: translateX(-4px) !important; background: rgba(255,255,255,.26) !important; }
+}
+:root body .fin-card:active { transform: translateY(-1px) !important; }
+:root body .fin-card .fc-icon {
+    width: 50px !important; height: 50px !important; border-radius: 15px !important; margin: 0 0 auto !important; font-size: 1.25rem !important;
+    background: rgba(255,255,255,.16) !important; border: 1px solid rgba(255,255,255,.24) !important; -webkit-backdrop-filter: none !important; backdrop-filter: none !important;
+    box-shadow: inset 0 1px 0 rgba(255,255,255,.22) !important; text-shadow: none !important;
+}
+:root body .fin-card h3 { margin-top: 18px !important; font-size: 1.55rem !important; font-weight: 800 !important; letter-spacing: -.01em; line-height: 1.15 !important; text-shadow: none !important; }
+:root body .fin-card .fc-sub { font-size: .9rem !important; font-weight: 500 !important; color: rgba(255,255,255,.82) !important; text-shadow: none !important; }
+:root body .fin-card .fc-go {
+    top: 22px !important; bottom: auto !important; left: 22px !important; width: 40px; height: 40px; border-radius: 50%;
+    display: grid; place-items: center; color: #fff !important; font-size: .95rem !important;
+    background: rgba(255,255,255,.14); border: 1px solid rgba(255,255,255,.24);
+    transition: transform .3s cubic-bezier(.22,1,.36,1), background .3s !important;
+}
+
+/* צבע לכל מקצוע - הגרדיאנטים העמוקים של דפי המקצועות */
+:root body .fin-card[onclick*="math-overlay"]    { --g1: #ef2b55; --g2: #7f1d1d; --glow: rgba(225,29,72,.55); }
+:root body .fin-card[onclick*="english.html"]    { --g1: #f2a516; --g2: #8a3a07; --glow: rgba(234,150,20,.5); }
+:root body .fin-card[onclick*="hebrew.html"]     { --g1: #8b4cf6; --g2: #3b0764; --glow: rgba(124,58,237,.55); }
+:root body .fin-card[onclick*="science-overlay"] { --g1: #1fb880; --g2: #0a5c46; --glow: rgba(23,166,115,.55); }
+:root body .fin-card[onclick*="arabic.html"]     { --g1: #f08a3c; --g2: #7c2d12; --glow: rgba(234,128,52,.5); }
+:root body .fin-card[onclick*="finance.html"]    { --g1: #0ea5c6; --g2: #164e63; --glow: rgba(8,145,178,.55); }
+
+@media (max-width: 760px) {
+    :root body .fin-how { grid-template-columns: 1fr !important; gap: 10px !important; }
+    :root body .fin-how-step { padding: 13px 15px !important; border-radius: 20px !important; }
+    :root body .fin-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px !important; }
+    :root body .fin-card { min-height: 150px !important; padding: 16px !important; border-radius: 22px !important; }
+    :root body .fin-card .fc-icon { width: 44px !important; height: 44px !important; border-radius: 13px !important; font-size: 1.1rem !important; }
+    :root body .fin-card h3 { margin-top: 14px !important; font-size: 1.25rem !important; }
+    :root body .fin-card .fc-sub { font-size: .8rem !important; }
+    :root body .fin-card .fc-go { width: 34px; height: 34px; top: 16px !important; left: 14px !important; font-size: .8rem !important; }
+}
+@media (max-width: 340px) { :root body .fin-grid { grid-template-columns: 1fr; } }
+@media (prefers-reduced-motion: reduce) { :root body .fin-card { transition: none !important; animation: none !important; } }
