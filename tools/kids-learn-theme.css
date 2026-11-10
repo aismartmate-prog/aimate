@@ -1,0 +1,99 @@
+/* =====================================================================
+   kids-learn-2026 — דף "למד אותי" של הקידס בשפת העיצוב של האתר:
+   רקע כחול-לילה עם כוכבים, אריחים גדולים ומעוגלים, אותיות עגולות וגדולות,
+   כפתורי זהב "לחיצים". כרטיסי התוכן נשארים בהירים כדי שיהיה קל לקרוא.
+   עיצוב בלבד - מנוע השיעור, הסרטונים והמורה הקולי לא משתנים.
+   מקור: tools/kids-learn-theme.css · מוחל עם tools/apply-kids-learn-theme.py
+   ===================================================================== */
+@import url('https://fonts.googleapis.com/css2?family=Rubik:wght@400;500;700;800;900&display=swap');
+:root { --bg: #0b1226; --brand: #2563eb; --brand-2: #1d4ed8; }
+html { background: #0b1226; }
+:root body { font-family: 'Rubik', 'Heebo', sans-serif; font-size: 17px; color: #172036;
+    background: radial-gradient(900px 480px at 88% -10%, rgba(59,130,246,.3), transparent 60%), radial-gradient(700px 420px at 0% 30%, rgba(168,85,247,.2), transparent 60%),
+        radial-gradient(2px 2px at 12% 18%, rgba(255,255,255,.7) 50%, transparent 51%), radial-gradient(2px 2px at 78% 32%, rgba(255,255,255,.55) 50%, transparent 51%), radial-gradient(1.5px 1.5px at 42% 64%, rgba(255,255,255,.5) 50%, transparent 51%), radial-gradient(2px 2px at 91% 76%, rgba(255,255,255,.45) 50%, transparent 51%),
+        linear-gradient(180deg, #16224a 0, #0b1226 900px) no-repeat, #0b1226; }
+
+/* סרגל עליון */
+:root body .appbar { background: rgba(11,18,38,.82); -webkit-backdrop-filter: blur(14px); backdrop-filter: blur(14px); border-bottom: 1px solid rgba(255,255,255,.1); }
+:root body .appbar .in { height: 66px; }
+:root body .brand { color: #fff; font-size: 1.15rem; }
+:root body .brand .mark { width: 42px; height: 42px; border-radius: 14px; background: linear-gradient(135deg, #3b82f6, #1d4ed8); box-shadow: 0 10px 22px -10px rgba(59,130,246,.9); }
+:root body .brand .tag { background: #f5b83d; color: #1a1205; font-size: .76rem; padding: 3px 11px; }
+:root body .breadcrumb { color: #8e9bc2; } :root body .breadcrumb .crumb-current { color: #fff; }
+:root body .back-btn { background: rgba(255,255,255,.1); border: 1px solid rgba(255,255,255,.16); color: #fff; border-radius: 999px; padding: 10px 20px; font-size: .98rem; }
+:root body .back-btn:hover { background: rgba(255,255,255,.2); }
+
+/* באנר השיעור: אריח גדול עם הינשוף */
+:root body .hero { background: none; overflow: visible; padding: 22px 43px 0; }
+:root body .hero::before { display: none; }
+:root body .hero .in { margin-top: 0; box-sizing: border-box; padding: clamp(22px, 3vw, 34px); border-radius: 34px; position: relative; overflow: hidden;
+    background: radial-gradient(600px 360px at 0% 100%, rgba(59,130,246,.28), transparent 70%), linear-gradient(160deg, rgba(255,255,255,.1), rgba(255,255,255,.03));
+    border: 1px solid rgba(255,255,255,.14); box-shadow: 0 30px 60px -34px rgba(0,0,0,.8), inset 0 1px 0 rgba(255,255,255,.12); }
+:root body .hero-text { padding-inline-start: 0; }
+:root body .hero h1 { font-size: clamp(1.9rem, 3.2vw, 2.8rem); font-weight: 800; }
+:root body .hero p { color: #dbe5ff; font-size: 1.05rem; }
+:root body .eyebrow { font-size: .88rem; padding: 6px 15px; }
+:root body .hero .vid-btn, :root body .vid-btn { background: linear-gradient(180deg, #ffd45e, #f5b83d) !important; color: #1a1205 !important; border: 0 !important; border-radius: 999px !important; min-height: 52px; padding: 10px 26px !important; font-size: 1.05rem !important; font-weight: 800 !important;
+    box-shadow: 0 6px 0 #b9770c, 0 20px 34px -16px rgba(245,184,61,.9) !important; transition: transform .15s, box-shadow .15s; }
+:root body .vid-btn i { color: #1a1205 !important; }
+:root body .vid-btn:active { transform: translateY(4px); box-shadow: 0 2px 0 #b9770c !important; }
+:root body .stat { border-radius: 22px; padding: 16px 18px; background: rgba(255,255,255,.09); }
+:root body .stat i { color: #f5b83d; font-size: 1.15rem; }
+:root body .stat b { font-size: 1.75rem; } :root body .stat span { font-size: .86rem; color: #c9d4f3; }
+:root body .ring .fg { stroke: #f5b83d; }
+:root body .kl-owl { width: 104px; height: auto; flex-shrink: 0; filter: drop-shadow(0 12px 10px rgba(0,0,0,.35)); animation: klbob 4s ease-in-out infinite; }
+@keyframes klbob { 50% { transform: translateY(-7px); } }
+
+/* מפת השיעור */
+:root body .shell { padding-top: 24px; gap: 24px; }
+:root body .outline { border-radius: 28px; border: 0; padding: 20px 16px 16px; box-shadow: 0 26px 50px -30px rgba(0,0,0,.8); }
+:root body .outline-head b { font-size: 1.12rem; }
+:root body .oprog { height: 10px; } :root body .oprog > i { background: linear-gradient(90deg, #f5b83d, #f59e0b); }
+:root body .step { border-radius: 18px; padding: 12px 14px; min-height: 58px; }
+:root body .step .n { width: 38px; height: 38px; border-radius: 13px; font-size: .98rem; }
+:root body .step .t b { font-size: 1.02rem; } :root body .step .t small { font-size: .8rem; }
+:root body .step.done .n { background: #22c55e; color: #fff; }
+
+/* כרטיס השיעור */
+:root body .panel { border-radius: 30px; border: 0; padding: 30px 34px 26px; box-shadow: 0 30px 60px -32px rgba(0,0,0,.85); }
+:root body .panel::before { height: 6px; }
+:root body .panel-head .ico { width: 60px; height: 60px; border-radius: 20px; font-size: 1.5rem; }
+:root body .panel-head h2 { font-size: 1.8rem; font-weight: 800; }
+:root body .panel-head .ey { font-size: .86rem; }
+:root body .ls-body { font-size: 1.12rem; line-height: 1.85; }
+:root body .pt-list li, :root body .steps-ol li, :root body .ex-q, :root body .ex-steps, :root body .ex-final { border-radius: 20px; }
+:root body .steps-ol li::before, :root body .ex-step .n { width: 34px; height: 34px; font-size: .95rem; }
+:root body .opt { border-radius: 20px; min-height: 60px; font-size: 1.08rem; border-width: 2px; padding: 14px 18px; box-shadow: 0 4px 0 #e2e8f0; transition: transform .12s, box-shadow .12s; }
+:root body .opt:active:not(:disabled) { transform: translateY(3px); box-shadow: 0 1px 0 #e2e8f0; }
+:root body .media-card { border-radius: 22px; }
+:root body .media-card .thumb { border-radius: 16px; }
+:root body .media-card .mt b { font-size: 1.08rem; }
+:root body .alt-btn, :root body .seen-btn { border-radius: 999px; min-height: 48px; padding: 10px 20px; font-size: 1rem; }
+:root body .seen-btn.on { background: #22c55e; border-color: #22c55e; color: #fff; }
+
+/* ניווט וכפתור התרגול */
+:root body .nav-btn { border-radius: 999px; min-height: 56px; padding: 12px 30px; font-size: 1.08rem; font-weight: 800; border: 0; background: rgba(255,255,255,.12); color: #fff; box-shadow: inset 0 0 0 1px rgba(255,255,255,.18); }
+:root body .nav-btn.primary { background: linear-gradient(180deg, #ffd45e, #f5b83d); color: #1a1205; box-shadow: 0 6px 0 #b9770c, 0 20px 34px -16px rgba(245,184,61,.9); transition: transform .15s, box-shadow .15s; }
+:root body .nav-btn.primary:active { transform: translateY(4px); box-shadow: 0 2px 0 #b9770c; }
+:root body .nav-btn[disabled] { opacity: .4; }
+:root body .practice-cta { border-radius: 26px; min-height: 68px; font-size: 1.15rem; font-weight: 800; background: linear-gradient(155deg, #2d93ff, #0b4fb3); box-shadow: inset 0 2px 0 rgba(255,255,255,.28), 0 8px 0 #083a86, 0 26px 40px -22px rgba(0,114,255,.7); transition: transform .15s, box-shadow .15s; }
+:root body .practice-cta:hover { transform: translateY(-2px); }
+:root body .practice-cta:active { transform: translateY(6px); box-shadow: inset 0 2px 0 rgba(255,255,255,.28), 0 2px 0 #083a86; }
+:root body .empty-note { border-radius: 22px; }
+:root body footer, :root body .site-footer { color: #8e9bc2; }
+
+@media (max-width: 960px) {
+    :root body .hero { padding: 14px 14px 0; }
+    :root body .hero .in { margin: 0; border-radius: 28px; }
+    :root body .kl-owl { width: 72px; position: absolute; top: 14px; inset-inline-end: 14px; }
+    :root body .hero h1 { max-width: calc(100% - 80px); }
+    :root body .outline { border-radius: 22px; padding: 10px; background: rgba(255,255,255,.08); box-shadow: none; }
+    :root body .step { background: rgba(255,255,255,.1); color: #fff; min-height: 46px; border-radius: 999px; }
+    :root body .step .n { background: rgba(255,255,255,.18); color: #fff; width: 30px; height: 30px; border-radius: 50%; }
+    :root body .step.active { background: #fff; color: #0b1226; }
+    :root body .step.active .n { background: #0b1226; color: #fff; }
+    :root body .panel { border-radius: 26px; padding: 22px 18px 20px; }
+    :root body .panel-head h2 { font-size: 1.5rem; }
+    :root body .panel-nav { background: rgba(11,18,38,.92) !important; -webkit-backdrop-filter: blur(12px); backdrop-filter: blur(12px); border-top: 1px solid rgba(255,255,255,.1); }
+}
+@media (prefers-reduced-motion: reduce) { :root body .kl-owl { animation: none; } }

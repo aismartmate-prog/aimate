@@ -1,0 +1,658 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <script>
+      // בדיקת קאש חכמה (מסונכרן עם התיקון בעמוד הבית הראשי): מוחקים עוגיות
+      // וקאש ישן רק כאשר יש גרסה חדשה בפועל אחרי דיפלוי - לא בכל טעינה, כדי
+      // לא להרוג את יתרון הקאשינג הרגיל בדפדפן.
+      var SITE_VERSION = '2026-08-17';
+      (function () {
+        try {
+          var stored = localStorage.getItem('__siteVersion');
+          if (stored === SITE_VERSION) return;
+          document.cookie.split(';').forEach(function (c) {
+            var name = c.split('=')[0].trim();
+            if (!name) return;
+            var expire = 'expires=Thu, 01 Jan 1970 00:00:00 UTC;';
+            document.cookie = name + '=; ' + expire + ' path=/;';
+            document.cookie = name + '=; ' + expire + ' path=/; domain=' + location.hostname + ';';
+          });
+          if ('caches' in window) {
+            caches.keys().then(function (names) {
+              names.forEach(function (n) { caches.delete(n); });
+            }).catch(function () {});
+          }
+          localStorage.setItem('__siteVersion', SITE_VERSION);
+        } catch (e) {}
+      })();
+    </script>
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <title>חשבון - המרכז להישגים לימודיים</title>
+<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Frank+Ruhl+Libre:wght@500;700;900&family=Heebo:wght@400;500;600;700;800;900&family=Rubik:wght@400;500;700;800;900&display=swap" onload="this.onload=null;this.rel='stylesheet'">
+    <link rel="preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" onload="this.onload=null;this.rel='stylesheet'">
+    <noscript>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Frank+Ruhl+Libre:wght@500;700;900&family=Heebo:wght@400;500;600;700;800;900&family=Rubik:wght@400;500;700;800;900&display=swap">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    </noscript>
+    
+    
+    
+    <style>
+    /* =====================================================================
+       עמודי המקצוע (math / hebrew / english / arabic / finance / science).
+       הזהות המקורית של האתר - רקע כחול-לילה עם זוהר עדין, כרטיסים בגרדיאנטים
+       עמוקים (כחול, ירוק, סגול, ארגמן) - בפריסת אריחים גדולים ויוקרתית.
+       בלי סמלים וצורות על הכרטיסים: צבע, טיפוגרפיה ומרווח בלבד.
+       מקור: tools/subject-theme.css - מוחל עם tools/apply-subject-theme.py
+       ===================================================================== */
+    :root {
+        --bg: #0b1226; --bg-2: #111a36; --ink: #fff; --muted: #b7c2e0; --muted-2: #8e9bc2;
+        --glass: rgba(255,255,255,.06); --glass-2: rgba(255,255,255,.1); --gline: rgba(255,255,255,.12);
+        --blue: #3b82f6; --gold: #f5b83d;
+        --serif: 'Frank Ruhl Libre', Georgia, serif; --font: 'Heebo', 'Assistant', Arial, sans-serif;
+        --ease: cubic-bezier(.16, 1, .3, 1);
+        --sh: 0 1px 0 rgba(255,255,255,.08) inset, 0 24px 50px -28px rgba(0,0,0,.8);
+        /* שמות שהסקריפטים של העמוד משתמשים בהם (טקסט בתוך חלון הבחירה הלבן) */
+        --text-dark: #0f172a; --text-main: #0f172a; --text-muted: #475569;
+    }
+    * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+    html { -webkit-text-size-adjust: 100%; scroll-behavior: smooth; background: var(--bg); }
+    body { margin: 0; min-height: 100vh; font-family: var(--font); color: var(--ink); line-height: 1.6; font-size: 17px; overflow-x: hidden;
+        -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; text-rendering: optimizeLegibility;
+        background:
+            radial-gradient(900px 600px at 88% -10%, rgba(59,130,246,.30), transparent 60%),
+            radial-gradient(800px 600px at 0% 45%, rgba(124,58,237,.22), transparent 60%),
+            radial-gradient(700px 500px at 60% 110%, rgba(14,165,233,.14), transparent 60%),
+            linear-gradient(180deg, var(--bg-2) 0, var(--bg) 900px) no-repeat, var(--bg); }
+    button, input, select { font-family: inherit; }
+    /* מחשב וטאבלט: הכל קטן ב-10% (בנייד נשאר בגודל מלא) */
+    :focus-visible { outline: 3px solid var(--gold); outline-offset: 3px; border-radius: 12px; }
+    .in, .container { width: 100%; max-width: 1140px; margin: 0 auto; padding-inline: clamp(14px, 3.4vw, 40px); }
+
+    /* סמלי המקצוע המרחפים ברקע (כמו במקור) - עדינים מאוד */
+    .ambient-bg { position: fixed; inset: 0; z-index: 0; pointer-events: none; overflow: hidden; }
+    .floating-icon { position: absolute; font-family: var(--serif); font-weight: 700; font-size: 2.4rem; color: #fff; opacity: .05; white-space: nowrap; animation: drift linear infinite; }
+    @keyframes drift { from { transform: translate(0, 0); } to { transform: translate(60px, -90px); } }
+
+    /* ---------- סרגל עליון ---------- */
+    .topbar { position: sticky; top: 0; z-index: 50; background: rgba(11,18,38,.72); backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px); border-bottom: 1px solid var(--gline); }
+    .topbar .in { display: flex; align-items: center; gap: 12px; height: 60px; }
+    .brand { display: flex; align-items: center; gap: 11px; text-decoration: none; color: #fff; font-family: var(--serif); font-weight: 900; font-size: 1.08rem; margin-inline-end: auto; min-width: 0; white-space: nowrap; }
+    .brand i { width: 34px; height: 34px; flex-shrink: 0; display: grid; place-items: center; border-radius: 13px; background: linear-gradient(135deg, #3b82f6, #1d4ed8); color: #fff; font-size: 1rem; box-shadow: 0 10px 22px -10px rgba(59,130,246,.9); }
+    .brand em { font-style: normal; color: #93b4ff; }
+    .back-btn { display: inline-flex; align-items: center; gap: 9px; min-height: 38px; padding: 6px 16px; border-radius: 999px; background: var(--glass-2); border: 1px solid var(--gline); color: #fff; font-weight: 700; font-size: .88rem; text-decoration: none; white-space: nowrap; transition: background .25s; }
+    .back-btn:hover { background: rgba(255,255,255,.18); }
+
+    /* ---------- פריסת האריחים ---------- */
+    .content { position: relative; z-index: 1; padding-top: 20px; padding-bottom: 70px; }
+    .welcome-text, .section-title { display: none; }
+    .studio-top { display: grid; grid-template-columns: minmax(0, 7fr) minmax(0, 5fr); gap: 14px; }
+    .studio-side { display: grid; grid-template-columns: 1fr 1fr; grid-template-rows: 1fr 1fr; gap: 14px; }
+    .studio-side > .card.learn { grid-column: 1 / -1; }
+    .studio-row { display: flex; flex-wrap: wrap; gap: 14px; margin-top: 14px; }
+    .studio-row > * { flex: 1 1 180px; min-height: 160px; }
+    .studio-row .card h3 { font-size: 1.2rem; }
+    .card p { padding-inline-end: 0; }
+    .card-arrow { display: none !important; }
+
+    /* אריח הפתיחה */
+    .hero { position: relative; overflow: hidden; isolation: isolate; border-radius: 26px; padding: clamp(22px, 3vw, 36px); min-height: 340px; display: flex; flex-direction: column;
+        background: radial-gradient(600px 360px at 0% 100%, rgba(59,130,246,.28), transparent 70%), linear-gradient(160deg, rgba(255,255,255,.09), rgba(255,255,255,.03));
+        border: 1px solid var(--gline); box-shadow: var(--sh); backdrop-filter: blur(6px); }
+    .hero::after { content: ""; position: absolute; z-index: -1; inset: 0; border-radius: inherit; background: linear-gradient(90deg, transparent, rgba(255,255,255,.35), transparent) top / 70% 1px no-repeat; }
+    .grade-chip { align-self: flex-start; display: inline-flex; align-items: center; gap: 9px; margin: 0; padding: 5px 13px; border-radius: 999px; background: var(--glass-2); border: 1px solid var(--gline); color: #dbe5ff; font-weight: 700; font-size: .82rem; }
+    .grade-chip::before { content: ""; width: 7px; height: 7px; border-radius: 50%; background: var(--gold); box-shadow: 0 0 10px var(--gold); }
+    .board-title { display: flex; align-items: center; gap: 14px; margin: 16px 0 0; font-family: var(--serif); font-weight: 900; font-size: clamp(2.1rem, 3.6vw, 3.2rem); line-height: 1.05; letter-spacing: -.02em; animation: fade .8s var(--ease) both; }
+    .board-title i { font-size: .46em; width: 2em; height: 2em; flex-shrink: 0; display: grid; place-items: center; border-radius: 14px; background: linear-gradient(135deg, #3b82f6, #1d4ed8); color: #fff; box-shadow: 0 16px 34px -14px rgba(59,130,246,.95), inset 0 1px 0 rgba(255,255,255,.3); }
+    .underline { display: none; }
+    .board-sub { margin: 12px 0 0; color: var(--muted); font-size: 1rem; line-height: 1.65; max-width: 40ch; }
+    .hero-actions { display: flex; flex-wrap: wrap; gap: 12px; margin-top: auto; padding-top: 20px; }
+    .pill { display: inline-flex; align-items: center; gap: 10px; min-height: 44px; padding: 8px 22px; border-radius: 999px; border: 0; background: #fff; color: #0b1226; font-weight: 800; font-size: .92rem; text-decoration: none; cursor: pointer; box-shadow: 0 16px 34px -16px rgba(0,0,0,.8); transition: transform .25s var(--ease); max-width: 100%; }
+    .pill span { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+    .pill:hover { transform: translateY(-2px); }
+    .shapes { display: none; }
+    /* מסלול הלמידה בצד אריח הפתיחה */
+    .hero-path { list-style: none; margin: 18px 0 0; padding: 0; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px; max-width: 620px; }
+    .hero-path li { display: flex; align-items: center; gap: 10px; padding: 10px 12px; border-radius: 14px; background: rgba(11,18,38,.4); border: 1px solid var(--gline); font-weight: 700; font-size: .86rem; color: #e6ecff; line-height: 1.25; }
+    .hero-path b { width: 26px; height: 26px; flex-shrink: 0; display: grid; place-items: center; border-radius: 10px; font-size: .92rem; color: #fff; }
+    .hero-path li:nth-child(2) b { background: linear-gradient(135deg, #3b82f6, #1d4ed8); } .hero-path li:nth-child(3) b { background: linear-gradient(135deg, #1a84ff, #003f8a); }
+    .hero-path li:nth-child(4) b { background: linear-gradient(135deg, #9b3ff0, #4c1d95); }
+    .hero-path small { display: block; margin-top: 2px; font-size: .72rem; font-weight: 500; color: var(--muted-2); }
+    .hero-path .cap { display: none; }
+
+    /* כרטיסי הפעילות - הגרדיאנטים המקוריים, בצורת אריח גדול */
+    .card { --g1: #0072ff; --g2: #003f8a; --glow: rgba(0,114,255,.55);
+        position: relative; overflow: hidden; isolation: isolate; display: flex; flex-direction: column; align-items: flex-start; gap: 4px; min-height: 160px; padding: 18px 20px; border-radius: 22px; cursor: pointer; color: #fff;
+        background: linear-gradient(155deg, var(--g1) 0%, var(--g2) 100%); border: 1px solid rgba(255,255,255,.12);
+        box-shadow: inset 0 1px 0 rgba(255,255,255,.2), 0 22px 44px -26px var(--glow); transition: transform .35s var(--ease), box-shadow .35s var(--ease); animation: rise .6s var(--ease) both; }
+    .card::before { content: ""; position: absolute; z-index: -1; inset: 0; border-radius: inherit; background: linear-gradient(180deg, rgba(255,255,255,.14), transparent 46%); }
+    .card::after { display: none; }
+    .card:hover { transform: translateY(-5px); box-shadow: inset 0 1px 0 rgba(255,255,255,.24), 0 30px 60px -26px var(--glow); }
+    .card:active { transform: translateY(-1px); }
+    .card-icon { width: 44px; height: 44px; flex-shrink: 0; display: grid; place-items: center; border-radius: 13px; background: rgba(255,255,255,.16); border: 1px solid rgba(255,255,255,.22); color: #fff; font-size: 1.1rem; margin-bottom: auto; box-shadow: inset 0 1px 0 rgba(255,255,255,.2); }
+    .card > div:not(.card-icon):not(.card-arrow) { margin-top: 14px; }
+    .card h3 { margin: 0; font-size: 1.4rem; font-weight: 800; line-height: 1.15; letter-spacing: -.01em; color: #fff; }
+    .card p { margin: 4px 0 0; font-size: .88rem; font-weight: 500; line-height: 1.45; color: rgba(255,255,255,.82); }
+    .card-arrow { position: absolute; bottom: 24px; inset-inline-end: 24px; width: 40px; height: 40px; border-radius: 50%; display: grid; place-items: center; background: rgba(255,255,255,.14); border: 1px solid rgba(255,255,255,.22); color: #fff; font-size: .95rem; transition: transform .35s var(--ease), background .3s; }
+    .card:hover .card-arrow { transform: translateX(-4px); background: rgba(255,255,255,.24); }
+
+    .card.practice { --g1: #1a84ff; --g2: #003f8a; --glow: rgba(0,114,255,.6); }
+    .card.quiz { --g1: #1fb880; --g2: #0a5c46; --glow: rgba(23,166,115,.55); }
+    .card.exam { --g1: #9b3ff0; --g2: #4c1d95; --glow: rgba(147,51,234,.55); }
+    .card.learn { order: -1; --g1: #22304f; --g2: #0f172a; --glow: rgba(59,130,246,.45); border-color: rgba(147,180,255,.28); }
+    .card.learn .card-icon { background: linear-gradient(135deg, #3b82f6, #1d4ed8); border-color: transparent; box-shadow: 0 12px 26px -12px rgba(59,130,246,.95); }
+    .card.learn .card-arrow { display: none; }
+    .card.learn h3::after { content: "מתחילים כאן"; position: absolute; top: 20px; inset-inline-end: 20px; padding: 4px 11px; border-radius: 999px; background: var(--gold); color: #1a1205; font-size: .72rem; font-weight: 800; letter-spacing: .01em; }
+    .card.bagrut { --g1: #0ea5c6; --g2: #164e63; --glow: rgba(8,145,178,.55); }
+    .card.barilan { --g1: #f08a3c; --g2: #7c2d12; --glow: rgba(234,128,52,.5); }
+    .card.game { --g1: #ef2b55; --g2: #7f1d1d; --glow: rgba(225,29,72,.55); }
+    .card.game-2 { --g1: #8b4cf6; --g2: #3b0764; --glow: rgba(124,58,237,.55); }
+    .card.abc-card { --g1: #14c08a; --g2: #065f46; --glow: rgba(16,185,129,.5); }
+
+    /* אריח "ההתקדמות שלי" */
+    .resume { position: relative; overflow: hidden; display: flex; flex-direction: column; gap: 4px; padding: 18px 20px; border-radius: 22px; text-decoration: none; color: #fff; cursor: pointer; min-height: 160px;
+        background: linear-gradient(160deg, rgba(255,255,255,.09), rgba(255,255,255,.03)); border: 1px solid var(--gline); box-shadow: var(--sh); transition: transform .35s var(--ease), background .3s; animation: rise .6s var(--ease) .15s both; }
+    .resume:hover { transform: translateY(-5px); background: linear-gradient(160deg, rgba(255,255,255,.12), rgba(255,255,255,.05)); }
+    .resume .ring { display: flex; align-items: baseline; gap: 6px; margin-bottom: auto; background: none !important; }
+    .resume .ring b { font-family: var(--serif); font-size: 1.9rem; font-weight: 900; line-height: 1; color: #fff; }
+    div.resume .ring { display: none; }
+    div.resume::before { content: "\f201"; font-family: "Font Awesome 6 Free"; font-weight: 900; width: 44px; height: 44px; display: grid; place-items: center; border-radius: 13px; background: rgba(255,255,255,.1); border: 1px solid var(--gline); font-size: 1.3rem; margin-bottom: auto; }
+    .resume h3 { margin: 12px 0 0; font-size: 1.15rem; font-weight: 800; line-height: 1.2; }
+    .resume p { margin: 4px 0 0; color: var(--muted); font-weight: 500; }
+    .resume .go { position: static; align-self: flex-start; margin-top: 10px; display: inline-flex; align-items: center; gap: 8px; padding: 8px 15px; border-radius: 999px; background: #fff; color: #0b1226; font-weight: 800; font-size: .85rem; }
+
+    /* ---------- חלון הבחירה ---------- */
+    .modal-overlay { display: none; position: fixed; inset: 0; z-index: 100; align-items: center; justify-content: center; padding: 16px; background: rgba(5,9,22,.62); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); }
+    .modal-content { position: relative; width: min(580px, 100%); max-height: calc(100vh - 32px); max-height: calc(100dvh - 32px); overflow: auto; display: flex; flex-direction: column; color: #0f172a;
+        background: #fff; border: 0; border-radius: 30px; box-shadow: 0 50px 100px -30px rgba(0,0,0,.8); padding: 34px 32px 28px; animation: pop .4s var(--ease) both; }
+    .modal-content h2, #modal-inner-content h2 { margin: 0 0 22px; padding-inline-end: 56px; font-family: var(--serif) !important; font-size: 2.1rem; font-weight: 900; color: #0f172a; line-height: 1.1; }
+    #modal-inner-content h2::after, #modal-title:not(:empty)::after { content: ""; display: block; width: 56px; height: 5px; margin-top: 12px; border-radius: 3px; background: linear-gradient(90deg, #3b82f6, #1d4ed8); }
+    #modal-inner-content, #modal-inner-content *:not(h2) { font-family: var(--font) !important; }
+    #modal-inner-content .fa-solid, #modal-inner-content .fa-regular { font-family: "Font Awesome 6 Free" !important; }
+    #modal-inner-content p { color: #475569 !important; }
+    .close-modal { position: absolute; top: 26px; inset-inline-end: 26px; z-index: 2; width: 44px; height: 44px; display: grid; place-items: center; border-radius: 50%; border: 0; background: #f1f5f9; color: #0f172a; font-size: 1.05rem; font-weight: 800; cursor: pointer; transition: background .2s; }
+    .close-modal:hover { background: #e2e8f0; }
+    .modal-content:has(#modal-inner-content .close-modal) > .close-modal, #modal-title:empty { display: none; }
+    #modal-inner-content select { width: 100%; min-height: 58px; margin: 0 0 14px; padding-block: 10px; padding-inline: 20px 50px; border: 1.5px solid #e2e8f0; border-radius: 18px; background-color: #f8fafc; color: #0f172a; font-size: 1.06rem; font-weight: 600; cursor: pointer;
+        -webkit-appearance: none; appearance: none; background-repeat: no-repeat; background-position: left 18px center; background-size: 14px; transition: border-color .2s, background-color .2s, box-shadow .2s;
+        background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath d='M3 6l5 5 5-5' fill='none' stroke='%230f172a' stroke-width='2.2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E"); }
+    #modal-inner-content select:hover { border-color: #93b4ff; }
+    #modal-inner-content select:focus { outline: none; border-color: #3b82f6; background-color: #fff; box-shadow: 0 0 0 4px rgba(59,130,246,.15); }
+    #subtopic-container { margin-top: 2px; }
+    .checkbox-list { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 210px), 1fr)); gap: 10px; margin-bottom: 16px; max-height: 46vh; overflow: auto; padding: 2px; }
+    .checkbox-item { display: flex; align-items: center; gap: 12px; min-height: 54px; padding: 10px 16px; border: 1.5px solid #e2e8f0; border-radius: 16px; background: #f8fafc; color: #0f172a; font-weight: 600; font-size: 1rem; line-height: 1.35; cursor: pointer; transition: border-color .2s, background .2s; }
+    .checkbox-item:hover { border-color: #93b4ff; }
+    .checkbox-item:has(input:checked) { border-color: #3b82f6; background: #eff5ff; }
+    .checkbox-item input { width: 21px; height: 21px; flex-shrink: 0; margin: 0; accent-color: #2563eb; }
+    .btn-start { width: 100%; min-height: 58px; margin-top: 10px; border: 0; border-radius: 999px; background: linear-gradient(135deg, #3b82f6, #1d4ed8); color: #fff; font-size: 1.12rem; font-weight: 800; cursor: pointer; box-shadow: 0 18px 34px -16px rgba(37,99,235,.85); transition: transform .25s var(--ease), filter .2s; }
+    .btn-start::after { content: "  ←"; }
+    .btn-start:hover { transform: translateY(-2px); filter: brightness(1.08); }
+
+    .copyright-footer { position: relative; z-index: 1; text-align: center; padding: 22px 16px 34px; color: var(--muted-2); font-size: .88rem; font-weight: 500; }
+
+    @keyframes fade { from { opacity: 0; transform: translateY(10px); } }
+    @keyframes rise { from { opacity: 0; transform: translateY(18px); } }
+    @keyframes pop { from { opacity: 0; transform: scale(.96) translateY(12px); } }
+
+    @media (max-width: 1100px) and (min-width: 981px) { .hero-path small { display: none; } }
+    @media (max-width: 980px) {
+        .studio-top { grid-template-columns: minmax(0, 1fr); }
+        .hero { min-height: 0; }
+        .studio-side { grid-template-rows: auto; }
+    }
+    @media (max-width: 600px) {
+        body { font-size: 16px; }
+        .topbar .in { height: 62px; }
+        .brand { font-size: 1.08rem; } .brand i { width: 36px; height: 36px; }
+        .content { padding-top: 16px; }
+        .hero { padding: 26px 22px; border-radius: 26px; }
+        .board-title { gap: 14px; margin-top: 18px; }
+        .board-sub { font-size: 1.02rem; }
+        .hero-actions { padding-top: 22px; }
+        .pill { min-height: 50px; width: 100%; justify-content: center; }
+        .studio-side, .studio-row, .studio-top { gap: 12px; } .studio-row { margin-top: 12px; }
+        .studio-row > * { flex: 1 1 40%; min-height: 0; }
+        .card, .resume { min-height: 172px; padding: 18px; border-radius: 24px; }
+        .card-icon { width: 46px; height: 46px; border-radius: 14px; font-size: 1.15rem; }
+        .card > div:not(.card-icon):not(.card-arrow) { margin-top: 16px; }
+        .card h3 { font-size: 1.35rem; } .card p { font-size: .9rem; }
+        .card-arrow { display: none; }
+        .card.learn h3::after { top: 18px; inset-inline-end: 18px; font-size: .74rem; padding: 5px 11px; }
+        .resume .go { font-size: .8rem; }
+        .studio-row .card h3 { font-size: 1.3rem; }
+        .hero-path { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 6px; margin-top: 18px; } .hero-path li { flex-direction: column; text-align: center; gap: 6px; padding: 10px 6px; font-size: .86rem; } .hero-path small { display: none; }
+        .resume .ring b { font-size: 2rem; } .resume h3 { font-size: 1.2rem; }
+        .modal-overlay { align-items: flex-end; padding: 0; }
+        .modal-content { width: 100%; max-height: 92dvh; border-radius: 28px 28px 0 0; padding: 28px 20px calc(22px + env(safe-area-inset-bottom)); }
+        .modal-content h2, #modal-inner-content h2 { font-size: 1.75rem; }
+    }
+    @media (prefers-reduced-motion: reduce) {
+        *, *::before, *::after { animation-duration: .01ms !important; animation-delay: 0s !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; scroll-behavior: auto !important; }
+        .floating-icon { display: none; }
+    }
+    /* =====================================================================
+       קידס (כיתות א'-ד') — אותה שפה של האתר: כחול לילה ואריחים גדולים,
+       רק ידידותי יותר: אותיות עגולות וגדולות, אריחים "לחיצים" עם שפה תחתונה,
+       אייקונים בלבן עם צבע המקצוע, וינשוף שמלווה את הילדים.
+       ===================================================================== */
+    body.kids { --serif: 'Rubik', 'Heebo', sans-serif; font-family: 'Rubik', 'Heebo', sans-serif; font-size: 17px;
+        background: radial-gradient(900px 480px at 88% -10%, rgba(59,130,246,.34), transparent 60%), radial-gradient(700px 420px at 0% 30%, rgba(168,85,247,.22), transparent 60%),
+            radial-gradient(2px 2px at 12% 18%, rgba(255,255,255,.7) 50%, transparent 51%), radial-gradient(2px 2px at 78% 32%, rgba(255,255,255,.55) 50%, transparent 51%), radial-gradient(1.5px 1.5px at 42% 64%, rgba(255,255,255,.5) 50%, transparent 51%), radial-gradient(2px 2px at 91% 76%, rgba(255,255,255,.45) 50%, transparent 51%), radial-gradient(1.5px 1.5px at 24% 86%, rgba(255,255,255,.5) 50%, transparent 51%),
+            linear-gradient(180deg, #16224a 0, var(--bg) 900px) no-repeat, var(--bg); }
+    body.kids .hero { border-radius: 34px; min-height: 360px; padding-inline-end: clamp(22px, 3vw, 36px); }
+    body.kids .board-title { font-weight: 800; letter-spacing: 0; font-size: clamp(2.3rem, 4vw, 3.5rem); }
+    body.kids .board-title i { border-radius: 20px; background: linear-gradient(135deg, #ffd45e, #f5a524); color: #1a1205; box-shadow: 0 6px 0 #b9770c, 0 18px 30px -14px rgba(245,165,36,.9); }
+    body.kids .board-sub { font-size: 1.12rem; color: #dbe5ff; }
+    body.kids .grade-chip { font-size: .92rem; padding: 7px 16px; }
+    body.kids .pill { min-height: 54px; padding: 10px 28px; font-size: 1.08rem; font-weight: 800; background: linear-gradient(180deg, #ffd45e, #f5b83d); color: #1a1205; box-shadow: 0 6px 0 #b9770c, 0 20px 34px -16px rgba(245,184,61,.9); transition: transform .15s, box-shadow .15s; }
+    body.kids .pill:hover { transform: translateY(-2px); }
+    body.kids .pill:active { transform: translateY(4px); box-shadow: 0 2px 0 #b9770c; }
+    body.kids .hero-path b { background: #fff; color: #0b1226; }
+    body.kids .hero-path span { font-size: .95rem; } body.kids .hero-path small { font-size: .78rem; }
+
+    /* הינשוף */
+    body.kids .owl-wrap { position: absolute; z-index: 0; inset-inline-end: clamp(14px, 3vw, 40px); top: clamp(16px, 3vw, 34px); display: flex; flex-direction: column; align-items: center; gap: 8px; pointer-events: none; }
+    body.kids .owl { width: clamp(96px, 11vw, 150px); height: auto; display: block; filter: drop-shadow(0 12px 10px rgba(0,0,0,.35)); animation: kbob 4s ease-in-out infinite; }
+    body.kids .owl .lid { transform-origin: center; transform-box: fill-box; animation: kblink 5s infinite; }
+    body.kids .owl-say { order: -1; position: relative; background: #fff; color: #0b1226; font-weight: 700; font-size: .9rem; padding: 8px 14px; border-radius: 16px; box-shadow: 0 10px 24px -12px rgba(0,0,0,.6); white-space: nowrap; }
+    body.kids .owl-say::after { content: ""; position: absolute; bottom: -6px; left: 50%; width: 14px; height: 14px; background: #fff; transform: translateX(-50%) rotate(45deg); border-radius: 3px; }
+    @keyframes kbob { 50% { transform: translateY(-7px); } }
+    @keyframes kblink { 0%, 94%, 100% { transform: scaleY(0); } 97% { transform: scaleY(1); } }
+
+    /* אריחי הפעילות: גדולים, עגולים ו"לחיצים" */
+    body.kids .card { min-height: 184px; padding: 22px; border-radius: 30px; border: 0;
+        box-shadow: inset 0 2px 0 rgba(255,255,255,.28), 0 8px 0 color-mix(in srgb, var(--g2) 78%, #000), 0 26px 40px -22px var(--glow); transition: transform .18s var(--ease), box-shadow .18s var(--ease); }
+    body.kids .card:hover { transform: translateY(-4px); box-shadow: inset 0 2px 0 rgba(255,255,255,.3), 0 12px 0 color-mix(in srgb, var(--g2) 78%, #000), 0 34px 50px -22px var(--glow); }
+    body.kids .card:active { transform: translateY(6px); box-shadow: inset 0 2px 0 rgba(255,255,255,.28), 0 2px 0 color-mix(in srgb, var(--g2) 78%, #000); }
+    body.kids .card-icon { width: 58px; height: 58px; border-radius: 19px; font-size: 1.5rem; background: #fff; border: 0; color: var(--g2); box-shadow: 0 4px 0 rgba(0,0,0,.16); }
+    body.kids .card.learn .card-icon { background: #fff; color: #1d4ed8; box-shadow: 0 4px 0 rgba(0,0,0,.25); }
+    body.kids .card h3 { font-size: 1.6rem; font-weight: 800; }
+    body.kids .card p { font-size: 1rem; color: rgba(255,255,255,.92); }
+    body.kids .card.learn { --g1: #2b3f7a; --g2: #131d40; }
+    body.kids .card.learn h3::after { content: "⭐ מתחילים כאן"; font-size: .8rem; padding: 5px 13px; }
+    body.kids .card.practice { --g1: #2d93ff; --g2: #0b4fb3; }
+    body.kids .card.quiz { --g1: #2ccf8f; --g2: #0b7a55; }
+    body.kids .card.exam { --g1: #a855f7; --g2: #5b21b6; }
+    body.kids .card.game { --g1: #ff4d6d; --g2: #a11235; }
+    body.kids .card.game-2 { --g1: #9b5cff; --g2: #4c1d95; }
+    body.kids .resume { border-radius: 30px; min-height: 184px; }
+    body.kids .resume h3 { font-size: 1.35rem; }
+    body.kids .studio-top, body.kids .studio-row, body.kids .studio-side { gap: 18px; } body.kids .studio-row { margin-top: 22px; }
+    body.kids .back-btn { font-size: 1rem; min-height: 46px; padding-inline: 20px; }
+
+    /* חלון בחירת הנושא: כפתורים גדולים לאצבעות קטנות */
+    body.kids .modal-content { border-radius: 32px; }
+    body.kids .modal-content h2 { font-family: 'Rubik', sans-serif; font-weight: 800; }
+
+    @media (max-width: 900px) {
+        body.kids .owl-wrap { top: 14px; inset-inline-end: 14px; }
+        body.kids .owl-say { display: none; }
+        body.kids .owl { width: 84px; }
+        body.kids .board-title { padding-inline-end: 0; max-width: calc(100% - 92px); }
+        body.kids .board-sub { max-width: calc(100% - 60px); }
+    }
+    @media (max-width: 600px) {
+        body.kids { font-size: 17px; }
+        body.kids .card, body.kids .resume { min-height: 168px; border-radius: 26px; padding: 18px; }
+        body.kids .card h3 { font-size: 1.35rem; } body.kids .card p { font-size: .92rem; }
+        body.kids .card-icon { width: 52px; height: 52px; font-size: 1.3rem; }
+        body.kids .studio-top, body.kids .studio-row, body.kids .studio-side { gap: 16px; } body.kids .studio-row { margin-top: 18px; }
+    }
+    @media (prefers-reduced-motion: reduce) { body.kids .owl, body.kids .owl .lid { animation: none; } body.kids .owl .lid { display: none; } }
+    </style>
+</head>
+<body class="subj-math kids" data-subject="math">
+
+<div id="floating-container" class="ambient-bg" aria-hidden="true"></div>
+
+<header class="topbar"><div class="in">
+    <a class="brand" href="index.html"><i class="fa-solid fa-graduation-cap" aria-hidden="true"></i><span>המרכז <em>להישגים</em></span></a>
+    <a href="index.html" class="back-btn"><i class="fa-solid fa-house" aria-hidden="true"></i> לתפריט</a>
+</div></header>
+
+<div class="container content">
+<div class="studio">
+    <div class="studio-top">
+        <section class="hero">
+            <p id="grade-display" class="grade-chip">חשבון</p>
+            <h1 class="board-title"><i class="fa-solid fa-calculator" aria-hidden="true"></i><span>חשבון</span></h1>
+            <p class="board-sub">מוכנים ללמוד? בחרו פעילות ונתחיל!</p>
+            <div class="hero-actions"><button type="button" class="pill" id="studio-go"><i class="fa-solid fa-play" aria-hidden="true"></i><span>פותחים שיעור</span></button></div>
+            <ol class="hero-path" aria-label="איך לומדים כאן"><li class="cap">המסלול המומלץ</li><li><b>1</b><span>למד אותי<small>שיעור מסודר על הנושא</small></span></li><li><b>2</b><span>תרגול<small>עם רמזים ופתרון מלא</small></span></li><li><b>3</b><span>בוחן או מבחן<small>בודקים שזה יושב</small></span></li></ol>
+            <div class="owl-wrap" aria-hidden="true"><span class="owl-say">היי! בואו נלמד יחד</span>
+<svg class="owl" viewBox="0 0 200 215" aria-hidden="true">
+<ellipse cx="62" cy="205" rx="20" ry="8" fill="#f59f00"/><ellipse cx="138" cy="205" rx="20" ry="8" fill="#f59f00"/>
+<polygon points="42,58 52,22 78,50" fill="#7a4a24"/><polygon points="158,58 148,22 122,50" fill="#7a4a24"/>
+<ellipse cx="100" cy="128" rx="76" ry="82" fill="#9a6235"/>
+<ellipse cx="26" cy="140" rx="16" ry="44" fill="#7a4a24" transform="rotate(12 26 140)"/><ellipse cx="174" cy="140" rx="16" ry="44" fill="#7a4a24" transform="rotate(-12 174 140)"/>
+<ellipse cx="100" cy="152" rx="48" ry="52" fill="#f6dfb8"/>
+<path d="M78 150 q8 8 16 0 M106 150 q8 8 16 0 M92 168 q8 8 16 0" fill="none" stroke="#d9b98a" stroke-width="3" stroke-linecap="round"/>
+<circle cx="70" cy="96" r="29" fill="#fff"/><circle cx="130" cy="96" r="29" fill="#fff"/>
+<circle cx="74" cy="98" r="12" fill="#1b2440"/><circle cx="126" cy="98" r="12" fill="#1b2440"/>
+<circle cx="78" cy="93" r="4" fill="#fff"/><circle cx="130" cy="93" r="4" fill="#fff"/>
+<ellipse class="lid" cx="70" cy="96" rx="29" ry="29" fill="#9a6235"/><ellipse class="lid" cx="130" cy="96" rx="29" ry="29" fill="#9a6235"/>
+<circle cx="70" cy="96" r="31" fill="none" stroke="#1b2440" stroke-width="5"/><circle cx="130" cy="96" r="31" fill="none" stroke="#1b2440" stroke-width="5"/>
+<path d="M99 94 h2" stroke="#1b2440" stroke-width="5"/>
+<polygon points="100,108 90,122 110,122" fill="#f59f00"/>
+<polygon points="48,44 100,24 152,44 100,64" fill="#1b2440"/><rect x="78" y="50" width="44" height="14" rx="4" fill="#1b2440"/>
+<path d="M152 44 v26" stroke="#ffc93c" stroke-width="4"/><circle cx="152" cy="74" r="6" fill="#ffc93c"/>
+</svg>
+</div>
+        </section>
+        <div class="studio-side">
+        <div class="card practice" onclick="openSelectionModal('תרגול', true)">
+            <div class="card-icon"><i class="fa-solid fa-pencil"></i></div>
+            <div>
+                <h3>תרגול</h3>
+                <p>למידה חופשית ובקצב שלך</p>
+            </div><div class="card-arrow"><i class="fa-solid fa-arrow-left"></i></div>
+        </div>
+        <div class="card quiz" onclick="openSelectionModal('בוחן', true)">
+            <div class="card-icon"><i class="fa-solid fa-stopwatch"></i></div>
+            <div>
+                <h3>בוחן</h3>
+                <p>מבדק קצר על זמן</p>
+            </div><div class="card-arrow"><i class="fa-solid fa-arrow-left"></i></div>
+        </div>
+        <div class="card learn" onclick="openSelectionModal('למד אותי', true)">
+            <div class="card-icon"><i class="fa-solid fa-chalkboard-user"></i></div>
+            <div>
+                <h3>למד אותי</h3>
+                <p>שיעור קולי וחזותי על הנושא, לפני שמתרגלים</p>
+            </div><div class="card-arrow"><i class="fa-solid fa-arrow-left"></i></div>
+        </div>
+        </div>
+    </div>
+    <div class="studio-row">
+        <div class="card exam" onclick="openSelectionModal('מבחן', false)">
+            <div class="card-icon"><i class="fa-solid fa-graduation-cap"></i></div>
+            <div>
+                <h3>מבחן</h3>
+                <p>סימולציה מלאה ומסכמת</p>
+            </div><div class="card-arrow"><i class="fa-solid fa-arrow-left"></i></div>
+        </div>
+        <div class="card game" onclick="openSelectionModal('מי רוצה להיות מיליונר?', true)">
+            <div class="card-icon"><i class="fa-solid fa-trophy"></i></div>
+            <div>
+                <h3>מי רוצה להיות מיליונר?</h3>
+                <p>עלו בסולם עד למיליון ₪</p>
+            </div><div class="card-arrow"><i class="fa-solid fa-arrow-left"></i></div>
+        </div>
+        <div class="card game-2" onclick="openSelectionModal('ראש בראש', true)">
+            <div class="card-icon"><i class="fa-solid fa-gamepad"></i></div>
+            <div>
+                <h3>ראש בראש</h3>
+                <p>התחרות מול תלמידים אחרים</p>
+            </div><div class="card-arrow"><i class="fa-solid fa-arrow-left"></i></div>
+        </div>
+        <div class="resume" id="studio-resume" role="button" tabindex="0"><span class="go">לשיעור הראשון <i class="fa-solid fa-arrow-left"></i></span><span class="ring" style="--p:0%"><b>0</b></span><h3>ההתקדמות שלי</h3><p>עוד לא התחלתם שיעור במקצוע הזה</p></div>
+    </div>
+</div>
+</div>
+
+<div id="selection-modal" class="modal-overlay">
+    <div class="modal-content">
+        <span class="close-modal" onclick="closeModal()">✕</span>
+        <h2 id="modal-title"></h2>
+        <div id="modal-inner-content"></div>
+    </div>
+</div>
+
+<div class="copyright-footer">© כל הזכויות שמורות למרכז להישגים לימודיים</div>
+
+<script>
+    // הפקת רקע חי (אייקונים של מדעים)
+    function createFloatingIcons() {
+        const container = document.getElementById('floating-container');
+        if(!container) return;
+        const icons = ["+", "-", "×", "÷", "=", "%", "½", "①", "②", "③", "π", "∑", "√"];
+        for (let i = 0; i < 20; i++) {
+            const iconSpan = document.createElement('span');
+            iconSpan.className = 'floating-icon';
+            iconSpan.innerText = icons[Math.floor(Math.random() * icons.length)];
+            iconSpan.style.left = Math.random() * 100 + 'vw';
+            iconSpan.style.top = Math.random() * 100 + 'vh';
+            iconSpan.style.animationDuration = Math.random() * 30 + 40 + 's';
+            container.appendChild(iconSpan);
+        }
+    }
+    createFloatingIcons();
+
+    // קריאת הכיתה מתוך ה-URL
+    const urlParams = new URLSearchParams(window.location.search);
+    let currentGrade = urlParams.get('grade') || 'grade1'; 
+
+    const gradeNames = {
+        "grade1": "כיתה א'",
+        "grade2": "כיתה ב'",
+        "grade3": "כיתה ג'",
+        "grade4": "כיתה ד'"
+    };
+    
+    document.getElementById('grade-display').innerText = `חשבון - ${gradeNames[currentGrade] || currentGrade}`;
+
+    const mathData = {
+        "grade1": {
+            label: "כיתה א'",
+            topics: {
+                "numbers_1": { name: "מספרים עד 20", subs: ["הכרת הספרות 0-20", "סדר עולה ויורד וקו המספרים", "לפני, אחרי ובין", "השוואת מספרים (גדול מ-, קטן מ-)", "פירוק מספרים עד 10"] },
+                "addsub_1": { name: "חיבור וחיסור עד 20", subs: ["חיבור בתחום ה-10", "חיסור בתחום ה-10", "חיבור וחיסור בתחום ה-20 (ללא מעבר עשרת)", "השלמה למספר עגול", "בעיה מילולית פשוטה בחיבור ובחיסור"] },
+                "geometry_1": { name: "צורות וגופים", subs: ["צורות מישוריות: עיגול, ריבוע, משולש, מלבן", "גופים במרחב: קובייה, כדור, גליל", "מיון צורות לפי תכונות"] },
+                "measure_1": { name: "מדידה והתמצאות", subs: ["השוואת אורכים (ארוך/קצר)", "השוואת משקלים (כבד/קל)", "כיווני מרחב: ימין, שמאל, מעל, מתחת", "זיהוי מטבעות ושטרות בסיסי"] },
+                "patterns_1": { name: "דפוסים וסדרות", subs: ["זיהוי דפוס חוזר", "השלמת סדרה פשוטה"] }
+            }
+        },
+        "grade2": {
+            label: "כיתה ב'",
+            topics: {
+                "numbers_2": { name: "מספרים עד 100", subs: ["מבנה עשרוני: עשרות ויחידות", "קריאה וכתיבה של מספרים דו-ספרתיים", "השוואה וסידור מספרים עד 100", "עיגול למספר עשרות קרוב"] },
+                "addsub_2": { name: "חיבור וחיסור עד 100", subs: ["חיבור עם מעבר עשרת", "חיסור עם פריטת עשרת", "חישוב בעל פה ובטור", "השלמה לעשרת/למאה"] },
+                "muldiv_2": { name: "מבוא לכפל וחילוק", subs: ["כפל כחיבור חוזר", "חילוק כחלוקה לקבוצות שוות", "הקשר בין כפל לחיבור חוזר"] },
+                "multtable_2": { name: "לוח הכפל - התחלה", subs: ["כפל ב-2", "כפל ב-5", "כפל ב-10", "זיהוי דפוסים בלוח הכפל"] },
+                "data_2": { name: "חקר נתונים", subs: ["איסוף וסידור נתונים בטבלה", "קריאת דיאגרמת עמודות פשוטה"] },
+                "fractions_2": { name: "מבוא לשברים", subs: ["חצי ורבע מתוך שלם", "חצי ורבע מתוך קבוצה"] },
+                "measure_2": { name: "מדידה, זמן וכסף", subs: ["מדידת אורך בסרגל (ס\"מ)", "קריאת שעון (שעות עגולות וחצי)", "זיהוי מטבעות ושטרות וחישוב סכום פשוט"] },
+                "geometry_2": { name: "גיאומטריה", subs: ["צורות מישוריות ומספר צלעות", "גופים - היכרות עם פאות וקדקודים"] }
+            }
+        },
+        "grade3": {
+            label: "כיתה ג'",
+            topics: {
+                "numbers_3": { name: "מספרים עד 10,000", subs: ["מבנה עשרוני: אלפים, מאות, עשרות, יחידות", "קריאה, כתיבה והרכבת מספרים", "השוואה, סידור ועיגול מספרים"] },
+                "addsub_3": { name: "חיבור וחיסור בתחום הנלמד", subs: ["חיבור בטור עם פריטה", "חיסור בטור עם פריטה", "בעיות מילוליות בחיבור וחיסור"] },
+                "muldiv_3": { name: "כפל וחילוק", subs: ["כפל מספר דו-ספרתי במספר חד-ספרתי", "חילוק עם ובלי שארית", "הקשר בין כפל לחילוק", "תכונת החילוף בכפל"] },
+                "multtable_3": { name: "לוח הכפל המלא", subs: ["כפל ב-1, 2, 3", "כפל ב-4, 5, 6", "כפל ב-7, 8, 9", "כפל ב-10", "תרגול שטף (מהירות ודיוק)", "זיהוי דפוסים בלוח הכפל (שורות ועמודות)"] },
+                "data_3": { name: "חקר נתונים", subs: ["איסוף נתונים ובניית טבלת שכיחות", "קריאת דיאגרמת עמודות ופירושה"] },
+                "fractions_3": { name: "שברים", subs: ["שבר כחלק משלם", "שבר כחלק מקבוצה", "השוואת שברים פשוטים"] },
+                "geometry_3": { name: "גיאומטריה ומדידה", subs: ["היקף צורות", "שטח על רשת משבצות", "יחידות אורך (מ\"מ, ס\"מ, מ')"] },
+                "time_money_3": { name: "זמן וכסף", subs: ["קריאת שעון מדויקת (דקות)", "לוח שנה וימי השבוע", "חישובי כסף ועודף"] }
+            }
+        },
+        "grade4": {
+            label: "כיתה ד'",
+            topics: {
+                "numbers_4": { name: "מספרים עד מיליון", subs: ["מבנה עשרוני עד מיליון", "השוואה, סידור ועיגול", "מספרים זוגיים ואי-זוגיים"] },
+                "ops_4": { name: "ארבע פעולות החשבון", subs: ["חיבור וחיסור של מספרים גדולים", "כפל במספר דו-ספרתי", "חילוק ארוך עם שארית", "סדר פעולות חשבון"] },
+                "fracdec_4": { name: "שברים ושברים עשרוניים", subs: ["חיבור וחיסור שברים עם מכנה משותף", "שבר עשרוני - מבנה ומשמעות", "הקשר בין שבר עשרוני לשבר רגיל"] },
+                "geometry_4": { name: "גיאומטריה", subs: ["סוגי זוויות (חדה, ישרה, קהה)", "היקף ושטח מדויק של מלבן וריבוע", "סוגי משולשים ומרובעים"] },
+                "measure_4": { name: "יחידות מידה", subs: ["המרות אורך (מ\"מ, ס\"מ, מ', ק\"מ)", "המרות משקל ונפח", "יחידות זמן"] },
+                "wordprob_4": { name: "בעיות מילוליות מורכבות", subs: ["בעיות מרובות שלבים", "בעיות עם טבלאות ותרשימים"] },
+                "multtable_4": { name: "שטף בלוח הכפל וחילוק", subs: ["תרגול שטף בזמן קצוב", "שימוש בלוח הכפל לחילוק", "כפל מספר תלת-ספרתי במספר חד-ספרתי", "פתרון בעיות בעזרת לוח הכפל"] },
+                "data_4": { name: "חקר נתונים ותרשימים", subs: ["בניית דיאגרמת עמודות", "חישוב ממוצע פשוט", "פירוש גרפים ותרשימים מהחיים"] },
+                "estimation_4": { name: "אומדן וחישוב מקורב", subs: ["עיגול מספרים לצורך אומדן", "בדיקת סבירות התוצאה"] }
+            }
+        }
+    };
+
+    let currentActivity = "", needsSubtopic = false;
+    
+    function openSelectionModal(activityName, subtopicRequired) {
+        currentActivity = activityName;
+        needsSubtopic = subtopicRequired;
+        const inner = document.getElementById('modal-inner-content');
+        const titleEl = document.getElementById('modal-title');
+        
+        let btnText = "התחל למידה";
+        if (activityName === "תרגול") btnText = "התחל תרגול";
+        else if (activityName === "בוחן") btnText = "התחל בוחן";
+        else if (activityName === "מבחן") btnText = "התחל מבחן";
+        else if (activityName === "מי רוצה להיות מיליונר?" || activityName === "ראש בראש") btnText = "התחל משחק";
+        else if (activityName === "למד אותי") btnText = "פתח שיעור";
+
+        titleEl.innerText = activityName;
+        let html = '';
+
+        let topicsObj = mathData[currentGrade] ? mathData[currentGrade].topics : null;
+
+        if (!topicsObj) {
+             html += `<div style="text-align:center; color:red; font-weight:bold;">שגיאה: נתוני הכיתה לא נמצאו במערכת. חזור לדף הראשי ובחר כיתה שוב.</div>`;
+             inner.innerHTML = html;
+             document.getElementById('selection-modal').style.display = 'flex';
+             return;
+        }
+
+        if (activityName === 'מבחן') {
+            html += `<div style="font-weight:800; margin-bottom:12px; font-size:1.25rem; color:var(--text-dark); flex-shrink:0;">בחר נושאים ל${activityName}:</div><div class="checkbox-list">`;
+            for (let tKey in topicsObj) {
+                html += `<label class="checkbox-item"><input type="checkbox" name="topic-check" value="${tKey}"> <span dir="rtl" style="flex:1; text-align:right; line-height:1.3;">${topicsObj[tKey].name}</span></label>`;
+            }
+            html += `</div><button class="btn-start" onclick="handleStart()">${btnText}</button>`;
+        } else {
+            let topicOptions = '<option value="">-- בחר נושא --</option>';
+            for (let tKey in topicsObj) { topicOptions += `<option value="${tKey}">${topicsObj[tKey].name}</option>`; }
+            html += `<select id="topic-select" onchange="updateSubtopics()">${topicOptions}</select>`;
+            html += `<div id="subtopic-container" style="display:none; flex: 1; min-height: 0; display: flex; flex-direction: column;"></div>`;
+            html += `<button class="btn-start" onclick="handleStart()">${btnText}</button>`;
+        }
+
+        inner.innerHTML = html;
+        document.getElementById('selection-modal').style.display = 'flex';
+        
+        if (activityName !== 'מבחן') {
+            updateSubtopics();
+        }
+    }
+    
+    function closeModal() { document.getElementById('selection-modal').style.display = 'none'; }
+
+    // מעדכן את רשימת תתי-הנושאים לפי הנושא הראשי שנבחר
+    function updateSubtopics() {
+        const tKey = document.getElementById('topic-select').value;
+        const container = document.getElementById('subtopic-container');
+
+        if (tKey && mathData[currentGrade] && mathData[currentGrade].topics[tKey]) {
+            let subs = mathData[currentGrade].topics[tKey].subs;
+            
+            if (currentActivity === 'בוחן') {
+                let checks = `<div style="font-weight:800; margin-bottom:10px; font-size:1.2rem; color:var(--text-dark); flex-shrink:0;">בחר תתי נושאים לבוחן:</div><div class="checkbox-list">`;
+                subs.forEach(s => {
+                    let safeVal = s.replace(/"/g, '&quot;').replace(/'/g, '&#39;');
+                    checks += `<label class="checkbox-item"><input type="checkbox" name="subtopic-check" value="${safeVal}"> <span dir="rtl" style="flex:1; text-align:right; line-height:1.3;">${s}</span></label>`;
+                });
+                checks += `</div>`;
+                container.innerHTML = checks;
+            } else {
+                let sel = `<select id="subtopic-select" style="margin-bottom:0;"><option value="">-- בחר תת נושא --</option>`;
+                subs.forEach(s => { 
+                    let safeVal = s.replace(/"/g, '&quot;').replace(/'/g, '&#39;');
+                    sel += `<option value="${safeVal}">${s}</option>`; 
+                });
+                sel += `</select>`;
+                container.innerHTML = sel;
+            }
+            container.style.display = 'flex';
+        } else {
+            container.style.display = 'none';
+            container.innerHTML = '';
+        }
+    }
+
+    function handleStart() {
+        let topicParam = "", subtopicParam = "";
+        let topicLabelParam = "", subtopicLabelParam = "";
+
+        if (currentActivity === 'מבחן') {
+            const checkedTopics = document.querySelectorAll('input[name="topic-check"]:checked');
+            if (checkedTopics.length === 0) { alert("יש לבחור לפחות נושא אחד למבחן"); return; }
+            topicParam = Array.from(checkedTopics).map(cb => cb.value).join(",");
+        } else {
+            const t = document.getElementById('topic-select');
+            if (!t || !t.value) { alert("אנא בחר נושא לפני ההתחלה"); return; }
+            topicParam = t.value;
+            if (t.selectedOptions && t.selectedOptions[0]) topicLabelParam = t.selectedOptions[0].text;
+            
+            if (currentActivity === 'תרגול' || currentActivity === 'מי רוצה להיות מיליונר?' || currentActivity === 'ראש בראש' || currentActivity === 'למד אותי') {
+                const s = document.getElementById('subtopic-select');
+                if (!s || !s.value) { alert("חובה לבחור תת נושא כדי להתחיל"); return; }
+                subtopicParam = s.value;
+                if (s.selectedOptions && s.selectedOptions[0]) subtopicLabelParam = s.selectedOptions[0].text;
+            } else if (currentActivity === 'בוחן') {
+                const checkedSubs = document.querySelectorAll('input[name="subtopic-check"]:checked');
+                if (checkedSubs.length === 0) { alert("חובה לבחור לפחות תת-נושא אחד לבוחן"); return; }
+                subtopicParam = Array.from(checkedSubs).map(cb => cb.value).join(",");
+            }
+        }
+
+        let targetFile = 'exam.html';
+        if (currentActivity === 'תרגול') {
+            targetFile = 'practice.html';
+        } else if (currentActivity === 'מי רוצה להיות מיליונר?') {
+            targetFile = 'chase.html';
+        } else if (currentActivity === 'ראש בראש') {
+            targetFile = 'head2head.html';
+        } else if (currentActivity === 'למד אותי') {
+            targetFile = 'learn.html';
+        }
+
+        window.location.href = `${targetFile}?grade=${encodeURIComponent(currentGrade)}&subject=math&topic=${encodeURIComponent(topicParam)}&subtopic=${encodeURIComponent(subtopicParam)}&activity=${encodeURIComponent(currentActivity)}&topicLabel=${encodeURIComponent(topicLabelParam)}&subtopicLabel=${encodeURIComponent(subtopicLabelParam)}`;
+    }
+    
+    // סגירת חלון המודאל בלחיצה מחוץ לתוכן
+    document.getElementById('selection-modal').addEventListener('click', function(e) {
+        if (e.target === this) {
+            closeModal();
+        }
+    });
+</script>
+<script src="cookies.js"></script>
+<script>
+    /* subject-theme: נגישות, וכפתור/אריח "ממשיכים מאיפה שעצרתם" לפי השיעורים האחרונים בדף הלמידה */
+    (function () {
+        document.querySelectorAll('.card[onclick]').forEach(function (c) {
+            c.setAttribute('role', 'button'); c.setAttribute('tabindex', '0');
+            c.addEventListener('keydown', function (e) { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); c.click(); } });
+        });
+        document.addEventListener('keydown', function (e) {
+            var m = document.getElementById('selection-modal');
+            if (e.key === 'Escape' && m && m.style.display === 'flex' && typeof closeModal === 'function') closeModal();
+        });
+        var m = document.getElementById('selection-modal');
+        if (m) m.addEventListener('click', function (e) { if (e.target === m && typeof closeModal === 'function') closeModal(); });
+        new MutationObserver(function () {
+            document.querySelectorAll('.close-modal:not([role])').forEach(function (x) { x.setAttribute('role', 'button'); x.setAttribute('tabindex', '0'); x.setAttribute('aria-label', 'סגירה');
+                x.addEventListener('keydown', function (e) { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); x.click(); } }); });
+        }).observe(document.body, { childList: true, subtree: true });
+
+        var subj = document.body.getAttribute('data-subject') || '';
+        function esc(s) { return String(s || '').replace(/[&<>"]/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]; }); }
+        var list = []; try { list = JSON.parse(localStorage.getItem('learnHistory') || '[]') || []; } catch (e) { }
+        var last = list.filter(function (x) { return x && x.href && (x.href.indexOf('subject=' + subj) > -1 || x.href.indexOf('grade=' + subj) > -1); })[0];
+        var passed = 0, started = 0;
+        try { for (var i = 0; i < localStorage.length; i++) { var k = localStorage.key(i); if (k.indexOf('learnSeen|' + subj + '|') === 0) { started++; var v = JSON.parse(localStorage.getItem(k) || '{}'); if (v && v.__pass) passed++; } } } catch (e) { }
+        var go = document.getElementById('studio-go'), tile = document.getElementById('studio-resume');
+        function openLearn() { if (typeof openSelectionModal === 'function') openSelectionModal('למד אותי', true); }
+        if (last) {
+            go.outerHTML = '<a class="pill" id="studio-go" href="' + esc(last.href) + '"><i class="fa-solid fa-play" aria-hidden="true"></i><span>להמשיך: ' + esc(last.name) + '</span></a>';
+            var pct = started ? Math.round(passed / started * 100) : 0;
+            tile.outerHTML = '<a class="resume" id="studio-resume" href="' + esc(last.href) + '"><span class="go">להמשיך <i class="fa-solid fa-arrow-left"></i></span><span class="ring" style="--p:' + pct + '%"><b>' + passed + '/' + started + '</b></span><h3>' + esc(last.name) + '</h3><p>' + (passed ? 'שיעורים שעברתם את הבדיקה שלהם' : 'השיעור האחרון שפתחתם') + '</p></a>';
+        } else {
+            go.addEventListener('click', openLearn);
+            tile.addEventListener('click', openLearn);
+            tile.addEventListener('keydown', function (e) { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); openLearn(); } });
+        }
+    })();
+</script>
+</body>
+</html>

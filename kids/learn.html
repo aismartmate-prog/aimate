@@ -1,0 +1,1409 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <script>
+      // בדיקת קאש חכמה (מסונכרן עם התיקון בעמוד הבית): מוחקים עוגיות וקאש
+      // ישן רק כאשר יש גרסה חדשה בפועל אחרי דיפלוי - לא בכל טעינה, כדי לא
+      // להרוג את יתרון הקאשינג הרגיל בדפדפן (ראו הסבר מלא בעמוד הבית).
+      var SITE_VERSION = '2026-08-17';
+      (function () {
+        try {
+          var stored = localStorage.getItem('__siteVersion');
+          if (stored === SITE_VERSION) return;
+          document.cookie.split(';').forEach(function (c) {
+            var name = c.split('=')[0].trim();
+            if (!name) return;
+            var expire = 'expires=Thu, 01 Jan 1970 00:00:00 UTC;';
+            document.cookie = name + '=; ' + expire + ' path=/;';
+            document.cookie = name + '=; ' + expire + ' path=/; domain=' + location.hostname + ';';
+          });
+          if ('caches' in window) {
+            caches.keys().then(function (names) {
+              names.forEach(function (n) { caches.delete(n); });
+            }).catch(function () {});
+          }
+          localStorage.setItem('__siteVersion', SITE_VERSION);
+        } catch (e) {}
+      })();
+    </script>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <title>למד אותי - המרכז להישגים לימודיים</title>
+<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Heebo:wght@300;400;500;700;800;900&family=Varela+Round&display=swap" onload="this.onload=null;this.rel='stylesheet'">
+    <link rel="preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" onload="this.onload=null;this.rel='stylesheet'">
+    <noscript>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Heebo:wght@300;400;500;700;800;900&family=Varela+Round&display=swap">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    </noscript>
+    <script>
+      window.MathJax = {
+        options: { enableMenu: false },
+        tex: { inlineMath: [['$', '$'], ['\\(', '\\)']], displayMath: [['$$', '$$'], ['\\[', '\\]']] },
+        chtml: { displayAlign: 'center', scale: 1.05 }
+      };
+    </script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js" crossorigin></script>
+    
+<style>
+        :root {
+            --bg: #f5f6fb; --card: #fff; --text: #172036; --muted: #667089; --line: #e5e8f1; --brand: #6d28d9; --brand-2: #4f46e5;
+            --ink: #0b1030; --shadow: 0 1px 2px rgba(16,24,64,.04), 0 12px 32px -14px rgba(40,50,120,.18);
+            --c-intro: #64748b; --c-intro-bg: #f1f5f9; --c-def: #2563eb; --c-def-bg: #eff6ff; --c-terms: #7c3aed; --c-terms-bg: #f5f3ff;
+            --c-method: #0d9488; --c-method-bg: #f0fdfa; --c-ex1: #4f46e5; --c-ex1-bg: #eef2ff; --c-ex2: #db2777; --c-ex2-bg: #fdf2f8;
+            --c-mistake: #ea580c; --c-mistake-bg: #fff7ed; --c-summary: #059669; --c-summary-bg: #ecfdf5; --c-quiz: #0284c7; --c-quiz-bg: #f0f9ff;
+        }
+        * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+        html { scroll-behavior: smooth; scroll-padding-top: 80px; }
+        body { margin: 0; background: var(--bg); color: var(--text); font-family: 'Heebo', 'Varela Round', sans-serif; font-size: 15px; line-height: 1.7; min-height: 100vh; }
+        button { font-family: inherit; touch-action: manipulation; }
+        mjx-container { margin: 2px 0 !important; }
+        mjx-container[display="true"] { margin: 8px 0 !important; }
+        .in { width: 100%; max-width: 1760px; margin: 0 auto; padding: 0 clamp(14px, 3vw, 56px); }
+
+        /* ---------- סרגל עליון ---------- */
+        .appbar { position: sticky; top: 0; z-index: 50; background: rgba(255,255,255,.97); border-bottom: 1px solid var(--line); }
+        .appbar .in { display: flex; align-items: center; justify-content: space-between; gap: 18px; height: 60px; }
+        .brand { display: flex; align-items: center; gap: 11px; font-weight: 900; font-size: 1.05rem; white-space: nowrap; }
+        .brand .mark { width: 36px; height: 36px; border-radius: 11px; background: linear-gradient(135deg, #6366f1, #06b6d4); color: #fff; display: flex; align-items: center; justify-content: center; box-shadow: 0 6px 16px -6px rgba(99,102,241,.8); }
+        .brand .tag { font-size: .7rem; font-weight: 800; color: var(--brand); background: #f3e8ff; padding: 2px 9px; border-radius: 999px; }
+        .breadcrumb { flex: 1; min-width: 0; font-size: .85rem; color: var(--muted); display: flex; gap: 8px; align-items: center; overflow: hidden; white-space: nowrap; }
+        .breadcrumb span { overflow: hidden; text-overflow: ellipsis; }
+        .breadcrumb .crumb-current { color: var(--text); font-weight: 800; }
+        .back-btn { text-decoration: none; color: var(--text); font-weight: 700; font-size: .88rem; border: 1px solid var(--line); border-radius: 10px; padding: 8px 16px; background: #fff; white-space: nowrap; }
+        .back-btn:hover { background: #f6f7fb; }
+
+        /* ---------- באנר ---------- */
+        .hero { color: #fff; position: relative; overflow: hidden;
+            background: radial-gradient(900px 420px at 85% -10%, rgba(139,92,246,.55), transparent 60%), radial-gradient(700px 380px at 5% 110%, rgba(6,182,212,.35), transparent 60%), linear-gradient(135deg, #0b1030, #1e1b4b 55%, #2e1065); }
+        .hero::before { content: ""; position: absolute; inset: 0; background-image: radial-gradient(rgba(255,255,255,.09) 1px, transparent 1px); background-size: 22px 22px; opacity: .7; pointer-events: none; }
+        .hero .in { position: relative; display: flex; align-items: center; justify-content: space-between; gap: 32px; padding-top: 34px; padding-bottom: 34px; flex-wrap: wrap; }
+        .eyebrow { display: inline-flex; align-items: center; gap: 8px; font-size: .78rem; font-weight: 800; letter-spacing: .02em; background: rgba(255,255,255,.1); border: 1px solid rgba(255,255,255,.16); padding: 5px 13px; border-radius: 999px; }
+        .hero h1 { margin: 12px 0 8px; font-size: clamp(1.6rem, 2.6vw, 2.35rem); font-weight: 900; line-height: 1.2; }
+        .hero p { margin: 0 0 18px; color: #c9ccee; max-width: 640px; font-size: .98rem; }
+        .hero-text { flex: 1 1 380px; min-width: 0; }
+        .hero-stats { display: flex; gap: 12px; align-items: stretch; flex-wrap: wrap; }
+        .stat { min-width: 108px; background: rgba(255,255,255,.08); border: 1px solid rgba(255,255,255,.13); border-radius: 16px; padding: 14px 16px; display: flex; flex-direction: column; gap: 2px; }
+        .stat i { color: #67e8f9; font-size: 1rem; margin-bottom: 4px; }
+        .stat b { font-size: 1.55rem; font-weight: 900; line-height: 1.1; }
+        .stat span { font-size: .78rem; color: #b6bae0; font-weight: 700; }
+        .ring { position: relative; width: 112px; height: 112px; flex-shrink: 0; }
+        .ring svg { width: 100%; height: 100%; transform: rotate(-90deg); }
+        .ring .bg { stroke: rgba(255,255,255,.14); } .ring .fg { stroke: url(#ringGrad); transition: stroke-dashoffset .5s ease; }
+        .ring .pct { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; font-weight: 900; font-size: 1.45rem; line-height: 1; }
+        .ring .pct small { font-size: .68rem; font-weight: 700; color: #b6bae0; margin-top: 4px; }
+
+        /* ---------- מבנה ראשי ---------- */
+        .shell { display: grid; grid-template-columns: 320px minmax(0, 1fr); gap: 28px; align-items: start; padding-top: 28px; padding-bottom: 70px; }
+        .outline { position: sticky; top: 80px; background: var(--card); border: 1px solid var(--line); border-radius: 20px; padding: 18px 14px 14px; box-shadow: var(--shadow); max-height: calc(100vh - 96px); overflow: auto; }
+        .outline-head { display: flex; align-items: baseline; justify-content: space-between; padding: 0 6px; margin-bottom: 10px; }
+        .outline-head b { font-weight: 900; font-size: 1rem; } .outline-head small { color: var(--muted); font-weight: 700; font-size: .78rem; }
+        .oprog { height: 6px; border-radius: 999px; background: #eceff7; margin: 0 6px 14px; overflow: hidden; }
+        .oprog > i { display: block; height: 100%; width: 0; border-radius: 999px; background: linear-gradient(90deg, #06b6d4, #6d28d9); transition: width .4s ease; }
+        .steps { display: flex; flex-direction: column; gap: 4px; }
+        .step { display: flex; align-items: center; gap: 12px; width: 100%; text-align: right; background: transparent; border: 1px solid transparent; border-radius: 12px; padding: 10px 12px; cursor: pointer; color: var(--text); position: relative; }
+        .step:hover { background: #f6f7fb; }
+        .step .n { width: 30px; height: 30px; border-radius: 10px; background: #eef0f7; color: var(--muted); font-weight: 800; font-size: .82rem; display: inline-flex; align-items: center; justify-content: center; flex-shrink: 0; }
+        .step .t { display: flex; flex-direction: column; min-width: 0; line-height: 1.3; }
+        .step .t b { font-weight: 800; font-size: .92rem; } .step .t small { color: var(--muted); font-size: .74rem; font-weight: 600; }
+        .step .ok { margin-right: auto; color: #22c55e; font-size: .95rem; opacity: 0; }
+        .step.done .ok { opacity: 1; } .step.done .n { background: #dcfce7; color: #166534; }
+        .step.active { background: var(--sec-bg); border-color: transparent; }
+        .step.active::before { content: ""; position: absolute; right: -14px; top: 12px; bottom: 12px; width: 4px; border-radius: 4px; background: var(--sec-color); }
+        .step.active .n { background: var(--sec-color); color: #fff; }
+
+        .panel { background: var(--card); border: 1px solid var(--line); border-radius: 22px; padding: 28px 32px 24px; box-shadow: var(--shadow); position: relative; overflow: hidden; }
+        .panel::before { content: ""; position: absolute; top: 0; right: 0; left: 0; height: 4px; background: var(--sec-color, var(--brand)); }
+        .panel[hidden] { display: none; }
+        .panel-head { display: flex; align-items: center; gap: 16px; margin-bottom: 18px; }
+        .panel-head .ico { width: 52px; height: 52px; border-radius: 16px; background: var(--sec-bg); color: var(--sec-color); display: flex; align-items: center; justify-content: center; font-size: 1.3rem; flex-shrink: 0; }
+        .panel-head .ey { font-size: .76rem; font-weight: 800; color: var(--sec-color); letter-spacing: .02em; }
+        .panel-head h2 { margin: 0; font-size: 1.55rem; font-weight: 900; line-height: 1.2; }
+
+        .ls-body { font-size: 1rem; }
+        .ls-body p { margin: 0 0 10px; }
+        .ls-body .muted, .muted { color: var(--muted); font-size: .82rem; }
+        .pt-list { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 12px; }
+        .pt-list li { background: var(--sec-bg); border-radius: 14px; padding: 14px 16px; display: flex; gap: 11px; align-items: flex-start; border: 1px solid rgba(0,0,0,.03); }
+        .pt-list li > i { color: var(--sec-color); margin-top: 8px; font-size: .5rem; }
+        .pt-list li b { color: var(--sec-color); }
+        .steps-ol { margin: 0; padding: 0; list-style: none; counter-reset: s; display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 12px; }
+        .steps-ol li { counter-increment: s; background: var(--sec-bg); border-radius: 14px; padding: 14px 16px 14px 14px; display: flex; gap: 12px; align-items: flex-start; }
+        .steps-ol li::before { content: counter(s); width: 28px; height: 28px; border-radius: 50%; background: var(--sec-color); color: #fff; font-weight: 800; font-size: .84rem; display: inline-flex; align-items: center; justify-content: center; flex-shrink: 0; }
+        .ex-q { background: var(--sec-bg); border-radius: 16px; padding: 16px 20px; font-weight: 700; margin-bottom: 14px; font-size: 1.05rem; }
+        .ex-steps { border: 1px solid var(--line); border-radius: 16px; padding: 4px 18px; }
+        .ex-step { display: flex; gap: 14px; align-items: flex-start; padding: 12px 0; border-bottom: 1px dashed var(--line); }
+        .ex-step:last-child { border-bottom: none; }
+        .ex-step .n { flex-shrink: 0; width: 28px; height: 28px; border-radius: 50%; background: var(--sec-color); color: #fff; font-weight: 800; font-size: .82rem; display: flex; align-items: center; justify-content: center; margin-top: 2px; }
+        .ex-step .m { direction: ltr; text-align: center; overflow-x: auto; }
+        .ex-final { margin-top: 12px; background: #ecfdf5; border: 1.5px solid #86efac; border-radius: 14px; padding: 13px 18px; font-weight: 800; color: #166534; }
+        .opt-row { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 10px; margin: 12px 0; }
+        .opt { text-align: right; font-size: .98rem; border: 1.5px solid var(--line); background: #fff; border-radius: 14px; padding: 12px 16px; cursor: pointer; display: flex; gap: 10px; align-items: center; min-height: 52px; }
+        .opt:hover:not(:disabled) { border-color: var(--sec-color); background: var(--sec-bg); }
+        .opt.right { background: #dcfce7; border-color: #22c55e; font-weight: 800; }
+        .opt.wrong { background: #fee2e2; border-color: #ef4444; }
+        .opt.trap::after { content: 'נראית נכונה, אבל לא'; margin-right: auto; font-size: .74rem; color: #b91c1c; font-weight: 800; }
+        .opt.good-mark::after { content: 'התשובה הנכונה'; margin-right: auto; font-size: .74rem; color: #15803d; font-weight: 800; }
+        .quiz-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(380px, 1fr)); gap: 16px; }
+        .quiz-q { border: 1.5px solid var(--line); border-radius: 18px; padding: 18px; }
+        .quiz-q .qt { font-weight: 800; margin-bottom: 4px; }
+        .quiz-fb { margin-top: 8px; font-weight: 700; }
+        .quiz-fb.ok { color: #15803d; } .quiz-fb.no { color: #b91c1c; }
+        .score-chip { display: inline-block; margin-top: 14px; background: #e0f2fe; color: #075985; border-radius: 999px; padding: 5px 16px; font-weight: 800; font-size: .86rem; }
+
+        /* ---------- כרטיסי מדיה ---------- */
+        .ls-actions { margin-top: 24px; padding-top: 20px; border-top: 1px solid var(--line); display: flex; flex-direction: column; gap: 14px; }
+        .media-row { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 14px; }
+        .media-card { display: flex; align-items: center; gap: 16px; text-align: right; width: 100%; border: 1px solid var(--line); background: #fff; border-radius: 18px; padding: 12px 18px 12px 12px; cursor: pointer; color: var(--text); transition: transform .15s ease, box-shadow .15s ease, border-color .15s ease; }
+        .media-card:hover:not(:disabled) { transform: translateY(-2px); box-shadow: 0 14px 30px -14px rgba(60,40,160,.45); border-color: #c4b5fd; }
+        .media-card:disabled { opacity: .8; cursor: default; }
+        .media-card .thumb { width: 92px; height: 64px; border-radius: 13px; flex-shrink: 0; position: relative; display: flex; align-items: center; justify-content: center; color: #fff; font-size: 1.15rem; overflow: hidden; }
+        .media-card.video .thumb { background: repeating-linear-gradient(to bottom, #fffdf7 0, #fffdf7 13px, #bfdbfe 13px, #bfdbfe 14px); }
+        .media-card.video .thumb::after { content: ""; position: absolute; top: 0; bottom: 0; right: 14px; width: 1px; background: rgba(239,68,68,.5); }
+        .media-card.video .thumb i { position: relative; z-index: 1; width: 34px; height: 34px; border-radius: 50%; background: linear-gradient(135deg, #8b5cf6, #06b6d4); display: flex; align-items: center; justify-content: center; font-size: .85rem; box-shadow: 0 6px 14px -4px rgba(109,40,217,.7); padding-right: 0; }
+        .media-card.live .thumb { background: linear-gradient(135deg, #0ea5e9, #2563eb); }
+        .media-card.live.playing .thumb { background: linear-gradient(135deg, #ef4444, #be123c); }
+        .media-card .mt { display: flex; flex-direction: column; line-height: 1.35; min-width: 0; }
+        .media-card .mt b { font-weight: 900; font-size: 1rem; } .media-card .mt small { color: var(--muted); font-size: .8rem; font-weight: 600; }
+        .tools { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; }
+        .alt-btn, .seen-btn { display: inline-flex; align-items: center; gap: 8px; cursor: pointer; font-weight: 800; font-size: .88rem; border-radius: 12px; padding: 9px 16px; background: #fff; color: var(--text); border: 1.5px solid var(--line); min-height: 40px; }
+        .alt-btn:hover, .seen-btn:hover { border-color: var(--sec-color, #94a3b8); }
+        .seen-btn.on { background: #dcfce7; border-color: #22c55e; color: #166534; }
+        .tools .spacer { flex: 1; }
+        .live-tx { margin-top: 2px; background: #f0f9ff; border: 1px solid #bae6fd; border-radius: 14px; padding: 10px 16px; }
+        .live-tx summary { cursor: pointer; font-weight: 800; color: #075985; }
+        .live-tx .tx { margin-top: 8px; white-space: pre-line; font-size: .95rem; }
+        .live-tx[hidden] { display: none; }
+
+        .panel-nav { display: flex; justify-content: space-between; gap: 12px; margin-top: 16px; }
+        .nav-btn { border: 1.5px solid var(--line); background: #fff; color: var(--text); border-radius: 14px; padding: 12px 24px; font-weight: 800; font-size: .95rem; cursor: pointer; min-height: 48px; box-shadow: var(--shadow); }
+        .nav-btn.primary { background: linear-gradient(135deg, #6d28d9, #4f46e5); border-color: transparent; color: #fff; }
+        .nav-btn[disabled] { opacity: .35; cursor: default; }
+        .practice-cta { display: flex; align-items: center; justify-content: center; gap: 12px; margin-top: 16px; background: linear-gradient(135deg, #0b1030, #4c1d95); color: #fff; text-decoration: none; border-radius: 18px; padding: 20px; font-weight: 800; font-size: 1.02rem; box-shadow: var(--shadow); }
+        .practice-cta:hover { filter: brightness(1.12); }
+        .hero .vid-btn, .vid-btn { display: inline-flex; align-items: center; gap: 9px; border: none; cursor: pointer; font-weight: 800; font-size: .95rem; border-radius: 12px; padding: 12px 22px; background: #fff; color: #4c1d95; box-shadow: 0 10px 24px -10px rgba(0,0,0,.5); }
+        .quiz-solution .vid-btn { background: linear-gradient(135deg, #8b5cf6, #06b6d4); color: #fff; padding: 9px 16px; font-size: .86rem; margin-top: 10px; }
+        .empty-note { background: #fffbeb; border: 1.5px dashed #fbbf24; color: #92400e; border-radius: 14px; padding: 18px; line-height: 1.7; margin-bottom: 14px; }
+
+        @media (max-width: 960px) {
+            .shell { grid-template-columns: 1fr; gap: 14px; padding-top: 14px; }
+            .outline { position: sticky; top: 60px; z-index: 40; max-height: none; padding: 8px 8px; border-radius: 16px; overflow: visible; }
+            .outline-head, .oprog { display: none; }
+            .steps { flex-direction: row; overflow-x: auto; scrollbar-width: none; }
+            .steps::-webkit-scrollbar { display: none; }
+            .step { width: auto; flex: 0 0 auto; padding: 7px 12px 7px 10px; border: 1.5px solid var(--line); border-radius: 999px; gap: 8px; }
+            .step .t small, .step .ok { display: none; }
+            .step .n { width: 24px; height: 24px; border-radius: 50%; font-size: .74rem; }
+            .step.active { background: var(--sec-color); color: #fff; border-color: var(--sec-color); }
+            .step.active::before { display: none; }
+            .step.active .n { background: rgba(255,255,255,.3); }
+            .breadcrumb, .brand .tag { display: none; }
+            .hero .in { padding-top: 22px; padding-bottom: 22px; gap: 18px; }
+            .hero-stats { width: 100%; } .stat { flex: 1; min-width: 88px; padding: 11px 12px; } .ring { width: 92px; height: 92px; }
+        }
+        @media (max-width: 600px) {
+            .panel { padding: 20px 16px 18px; border-radius: 18px; }
+            .panel-head h2 { font-size: 1.3rem; }
+            .quiz-grid { grid-template-columns: 1fr; } .media-row { grid-template-columns: 1fr; }
+            .tools > button { flex: 1 1 auto; justify-content: center; }
+        }
+
+
+        /* ===== התאמת סלולר מלאה (v2) ===== */
+        @media (max-width: 960px) {
+            .shell { grid-template-columns: minmax(0, 1fr) !important; }
+            .shell > * { min-width: 0; }
+            .pt-list, .steps-ol { grid-template-columns: repeat(auto-fit, minmax(min(100%, 260px), 1fr)); }
+            .opt-row { grid-template-columns: repeat(auto-fit, minmax(min(100%, 200px), 1fr)); }
+            .quiz-grid, .media-row { grid-template-columns: minmax(0, 1fr) !important; }
+            .panel, .panel * { max-width: 100%; }
+            .panel img, .panel svg, .panel canvas, .panel video { max-width: 100%; height: auto; }
+            .panel .ls-body, .panel p, .panel li { overflow-wrap: anywhere; }
+            .panel mjx-container { max-width: 100%; overflow-x: auto; overflow-y: hidden; }
+            .panel pre, .panel table { display: block; max-width: 100%; overflow-x: auto; }
+        }
+        @media (max-width: 600px) {
+            body { -webkit-text-size-adjust: 100%; }
+            .wrap, .shell, .hero .in { padding-left: 14px; padding-right: 14px; }
+            .hero h1 { font-size: 1.7rem; line-height: 1.25; }
+            .hero .in { gap: 14px; }
+            .hero-stats { gap: 8px; } .stat { min-width: 0; padding: 10px; } .stat b { font-size: 1.25rem; }
+            .ring { width: 80px; height: 80px; }
+            .outline { top: 54px; margin: 0 -2px; }
+            .steps { padding-bottom: 2px; scroll-snap-type: x proximity; }
+            .step { scroll-snap-align: center; min-height: 40px; }
+            .panel { padding: 18px 14px 16px; }
+            .panel-head { flex-wrap: wrap; gap: 10px; }
+            .panel-head h2 { font-size: 1.25rem; }
+            .panel .ls-body, .panel p { font-size: 1.04rem; line-height: 1.8; }
+            .tools { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; width: 100%; }
+            .tools > button, .tools > a { min-height: 46px; font-size: .94rem; padding: 10px 12px; width: 100%; }
+            .panel-nav { position: sticky; bottom: 0; z-index: 30; margin: 14px -14px -16px; padding: 10px 14px calc(10px + env(safe-area-inset-bottom)); background: linear-gradient(180deg, rgba(255,255,255,0), #fff 30%); border-radius: 0 0 18px 18px; gap: 10px; }
+            .nav-btn { flex: 1; min-height: 48px; justify-content: center; font-size: 1rem; }
+            .practice-cta { min-height: 56px; font-size: 1.05rem; }
+            .vid-btn, .hero .vid-btn { min-height: 46px; }
+            .opt-row .opt, .quiz-grid button { min-height: 52px; }
+            .breadcrumb { display: none; }
+            #main, .panel, .lesson-sections > * { scroll-margin-top: 118px; }
+            .shell { padding-bottom: 96px; }
+        }
+        @media (hover: none) { .step:hover, .nav-btn:hover, .tools > button:hover { transform: none; } }
+
+        .kids body { font-size: 17px; }
+        .kids .ls-body { font-size: 1.12rem; }
+        .kids .step .t b { font-size: 1rem; }
+        .kids .media-card .mt b { font-size: 1.1rem; }
+        .kids .opt { font-size: 1.1rem; min-height: 58px; }
+        .kids .ex-q { font-size: 1.2rem; }
+</style>
+<style id="kids-learn-2026">
+/* =====================================================================
+   kids-learn-2026 — דף "למד אותי" של הקידס בשפת העיצוב של האתר:
+   רקע כחול-לילה עם כוכבים, אריחים גדולים ומעוגלים, אותיות עגולות וגדולות,
+   כפתורי זהב "לחיצים". כרטיסי התוכן נשארים בהירים כדי שיהיה קל לקרוא.
+   עיצוב בלבד - מנוע השיעור, הסרטונים והמורה הקולי לא משתנים.
+   מקור: tools/kids-learn-theme.css · מוחל עם tools/apply-kids-learn-theme.py
+   ===================================================================== */
+@import url('https://fonts.googleapis.com/css2?family=Rubik:wght@400;500;700;800;900&display=swap');
+:root { --bg: #0b1226; --brand: #2563eb; --brand-2: #1d4ed8; }
+html { background: #0b1226; }
+:root body { font-family: 'Rubik', 'Heebo', sans-serif; font-size: 17px; color: #172036;
+    background: radial-gradient(900px 480px at 88% -10%, rgba(59,130,246,.3), transparent 60%), radial-gradient(700px 420px at 0% 30%, rgba(168,85,247,.2), transparent 60%),
+        radial-gradient(2px 2px at 12% 18%, rgba(255,255,255,.7) 50%, transparent 51%), radial-gradient(2px 2px at 78% 32%, rgba(255,255,255,.55) 50%, transparent 51%), radial-gradient(1.5px 1.5px at 42% 64%, rgba(255,255,255,.5) 50%, transparent 51%), radial-gradient(2px 2px at 91% 76%, rgba(255,255,255,.45) 50%, transparent 51%),
+        linear-gradient(180deg, #16224a 0, #0b1226 900px) no-repeat, #0b1226; }
+
+/* סרגל עליון */
+:root body .appbar { background: rgba(11,18,38,.82); -webkit-backdrop-filter: blur(14px); backdrop-filter: blur(14px); border-bottom: 1px solid rgba(255,255,255,.1); }
+:root body .appbar .in { height: 66px; }
+:root body .brand { color: #fff; font-size: 1.15rem; }
+:root body .brand .mark { width: 42px; height: 42px; border-radius: 14px; background: linear-gradient(135deg, #3b82f6, #1d4ed8); box-shadow: 0 10px 22px -10px rgba(59,130,246,.9); }
+:root body .brand .tag { background: #f5b83d; color: #1a1205; font-size: .76rem; padding: 3px 11px; }
+:root body .breadcrumb { color: #8e9bc2; } :root body .breadcrumb .crumb-current { color: #fff; }
+:root body .back-btn { background: rgba(255,255,255,.1); border: 1px solid rgba(255,255,255,.16); color: #fff; border-radius: 999px; padding: 10px 20px; font-size: .98rem; }
+:root body .back-btn:hover { background: rgba(255,255,255,.2); }
+
+/* באנר השיעור: אריח גדול עם הינשוף */
+:root body .hero { background: none; overflow: visible; padding: 22px 43px 0; }
+:root body .hero::before { display: none; }
+:root body .hero .in { margin-top: 0; box-sizing: border-box; padding: clamp(22px, 3vw, 34px); border-radius: 34px; position: relative; overflow: hidden;
+    background: radial-gradient(600px 360px at 0% 100%, rgba(59,130,246,.28), transparent 70%), linear-gradient(160deg, rgba(255,255,255,.1), rgba(255,255,255,.03));
+    border: 1px solid rgba(255,255,255,.14); box-shadow: 0 30px 60px -34px rgba(0,0,0,.8), inset 0 1px 0 rgba(255,255,255,.12); }
+:root body .hero-text { padding-inline-start: 0; }
+:root body .hero h1 { font-size: clamp(1.9rem, 3.2vw, 2.8rem); font-weight: 800; }
+:root body .hero p { color: #dbe5ff; font-size: 1.05rem; }
+:root body .eyebrow { font-size: .88rem; padding: 6px 15px; }
+:root body .hero .vid-btn, :root body .vid-btn { background: linear-gradient(180deg, #ffd45e, #f5b83d) !important; color: #1a1205 !important; border: 0 !important; border-radius: 999px !important; min-height: 52px; padding: 10px 26px !important; font-size: 1.05rem !important; font-weight: 800 !important;
+    box-shadow: 0 6px 0 #b9770c, 0 20px 34px -16px rgba(245,184,61,.9) !important; transition: transform .15s, box-shadow .15s; }
+:root body .vid-btn i { color: #1a1205 !important; }
+:root body .vid-btn:active { transform: translateY(4px); box-shadow: 0 2px 0 #b9770c !important; }
+:root body .stat { border-radius: 22px; padding: 16px 18px; background: rgba(255,255,255,.09); }
+:root body .stat i { color: #f5b83d; font-size: 1.15rem; }
+:root body .stat b { font-size: 1.75rem; } :root body .stat span { font-size: .86rem; color: #c9d4f3; }
+:root body .ring .fg { stroke: #f5b83d; }
+:root body .kl-owl { width: 104px; height: auto; flex-shrink: 0; filter: drop-shadow(0 12px 10px rgba(0,0,0,.35)); animation: klbob 4s ease-in-out infinite; }
+@keyframes klbob { 50% { transform: translateY(-7px); } }
+
+/* מפת השיעור */
+:root body .shell { padding-top: 24px; gap: 24px; }
+:root body .outline { border-radius: 28px; border: 0; padding: 20px 16px 16px; box-shadow: 0 26px 50px -30px rgba(0,0,0,.8); }
+:root body .outline-head b { font-size: 1.12rem; }
+:root body .oprog { height: 10px; } :root body .oprog > i { background: linear-gradient(90deg, #f5b83d, #f59e0b); }
+:root body .step { border-radius: 18px; padding: 12px 14px; min-height: 58px; }
+:root body .step .n { width: 38px; height: 38px; border-radius: 13px; font-size: .98rem; }
+:root body .step .t b { font-size: 1.02rem; } :root body .step .t small { font-size: .8rem; }
+:root body .step.done .n { background: #22c55e; color: #fff; }
+
+/* כרטיס השיעור */
+:root body .panel { border-radius: 30px; border: 0; padding: 30px 34px 26px; box-shadow: 0 30px 60px -32px rgba(0,0,0,.85); }
+:root body .panel::before { height: 6px; }
+:root body .panel-head .ico { width: 60px; height: 60px; border-radius: 20px; font-size: 1.5rem; }
+:root body .panel-head h2 { font-size: 1.8rem; font-weight: 800; }
+:root body .panel-head .ey { font-size: .86rem; }
+:root body .ls-body { font-size: 1.12rem; line-height: 1.85; }
+:root body .pt-list li, :root body .steps-ol li, :root body .ex-q, :root body .ex-steps, :root body .ex-final { border-radius: 20px; }
+:root body .steps-ol li::before, :root body .ex-step .n { width: 34px; height: 34px; font-size: .95rem; }
+:root body .opt { border-radius: 20px; min-height: 60px; font-size: 1.08rem; border-width: 2px; padding: 14px 18px; box-shadow: 0 4px 0 #e2e8f0; transition: transform .12s, box-shadow .12s; }
+:root body .opt:active:not(:disabled) { transform: translateY(3px); box-shadow: 0 1px 0 #e2e8f0; }
+:root body .media-card { border-radius: 22px; }
+:root body .media-card .thumb { border-radius: 16px; }
+:root body .media-card .mt b { font-size: 1.08rem; }
+:root body .alt-btn, :root body .seen-btn { border-radius: 999px; min-height: 48px; padding: 10px 20px; font-size: 1rem; }
+:root body .seen-btn.on { background: #22c55e; border-color: #22c55e; color: #fff; }
+
+/* ניווט וכפתור התרגול */
+:root body .nav-btn { border-radius: 999px; min-height: 56px; padding: 12px 30px; font-size: 1.08rem; font-weight: 800; border: 0; background: rgba(255,255,255,.12); color: #fff; box-shadow: inset 0 0 0 1px rgba(255,255,255,.18); }
+:root body .nav-btn.primary { background: linear-gradient(180deg, #ffd45e, #f5b83d); color: #1a1205; box-shadow: 0 6px 0 #b9770c, 0 20px 34px -16px rgba(245,184,61,.9); transition: transform .15s, box-shadow .15s; }
+:root body .nav-btn.primary:active { transform: translateY(4px); box-shadow: 0 2px 0 #b9770c; }
+:root body .nav-btn[disabled] { opacity: .4; }
+:root body .practice-cta { border-radius: 26px; min-height: 68px; font-size: 1.15rem; font-weight: 800; background: linear-gradient(155deg, #2d93ff, #0b4fb3); box-shadow: inset 0 2px 0 rgba(255,255,255,.28), 0 8px 0 #083a86, 0 26px 40px -22px rgba(0,114,255,.7); transition: transform .15s, box-shadow .15s; }
+:root body .practice-cta:hover { transform: translateY(-2px); }
+:root body .practice-cta:active { transform: translateY(6px); box-shadow: inset 0 2px 0 rgba(255,255,255,.28), 0 2px 0 #083a86; }
+:root body .empty-note { border-radius: 22px; }
+:root body footer, :root body .site-footer { color: #8e9bc2; }
+
+@media (max-width: 960px) {
+    :root body .hero { padding: 14px 14px 0; }
+    :root body .hero .in { margin: 0; border-radius: 28px; }
+    :root body .kl-owl { width: 72px; position: absolute; top: 14px; inset-inline-end: 14px; }
+    :root body .hero h1 { max-width: calc(100% - 80px); }
+    :root body .outline { border-radius: 22px; padding: 10px; background: rgba(255,255,255,.08); box-shadow: none; }
+    :root body .step { background: rgba(255,255,255,.1); color: #fff; min-height: 46px; border-radius: 999px; }
+    :root body .step .n { background: rgba(255,255,255,.18); color: #fff; width: 30px; height: 30px; border-radius: 50%; }
+    :root body .step.active { background: #fff; color: #0b1226; }
+    :root body .step.active .n { background: #0b1226; color: #fff; }
+    :root body .panel { border-radius: 26px; padding: 22px 18px 20px; }
+    :root body .panel-head h2 { font-size: 1.5rem; }
+    :root body .panel-nav { background: rgba(11,18,38,.92) !important; -webkit-backdrop-filter: blur(12px); backdrop-filter: blur(12px); border-top: 1px solid rgba(255,255,255,.1); }
+}
+@media (prefers-reduced-motion: reduce) { :root body .kl-owl { animation: none; } }
+</style>
+</head>
+<body>
+<header class="appbar"><div class="in">
+    <div class="brand"><span class="mark"><i class="fa-solid fa-chalkboard-user"></i></span><b>למד אותי</b><span class="tag">מרכז למידה</span></div>
+    <div class="breadcrumb" id="breadcrumb"></div>
+    <a href="tirgul.html" class="back-btn" id="back-btn"><i class="fa-solid fa-arrow-right"></i> חזרה</a>
+</div></header>
+
+<section class="hero"><div class="in">
+    <div class="hero-text">
+        <span class="eyebrow"><i class="fa-solid fa-graduation-cap"></i> שיעור נושא</span>
+        <h1 id="hero-title"></h1>
+        <p id="hero-sub">טוענים את התוכן של הנושא…</p>
+        <div id="hero-actions"></div>
+    </div>
+    <div class="hero-stats">
+        <div class="stat"><i class="fa-solid fa-layer-group"></i><b id="st-parts">–</b><span>חלקים</span></div>
+        <div class="stat"><i class="fa-solid fa-circle-play"></i><b id="st-vids">–</b><span>סרטוני הסבר</span></div>
+        <div class="stat"><i class="fa-solid fa-pen-to-square"></i><b id="st-ex">–</b><span>תרגילים במאגר</span></div>
+        <div class="ring" aria-label="התקדמות">
+            <svg viewBox="0 0 120 120"><defs><linearGradient id="ringGrad" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#22d3ee"/><stop offset="1" stop-color="#a78bfa"/></linearGradient></defs>
+                <circle class="bg" cx="60" cy="60" r="50" fill="none" stroke-width="10"/><circle class="fg" id="ring-fg" cx="60" cy="60" r="50" fill="none" stroke-width="10" stroke-linecap="round" stroke-dasharray="314.16" stroke-dashoffset="314.16"/></svg>
+            <div class="pct"><span id="ring-pct">0%</span><small>התקדמות</small></div>
+        </div>
+    </div>
+</div></section>
+
+<main class="in shell">
+    <aside class="outline" aria-label="מפת השיעור">
+        <div class="outline-head"><b>מפת השיעור</b><small id="progress-label"></small></div>
+        <div class="oprog"><i id="side-fill"></i></div>
+        <nav class="steps" id="outline"></nav>
+    </aside>
+    <div id="main">
+        <div id="status-box"></div>
+        <div id="lesson-sections"></div>
+        <div class="panel-nav" id="panel-nav" hidden>
+            <button class="nav-btn" id="prev-btn"><i class="fa-solid fa-arrow-right"></i> הקודם</button>
+            <button class="nav-btn primary" id="next-btn">הבא <i class="fa-solid fa-arrow-left"></i></button>
+        </div>
+        <a href="#" class="practice-cta" id="practice-cta"><i class="fa-solid fa-pencil"></i> מוכנים? עברו לתרגול על הנושא הזה</a>
+    </div>
+</main>
+
+<script>
+    const IDB_NAME = 'yoniLearnCache';
+    const IDB_STORE = 'lessons';
+
+    function idbOpen() {
+        return new Promise((resolve, reject) => {
+            const req = indexedDB.open(IDB_NAME, 1);
+            req.onupgradeneeded = () => {
+                if (!req.result.objectStoreNames.contains(IDB_STORE)) {
+                    req.result.createObjectStore(IDB_STORE);
+                }
+            };
+            req.onsuccess = () => resolve(req.result);
+            req.onerror = () => reject(req.error);
+        });
+    }
+
+    async function idbGet(key) {
+        try {
+            const db = await idbOpen();
+            return await new Promise((resolve, reject) => {
+                const tx = db.transaction(IDB_STORE, 'readonly');
+                const req = tx.objectStore(IDB_STORE).get(key);
+                req.onsuccess = () => resolve(req.result || null);
+                req.onerror = () => reject(req.error);
+            });
+        } catch (e) {
+            console.warn('[למד אותי] מטמון קבוע לא זמין (idbGet):', e);
+            return null;
+        }
+    }
+
+    async function idbSet(key, value) {
+        try {
+            const db = await idbOpen();
+            await new Promise((resolve, reject) => {
+                const tx = db.transaction(IDB_STORE, 'readwrite');
+                tx.objectStore(IDB_STORE).put(value, key);
+                tx.oncomplete = () => resolve();
+                tx.onerror = () => reject(tx.error);
+            });
+        } catch (e) {
+            console.warn('[למד אותי] שמירה למטמון קבוע נכשלה (idbSet):', e);
+        }
+    }
+
+    // =====================================================================================
+    // מנוע השמע/החיבור הקולי - פורט ישירות מ-practice.html (אותו מנגנון בדיוק שמפעיל את
+    // כפתורי רמז/פתרון מלא/דוגמה מוחשית שם, ומוכח כעובד). "למד אותי" משתמש באותה שיחה
+    // חיה עם יוני, עם actionType='teach-topic' חדש בשרת. ההפעלה בפועל (שליחת הבקשה
+    // ותחילת הדיבור) קורית רק בלחיצת התלמיד על "התחילו את השיעור" - אבל את החיבור
+    // עצמו (טוקן + WebSocket + setup) פותחים כבר ברקע מיד עם טעינת העמוד, כך שברגע
+    // שהתלמיד באמת לוחץ, הכל כבר מוכן ומרגיש מיידי לגמרי.
+    // =====================================================================================
+    window.yoniAudioCtx = null;
+    window.yoniOutputGain = null;
+    window.nextAudioTime = 0;
+    window.yoniActiveSources = [];
+    window.yoniAudioGen = 0;
+    window.yoniLastSentGen = 0;
+    window.yoniResponseActive = false;
+    window.yoniSetupComplete = false;
+    window.yoniSocket = null;
+    window.yoniConnectPromise = null;
+    window.yoniActiveSectionHelpKey = null;  // מפתח החלק שכרגע טוען/מתנגן, אם יש
+    window.yoniSectionRunningText = '';      // תמלול מצטבר של הבקשה הפעילה כרגע
+    window.yoniSectionRunningChunks = [];    // מקטעי PCM מצטברים של הבקשה הפעילה כרגע
+
+    function initAudioContext() {
+        try {
+            if ('audioSession' in navigator) navigator.audioSession.type = 'playback';
+        } catch (e) {}
+        if (!window.yoniAudioCtx) {
+            window.yoniAudioCtx = new (window.AudioContext || window.webkitAudioContext)({ sampleRate: 24000 });
+            window.yoniOutputGain = window.yoniAudioCtx.createGain();
+            window.yoniOutputGain.gain.value = 1.3;
+            const limiter = window.yoniAudioCtx.createDynamicsCompressor();
+            limiter.threshold.value = -6; limiter.knee.value = 4; limiter.ratio.value = 15;
+            limiter.attack.value = 0.002; limiter.release.value = 0.15;
+            window.yoniOutputGain.connect(limiter);
+            limiter.connect(window.yoniAudioCtx.destination);
+        }
+        if (window.yoniAudioCtx.state === 'suspended') window.yoniAudioCtx.resume();
+        // "טריק" ידוע לפתיחת נעילת שמע ב-Safari/iOS: מנגנים מיד באגר שקט כמעט-
+        // ריק. לפעמים resume() לבדו לא מספיק לשחרר בפועל את חומרת השמע במכשיר -
+        // צריך ניגון אמיתי, ולו רגעי, בתוך אותה מחוות-משתמש כדי שזה "יתפוס".
+        try {
+            const unlockBuffer = window.yoniAudioCtx.createBuffer(1, 1, window.yoniAudioCtx.sampleRate);
+            const unlockSource = window.yoniAudioCtx.createBufferSource();
+            unlockSource.buffer = unlockBuffer;
+            unlockSource.connect(window.yoniAudioCtx.destination);
+            unlockSource.start(0);
+        } catch (e) {}
+    }
+
+    function playAudioChunk(base64Data) {
+        initAudioContext();
+        try {
+            const binaryString = atob(base64Data);
+            const len = binaryString.length;
+            const bytes = new Uint8Array(len);
+            for (let i = 0; i < len; i++) bytes[i] = binaryString.charCodeAt(i);
+            const pcm16 = new Int16Array(bytes.buffer);
+            const frameCount = pcm16.length;
+            const audioBuffer = window.yoniAudioCtx.createBuffer(1, frameCount, 24000);
+            const channelData = audioBuffer.getChannelData(0);
+            for (let i = 0; i < frameCount; i++) channelData[i] = pcm16[i] / 32768;
+
+            const source = window.yoniAudioCtx.createBufferSource();
+            source.buffer = audioBuffer;
+            source.connect(window.yoniOutputGain);
+
+            const startAt = Math.max(window.nextAudioTime, window.yoniAudioCtx.currentTime);
+            source.start(startAt);
+            window.nextAudioTime = startAt + audioBuffer.duration;
+            window.yoniActiveSources.push(source);
+            source.onended = () => {
+                window.yoniActiveSources = window.yoniActiveSources.filter(s => s !== source);
+                if (window.yoniActiveSources.length === 0 && !window.yoniResponseActive) {
+                    onAllAudioPlaybackEnded();
+                }
+            };
+        } catch (e) {
+            console.error('[למד אותי] שגיאה בניגון מקטע שמע:', e);
+        }
+    }
+
+    function stopYoniAudio() {
+        try {
+            window.yoniActiveSources.forEach(s => { try { s.onended = null; s.stop(0); } catch (e) {} });
+        } catch (e) {}
+        window.yoniActiveSources = [];
+        window.nextAudioTime = 0;
+        window.yoniAudioGen = (window.yoniAudioGen || 0) + 1;
+        window.yoniResponseActive = false;
+    }
+
+    function closeYoniConnection() {
+        try {
+            if (window.yoniSocket) {
+                window.yoniSocket.onmessage = null;
+                window.yoniSocket.onerror = null;
+                window.yoniSocket.onclose = null;
+                window.yoniSocket.close();
+            }
+        } catch (e) {}
+        window.yoniSocket = null;
+        window.yoniSetupComplete = false;
+        window.yoniConnectPromise = null;
+    }
+
+    function ensureYoniConnection() {
+        if (window.yoniSocket && window.yoniSocket.readyState === WebSocket.OPEN && window.yoniSetupComplete) {
+            return Promise.resolve(true);
+        }
+        if (window.yoniConnectPromise) return window.yoniConnectPromise;
+
+        window.yoniConnectPromise = (async () => {
+            try {
+                const yoniEmail = localStorage.getItem('loggedInEmail') || '';
+                const yoniProfileName = localStorage.getItem('activeProfile') || '';
+                const yoniSid = (yoniEmail && yoniProfileName) ? (yoniEmail + '::' + yoniProfileName) : (yoniEmail || yoniProfileName || 'learn_user');
+
+                let tokenRes;
+                try {
+                    tokenRes = await fetch('/live-tutor/api/token?sid=' + encodeURIComponent(yoniSid));
+                } catch (fetchErr) {
+                    await new Promise((r) => setTimeout(r, 400));
+                    tokenRes = await fetch('/live-tutor/api/token?sid=' + encodeURIComponent(yoniSid));
+                }
+                if (!tokenRes.ok) throw new Error(`שרת ה-token החזיר סטטוס ${tokenRes.status}`);
+                const tokenData = await tokenRes.json();
+                if (!tokenData.token) throw new Error('לא התקבל טוקן חיבור מהשרת');
+
+                const wsUrl = `wss://generativelanguage.googleapis.com/ws/google.ai.generativelanguage.v1alpha.GenerativeService.BidiGenerateContentConstrained?access_token=${tokenData.token}`;
+                window.yoniSocket = new WebSocket(wsUrl);
+                window.yoniSetupComplete = false;
+
+                return await new Promise((resolve) => {
+                    let settled = false;
+                    const safeResolve = (val) => { if (settled) return; settled = true; clearTimeout(setupTimeoutId); resolve(val); };
+                    const setupTimeoutId = setTimeout(() => {
+                        try { window.yoniSocket.close(); } catch (e) {}
+                        safeResolve(false);
+                    }, 12000);
+
+                    window.yoniSocket.onopen = () => {
+                        const setupMsg = {
+                            setup: {
+                                model: "models/gemini-3.1-flash-live-preview",
+                                generationConfig: {
+                                    responseModalities: ["AUDIO"],
+                                    speechConfig: { voiceConfig: { prebuiltVoiceConfig: { voiceName: tokenData.voiceName || "Aoede" } } },
+                                    // תקרה על אורך התשובה: זו הדלת האחורית הכי יקרה שהייתה
+                                    // פתוחה כאן - אין שום הגבלה שמונעת מהמודל "להימשך" ולייצר
+                                    // תשובה קולית ארוכה ויקרה בהרבה מהצפוי להסבר של חלק שיעור
+                                    // בודד. 2048 טוקנים נותן מרווח נדיב (כמה דקות דיבור) בלי
+                                    // לחתוך הסברים תקינים, אבל עוצר ריצה חופשית אם המודל "נתקע"
+                                    // בלולאה או סתם מדבר יותר מדי.
+                                    maxOutputTokens: 2048
+                                },
+                                systemInstruction: { parts: [{ text: tokenData.systemInstruction || "" }] },
+                                // הדף הזה אף פעם לא פועל על tool call בפועל (ראו הטיפול
+                                // למטה - כל קריאה לכלי מקבלת תשובה גנרית "ממשיכים בקול
+                                // בלבד") - ולכן אין שום סיבה לשלם על הצהרת הכלים (סכמת
+                                // ה-JSON שלהם) בכל חיבור, ועדיף שהמודל אפילו לא ינסה
+                                // לקרוא לכלי שהוא ממילא לא יקבל ממנו כלום. מתעלמים
+                                // בכוונה מ-tokenData.tools ושולחים מערך ריק.
+                                tools: [],
+                                realtimeInputConfig: { automaticActivityDetection: tokenData.vad || {} },
+                                outputAudioTranscription: {}
+                            }
+                        };
+                        window.yoniSocket.send(JSON.stringify(setupMsg));
+                    };
+
+                    window.yoniSocket.onmessage = async (event) => {
+                        try {
+                            let responseData = event.data;
+                            if (responseData instanceof Blob) responseData = await responseData.text();
+                            const parsed = JSON.parse(responseData);
+
+                            if (parsed.setupComplete && !window.yoniSetupComplete) {
+                                window.yoniSetupComplete = true;
+                                safeResolve(true);
+                            }
+
+                            if (parsed.serverContent && parsed.serverContent.interrupted) {
+                                stopYoniAudio();
+                            }
+
+                            if (parsed.toolCall && Array.isArray(parsed.toolCall.functionCalls)) {
+                                const responses = parsed.toolCall.functionCalls.map(fc => ({
+                                    id: fc.id, name: fc.name,
+                                    response: { result: 'ok, ממשיכים בקול בלבד ללא תצוגה חזותית בעמוד הזה' }
+                                }));
+                                try { window.yoniSocket.send(JSON.stringify({ toolResponse: { functionResponses: responses } })); } catch (e) {}
+                            }
+
+                            const transcriptPiece = parsed?.serverContent?.outputTranscription?.text;
+                            if (transcriptPiece && window.yoniLastSentGen === window.yoniAudioGen) {
+                                appendSectionTranscript(transcriptPiece);
+                            }
+
+                            if (window.yoniLastSentGen === window.yoniAudioGen) {
+                                const parts = parsed?.serverContent?.modelTurn?.parts || [];
+                                for (const part of parts) {
+                                    if (part.inlineData && part.inlineData.mimeType && part.inlineData.mimeType.startsWith('audio/pcm')) {
+                                        playAudioChunk(part.inlineData.data);
+                                        if (window.yoniSectionRunningChunks) window.yoniSectionRunningChunks.push(part.inlineData.data);
+                                    }
+                                }
+                            }
+
+                            if (parsed.serverContent && (parsed.serverContent.turnComplete || parsed.serverContent.generationComplete)) {
+                                window.yoniResponseActive = false;
+                                onSectionTurnComplete();
+                            }
+                        } catch (e) {
+                            console.error('[למד אותי] שגיאה בפענוח הודעה קולית:', e);
+                        }
+                    };
+
+                    window.yoniSocket.onerror = () => {
+                        window.yoniResponseActive = false;
+                        safeResolve(false);
+                    };
+                    window.yoniSocket.onclose = () => {
+                        window.yoniSetupComplete = false;
+                        window.yoniResponseActive = false;
+                    };
+                });
+            } catch (err) {
+                console.error('[למד אותי] שגיאת חיבור:', err);
+                return false;
+            } finally {
+                window.yoniConnectPromise = null;
+            }
+        })();
+
+        return window.yoniConnectPromise;
+    }
+
+    // מתחברים כבר עכשיו, ברקע, בלי שהתלמיד יראה שום דבר - כדי שכשהוא באמת ילחץ
+    // "התחילו את השיעור" הקול יתחיל כמעט מיידית ולא ירגיש כמו המתנה נוספת.
+    // אם זה נכשל בשקט - לא נורא, startTeachSession ינסה שוב כרגיל בלחיצה עצמה.
+    function prewarmYoniConnection() {
+        ensureYoniConnection().catch(() => {});
+    }
+
+    // ═════════════════════════════════════════════════════════════════════
+    // עצירה מלאה בעת עזיבת העמוד - גם השתקה וגם סגירת החיבור החי עצמו
+    // ═════════════════════════════════════════════════════════════════════
+    // בלי זה: לחיצה על "עברו לתרגול" ואז "חזרה אחורה" בדפדפן (bfcache) משאירה
+    // את העמוד הקודם פעיל בזיכרון בדיוק כמו שהיה - כולל שמע שממשיך להתנגן,
+    // וכולל חיבור WebSocket שעדיין פתוח וממשיך "לצרוך" בצד השרת גם כשאף אחד
+    // לא שומע. ברגע שהעמוד מוסתר (טאב אחר, ניווט אחורה/קדימה, סגירה) - עוצרים
+    // הכל לגמרי. אם התלמיד חוזר לעמוד, הוא צריך ללחוץ שוב כדי להמשיך/להשמיע -
+    // בכוונה, כדי לא "להדליק" קול והתחברות מבלי שהתלמיד ממש ביקש את זה עכשיו.
+    function fullStopOnLeave() {
+        stopYoniAudio();
+        closeYoniConnection();
+        window.yoniResponseActive = false;
+        window.yoniSectionBusy = false;
+        // אם היה חלק פעיל (מתנגן/נטען) - מחזירים את כפתור האוזניות שלו למצב "מוכן"
+        // ולא משאירים אותו תקוע ויזואלית על "מתנגן" בזמן שבפועל שום דבר לא מתנגן.
+        if (window.yoniActiveSectionHelpKey && typeof setSectionBtnState === 'function') {
+            setSectionBtnState(window.yoniActiveSectionHelpKey, 'idle');
+            window.yoniActiveSectionHelpKey = null;
+        }
+    }
+
+    document.addEventListener('visibilitychange', () => {
+        if (document.hidden) fullStopOnLeave();
+    });
+    window.addEventListener('pagehide', fullStopOnLeave);
+
+    // =====================================================================
+    // מורה פרטי חי (אופציונלי) — כפתור "הסבר קולי מהמורה" בכל חלק.
+    // אותו מנגנון כמו בגרסה הקודמת (quick-action: teach-section), אבל הוא
+    // מופעל רק בלחיצה מפורשת, וההקראה נשמרת במטמון בדפדפן כך שהשמעה חוזרת
+    // של אותו חלק לא עולה טוקנים נוספים. ברירת המחדל בדף היא סרטוני הלוח.
+    // =====================================================================
+    window.LIVE_CFG = window.LIVE_CFG || {};
+    window.LiveUI = window.LiveUI || { btn: function () {}, state: function () {}, transcript: function () {}, saved: function () {} };
+    window.yoniSections = {};
+    const LIVE_LABELS = {
+        intro: 'המבוא', definition: 'ההגדרה', keyterms: 'מושגי המפתח', method: 'שיטת הפתרון',
+        example1: 'הדוגמה הראשונה', example2: 'הדוגמה השנייה', mistake: 'הטעות הנפוצה', summary: 'הסיכום'
+    };
+
+    function setSectionBtnState(key, state) { window.LiveUI.btn(key, state); }
+    function setSectionCardVisualState(key, state) { window.LiveUI.state(key, state); }
+
+    function appendSectionTranscript(piece) {
+        const key = window.yoniActiveSectionHelpKey;
+        if (!key) return;
+        window.yoniSectionRunningText = (window.yoniSectionRunningText || '') + piece;
+        window.LiveUI.transcript(key, window.yoniSectionRunningText, false);
+    }
+    function onSectionTurnComplete() {
+        const key = window.yoniActiveSectionHelpKey;
+        window.yoniSectionBusy = false;
+        if (key && window.yoniSectionRunningText) {
+            window.yoniSections[key] = { text: window.yoniSectionRunningText, chunks: window.yoniSectionRunningChunks || [] };
+            window.LiveUI.transcript(key, window.yoniSectionRunningText, true);
+            setSectionCardVisualState(key, 'idle');
+            saveSectionsToCache();
+        }
+        finishSectionPlaybackUI(key);
+    }
+    function finishSectionPlaybackUI(key) {
+        if (!key) return;
+        const check = () => {
+            if (window.yoniActiveSources.length === 0) {
+                setSectionBtnState(key, 'idle');
+                setSectionCardVisualState(key, 'idle');
+                if (window.yoniActiveSectionHelpKey === key) window.yoniActiveSectionHelpKey = null;
+                return true;
+            }
+            return false;
+        };
+        if (!check()) { const iv = setInterval(() => { if (check()) clearInterval(iv); }, 250); }
+    }
+    function onAllAudioPlaybackEnded() {
+        if (window.yoniActiveSectionHelpKey) finishSectionPlaybackUI(window.yoniActiveSectionHelpKey);
+    }
+
+    async function playLiveSection(key) {
+        const cfg = window.LIVE_CFG;
+        initAudioContext(); // חייב להיות סינכרוני בתוך אירוע הלחיצה (ספארי/אייפד)
+        if (window.yoniActiveSectionHelpKey === key && (window.yoniSectionBusy || window.yoniActiveSources.length > 0)) {
+            stopYoniAudio(); window.yoniSectionBusy = false; window.yoniActiveSectionHelpKey = null;
+            setSectionBtnState(key, 'idle'); setSectionCardVisualState(key, 'idle'); return;
+        }
+        if (window.yoniSectionBusy) return;
+        stopYoniAudio();
+        if (window.yoniActiveSectionHelpKey) setSectionBtnState(window.yoniActiveSectionHelpKey, 'idle');
+
+        const existing = window.yoniSections[key];
+        if (existing && existing.chunks && existing.chunks.length) {        // השמעה חוזרת מהמטמון: ללא עלות
+            window.yoniActiveSectionHelpKey = key;
+            window.yoniAudioGen = (window.yoniAudioGen || 0) + 1;
+            window.yoniLastSentGen = -1;
+            window.nextAudioTime = window.yoniAudioCtx ? window.yoniAudioCtx.currentTime : 0;
+            setSectionBtnState(key, 'playing');
+            existing.chunks.forEach(c => playAudioChunk(c));
+            return;
+        }
+
+        window.yoniSectionBusy = true;
+        setSectionBtnState(key, 'loading');
+        closeYoniConnection();
+        const connected = await ensureYoniConnection();
+        if (!connected) { window.yoniSectionBusy = false; setSectionBtnState(key, 'idle'); window.LiveUI.error && window.LiveUI.error(key); return; }
+        if (!window.yoniSectionBusy) return;
+
+        window.yoniActiveSectionHelpKey = key;
+        window.yoniAudioGen = (window.yoniAudioGen || 0) + 1;
+        window.yoniLastSentGen = window.yoniAudioGen;
+        window.nextAudioTime = window.yoniAudioCtx ? window.yoniAudioCtx.currentTime : 0;
+        window.yoniResponseActive = true;
+        window.yoniSectionRunningText = '';
+        window.yoniSectionRunningChunks = [];
+        setSectionCardVisualState(key, 'live');
+        setSectionBtnState(key, 'playing');
+        try {
+            const qaRes = await fetch('/live-tutor/api/quick-action', {
+                method: 'POST', headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    actionType: 'teach-section', focusSectionKey: key, focusSectionLabel: LIVE_LABELS[key] || key,
+                    subjectLabel: cfg.subjectLabel, topicLabel: cfg.topicLabel, subtopicLabel: cfg.subtopicLabel,
+                    sid: (localStorage.getItem('loggedInEmail') || '') + '::' + (localStorage.getItem('activeProfile') || ''),
+                    name: localStorage.getItem('activeProfile') || ''
+                })
+            });
+            if (!qaRes.ok) throw new Error('quick-action status ' + qaRes.status);
+            const qaData = await qaRes.json();
+            if (!qaData || !qaData.clientContentPayload) throw new Error('לא התקבל תוכן מהשרת');
+            if (window.yoniSocket && window.yoniSocket.readyState === WebSocket.OPEN && window.yoniSetupComplete) {
+                window.yoniSocket.send(JSON.stringify(qaData.clientContentPayload));
+            } else throw new Error('החיבור הקולי נסגר לפני שליחת הבקשה');
+        } catch (err) {
+            console.error('[למד אותי] שגיאה בהבאת חלק:', err);
+            window.yoniResponseActive = false; window.yoniSectionBusy = false; window.yoniActiveSectionHelpKey = null;
+            setSectionCardVisualState(key, 'idle'); setSectionBtnState(key, 'idle');
+            window.LiveUI.error && window.LiveUI.error(key);
+        }
+    }
+    function saveSectionsToCache() { if (window.LIVE_CFG.cacheKey) idbSet(window.LIVE_CFG.cacheKey, { sections: window.yoniSections, savedAt: Date.now() }); }
+    async function loadLiveCache() {
+        const c = window.LIVE_CFG.cacheKey ? await idbGet(window.LIVE_CFG.cacheKey) : null;
+        if (c && c.sections && typeof c.sections === 'object') {
+            Object.keys(c.sections).forEach(k => { const e = c.sections[k]; if (e && e.text && Array.isArray(e.chunks) && e.chunks.length) window.yoniSections[k] = e; });
+        }
+        return window.yoniSections;
+    }
+</script>
+<script src="wb-video.js"></script>
+<script>
+(function () {
+    'use strict';
+
+    // =====================================================================
+    // "למד אותי" — שיעור שנבנה כולו מהתוכן הקיים באתר (קבצי data/*.js:
+    // שאלות, רמזים, שלבי פתרון, תשובות סופיות). אין מורה קולי חי, אין פנייה
+    // למודל ואין עלות טוקנים: הכל נבנה בדפדפן ומוצג כטקסט + סרטוני לוח.
+    //
+    // תוכן מנוהל (אופציונלי): אם בקובץ הנתונים מוגדר lessonDB, הוא מקבל
+    // עדיפות על ההפקה האוטומטית. מבנה (כל שדה אופציונלי):
+    //   const lessonDB = [{ subTopic: 'שם תת-נושא',            // לא חובה
+    //     intro: 'טקסט פתיחה',
+    //     definition: ['משפט 1', 'משפט 2'],
+    //     keyTerms: [{ term: 'מונח', text: 'הסבר' }],
+    //     method: ['שלב 1', 'שלב 2'],
+    //     commonMistakes: [{ text: 'מה הטעות', wrong: 'ביטוי שגוי', right: 'ביטוי נכון' }],
+    //     summary: ['נקודה 1', 'נקודה 2'] }];
+    // =====================================================================
+
+    var params = new URLSearchParams(location.search);
+    var grade = (params.get('grade') || '').trim();
+    var subject = (params.get('subject') || 'math').trim().toLowerCase();
+    var topic = params.get('topic') || '';
+    var subtopic = params.get('subtopic') || '';
+    var topicLabel = params.get('topicLabel') || topic.replace(/_/g, ' ');
+    var subtopicLabel = params.get('subtopicLabel') || subtopic.replace(/_/g, ' ');
+    var lessonName = subtopicLabel || topicLabel || 'שיעור נושא';
+
+    var subjectFileMap = { math: 'math.html', english: 'english.html', hebrew: 'hebrew.html', arabic: 'arabic.html', finance: 'finance.html', science: 'science.html', tanach: 'tanach.html', trivia: 'index.html' };
+    var subjectLabelMap = { math: 'מתמטיקה', english: 'אנגלית', hebrew: 'לשון והבעה', arabic: 'ערבית', finance: 'חינוך פיננסי', science: 'מדעים', tanach: 'תנ"ך', trivia: 'טריוויה - ידע כללי' };
+    document.getElementById('back-btn').href = (subjectFileMap[subject] || 'math.html') + '?grade=' + encodeURIComponent(grade) + '&subject=' + encodeURIComponent(subject);
+    document.getElementById('practice-cta').href = 'practice.html?grade=' + encodeURIComponent(grade) + '&subject=' + encodeURIComponent(subject) + '&topic=' + encodeURIComponent(topic) + '&subtopic=' + encodeURIComponent(subtopic) + '&activity=' + encodeURIComponent('תרגול');
+
+    if (/^grade[1-4]$/i.test(grade)) document.documentElement.classList.add('kids');   // כיתות א-ד: גופן וכפתורים גדולים יותר
+    function $(id) { return document.getElementById(id); }
+    function escapeHtml(s) { return String(s == null ? '' : s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;'); }
+    function H(s) { return WBVideo.textToHtml(s, { autoMath: subject === 'math' }); }               // טקסט (+מתמטיקה) ← HTML בטוח
+    function M(s) { return WBVideo.mathToHtml(s); }
+    function hasHe(s) { return /[֐-׿]/.test(s); }
+    function stripMarks(s) { return String(s || '').replace(/<[^>]*>/g, ' ').replace(/\*\*/g, '').replace(/(?:xx|XX|××)/g, '').replace(/\s+/g, ' ').trim(); }
+    function sentences(s) { return (stripMarks(s).match(/[^.!?]+[.!?]?/g) || []).map(function (x) { return x.trim(); }).filter(Boolean); }
+
+    (function breadcrumb() {
+        var parts = [subjectLabelMap[subject] || 'לימודים', topicLabel];
+        if (subtopicLabel) parts.push(subtopicLabel);
+        $('breadcrumb').innerHTML = parts.filter(Boolean).map(function (p, i, a) {
+            return (i ? '<span class="crumb-sep">›</span>' : '') + '<span class="' + (i === a.length - 1 ? 'crumb-current' : '') + '">' + escapeHtml(p) + '</span>';
+        }).join('');
+        $('hero-title').textContent = lessonName;
+    })();
+
+    // ---------- טעינת קובץ הנתונים (אותו כלל נתיבים כמו בדף התרגול) ----------
+    function dataPaths() {
+        // זיהוי מקצוע: קודם פרמטר subject (מקור האמת); רק אם חסר - ניחוש לפי הנתיב. זהה ללוגיקה של דף התרגול.
+        var g = grade.toLowerCase(), sj = subject, full = (grade + '_' + subject + '_' + topic + '_' + subtopic).toLowerCase(), noSj = !sj;
+        function has() { for (var i = 0; i < arguments.length; i++) if (full.indexOf(arguments[i]) > -1) return true; return false; }
+        var isFin = sj === 'finance' || (noSj && has('finance', 'budget'));
+        var isEn = sj === 'english' || (noSj && has('english', 'grammar', 'vocabulary', 'reading', 'abc', 'past', 'present', 'future', 'progressive', 'simple', 'perfect', 'tenses', 'literature'));
+        var isHe = sj === 'hebrew' || (noSj && has('hebrew', 'לשון', 'syntax'));
+        var isAr = sj === 'arabic' || (noSj && has('arabic', 'ערבית'));
+        var isSci = sj === 'science' || (noSj && has('science', 'מדעים'));
+        var isTriv = sj === 'trivia' || (noSj && has('trivia', 'טריוויה'));
+        var isTan = sj === 'tanach' || (noSj && has('tanach', 'תנך', 'תנ"ך'));
+        var safe = topic.replace(/\s+/g, '_').replace(/'/g, ''), clean = safe.replace(/_\d{3,5}$/, ''), p = [];
+        var old = g.replace('35', ''), gnum = g.replace('grade', '');
+        function generic() { p.push('data/' + g + '_' + clean + '_' + old + '.js', 'data/' + g + '_' + safe + '.js', 'data/' + g + '_' + clean + '.js', 'data/' + safe + '.js', 'data/' + clean + '.js'); }
+        if (g === 'bar_ilan' || g === '5_6_bar_ilan') p.push('data/5_6_bar_ilan.js');
+        else if (g === '5_6' || g === 'ה-ו') p.push('data/5_6_' + safe + '.js');
+        else if (g === '35172' && safe === 'trigo_172') p.push('data/35172_trigonometry_172.js');
+        else if (isFin) p.push(topic ? 'data/finance_' + safe + '.js' : 'data/finance.js');
+        else if (isEn) p.push('data/english_' + safe + '.js');
+        else if (isHe) p.push(safe === 'יסודי_כללי' ? 'data/כללי_יסודי_כללי.js' : 'data/hebrew_' + safe + '.js');
+        else if (isAr) p.push('data/arabic_' + safe + '.js');
+        else if (isTriv) p.push('data/trivia.js');
+        else if (isSci) { p.push('data/' + g + '_science_' + gnum + '.js'); generic(); }      // מערכת הקידס: קובץ יחיד לכל כיתה (+ נתיבים כלליים כגיבוי)
+        else if (isTan) { p.push('data/' + g + '_tanach_' + gnum + '.js'); generic(); }
+        else generic();
+        return { paths: p, isSci: isSci };
+    }
+    function loadData() {
+        var paths = dataPaths().paths, i = 0;
+        return new Promise(function (resolve, reject) {
+            (function next() {
+                if (i >= paths.length) { reject(paths); return; }
+                var s = document.createElement('script');
+                s.src = paths[i++] + '?v=' + new Date().toISOString().slice(0, 10); s.async = false;
+                s.onload = function () { setTimeout(function () { var r = collectGlobals(); r.length ? resolve(r) : next(); }, 0); };
+                s.onerror = next;
+                document.head.appendChild(s);
+            })();
+        });
+    }
+    function collectGlobals() {
+        var raw = [];
+        ['readingTextsDB', 'questionsDB', 'questionsDB_grammar', 'questionsDB_syntax', 'questionsDB_part2', 'questionsDB_advanced', 'questionsDB_part3'].forEach(function (n) {
+            try { var v = (0, eval)('typeof ' + n + " !== 'undefined' ? " + n + ' : null'); if (Array.isArray(v)) raw = raw.concat(v); } catch (e) { }
+        });
+        return raw;
+    }
+    function managedLesson() {
+        var v = null; try { v = (0, eval)("typeof lessonDB !== 'undefined' ? lessonDB : null"); } catch (e) { }
+        if (!v) return null;
+        if (!Array.isArray(v)) return v;
+        var cur = subtopic.trim();
+        var hit = v.filter(function (x) { var s = (x.subTopic || x.subtopic || '').trim(); return cur && s && (s === cur || cur.indexOf(s) > -1 || s.indexOf(cur) > -1); })[0];
+        return hit || v.filter(function (x) { return !(x.subTopic || x.subtopic); })[0] || null;
+    }
+
+    // ---------- נרמול שאלות ----------
+    function normalize(raw) {
+        var cur = subtopic.trim(), out = [];
+        raw.forEach(function (item) {
+            var sub = (item.subTopic || item.subtopic || '').trim();
+            if (cur && sub && !(sub === cur || cur.indexOf(sub) > -1 || sub.indexOf(cur.split('(')[0].trim()) > -1)) return;
+            var list = (item.questions && Array.isArray(item.questions)) ? item.questions.map(function (q) { var n = {}; for (var k in q) n[k] = q[k]; n.passage = item.content; return n; }) : [item];
+            list.forEach(function (q) {
+                var text = q.question_text || q.question || q.text || q.sentence || '';
+                if (!text || q.passage) return;                         // שאלות קטע-קריאה לא מתאימות לדוגמה/סרטון
+                var steps = (q.solution_steps || []).map(function (s) {
+                    return typeof s === 'string' ? { text: s, math: '' } : { text: s.verbal_explanation || s.explanation || '', math: s.math_expression || '' };
+                }).filter(function (s) { return stripMarks(s.text) || String(s.math).trim(); });
+                var opts = q.options || q.answers || q.choices || [];
+                var corr = q.correctAnswer !== undefined ? q.correctAnswer : q.correct_answer;
+                var len = stripMarks(text).length; steps.forEach(function (s) { len += stripMarks(s.text).length + String(s.math).length; });
+                out.push({ text: text, hint: q.hint || '', steps: steps, final: q.final_answer == null ? '' : String(q.final_answer).trim(), options: Array.isArray(opts) ? opts : [], correct: corr, len: len, id: out.length });
+            });
+        });
+        return out;
+    }
+
+    // ---------- הפקת תוכן השיעור ----------
+    var SEEN_KEY = ['learnSeen', subject, grade, topic, subtopic].join('|').toLowerCase();
+    var seen = {};
+    try { seen = JSON.parse(localStorage.getItem(SEEN_KEY) || '{}') || {}; } catch (e) { seen = {}; }
+    function saveSeen() { try { localStorage.setItem(SEEN_KEY, JSON.stringify(seen)); } catch (e) { } }
+
+    var Q = [], MANAGED = null, sections = [];
+    var exState = { example1: 0, example2: 0 }, pools = { example1: [], example2: [] }, usedIds = {};
+
+    function pickPools() {
+        var ex = Q.filter(function (q) { return q.steps.length >= 2 || (q.steps.length === 1 && q.final); }).sort(function (a, b) { return a.len - b.len; });
+        // מעדיפים 2-8 שלבים; אם אין מספיק - לוקחים הכל
+        var good = ex.filter(function (q) { return q.steps.length >= 2 && q.steps.length <= 8; });
+        if (good.length >= 2) ex = good;
+        var n = ex.length, cut = Math.max(1, Math.floor(n * 0.5));
+        if (n === 1) { pools.example1 = ex.slice(); pools.example2 = []; }
+        else {
+            var p1 = ex.slice(0, cut), p2 = ex.slice(cut);
+            // דוגמה 1: מהקלות-בינוניות (מתחילות מהאמצע של החצי הקל), דוגמה 2: מהבינוניות-מאתגרות
+            pools.example1 = p1.slice(Math.floor(p1.length * 0.3)).concat(p1.slice(0, Math.floor(p1.length * 0.3)));
+            pools.example2 = p2.slice(0, Math.ceil(p2.length * 0.6));
+            if (!pools.example2.length) pools.example2 = p2;
+        }
+    }
+    function curEx(key) { var p = pools[key]; return p.length ? p[exState[key] % p.length] : null; }
+
+    var HINT_DEFAULT = /קראו את השאלה בעיון/;
+    function derivePrinciples() {
+        var map = {};
+        Q.forEach(function (q) {
+            var h = stripMarks(q.hint);
+            if (h.length < 15 || h.length > 220 || HINT_DEFAULT.test(h)) return;
+            var k = h.slice(0, 30);
+            (map[k] = map[k] || { text: h, n: 0 }).n++;
+        });
+        return Object.keys(map).map(function (k) { return map[k]; }).sort(function (a, b) { return b.n - a.n || a.text.length - b.text.length; }).slice(0, 3).map(function (x) { return x.text; });
+    }
+    function deriveTerms() {
+        var found = {}, re1 = /\*\*([^*\n]{2,28})\*\*/g, re2 = /(?:xx|XX|××)\s*([^xX×*<>\n]{2,28}?)\s*(?:xx|XX|××)/g;
+        function scan(text) {
+            [re1, re2].forEach(function (re) {
+                re.lastIndex = 0; var m;
+                while ((m = re.exec(String(text || '')))) {
+                    var t = m[1].trim();
+                    if (!/[A-Za-z֐-׿]/.test(t) || /[$\\=]/.test(t)) continue;
+                    var sent = sentences(text).filter(function (s) { return s.indexOf(t) > -1; })[0] || '';
+                    var f = found[t] = found[t] || { term: t, n: 0, text: sent };
+                    f.n++;
+                }
+            });
+        }
+        Q.forEach(function (q) { scan(q.hint); q.steps.forEach(function (s) { scan(s.text); }); });
+        return Object.keys(found).map(function (k) { return found[k]; }).sort(function (a, b) { return b.n - a.n; }).slice(0, 6);
+    }
+    function deriveMistakes() {
+        var re = /שימו לב|זהירות|טעות נפוצה|שגיאה נפוצה|אל תשכחו|היזהרו|לא לשכוח|שגוי|בטעות/, out = [], seenS = {};
+        Q.forEach(function (q) {
+            var src = [q.hint].concat(q.steps.map(function (s) { return s.text; }));
+            src.forEach(function (t) { sentences(t).forEach(function (s) { if (re.test(s) && s.length >= 15 && s.length <= 170 && !seenS[s]) { seenS[s] = 1; out.push(s); } }); });
+        });
+        return out.slice(0, 3);
+    }
+    function pickTrap() {
+        var c = Q.filter(function (q) { return q.options.length >= 3 && q.correct != null && q.options[q.correct] !== undefined && q.steps.length >= 1; }).sort(function (a, b) { return a.len - b.len; });
+        return c.length ? c[Math.floor(c.length * 0.5)] : null;
+    }
+    function pickQuiz(skip) {
+        var c = Q.filter(function (q) { return q.options.length >= 2 && q.correct != null && q.options[q.correct] !== undefined && !skip[q.id]; }).sort(function (a, b) { return a.len - b.len; });
+        if (c.length <= 3) return c;
+        return [c[Math.floor(c.length * 0.15)], c[Math.floor(c.length * 0.5)], c[Math.floor(c.length * 0.85)]];
+    }
+
+    // ---------- בניית סרטונים ----------
+    function exampleItems(q) {
+        var items = [{ k: 'q', text: q.text, label: 'התרגיל:' }];
+        q.steps.forEach(function (s, i) {
+            var last = i === q.steps.length - 1;
+            items.push({ k: 's', n: i + 1, text: stripMarks(s.text), math: s.math, final: last && !!String(s.math).trim(), spill: 'שלב ' + (i + 1) });
+        });
+        var lastMath = q.steps.length ? String(q.steps[q.steps.length - 1].math).replace(/\s+/g, '') : '';
+        if (q.final && q.final.replace(/\s+/g, '') !== lastMath) {
+            if (hasHe(q.final)) items.push({ k: 's', n: '✓', text: 'התשובה הסופית: ' + stripMarks(q.final), spill: 'תשובה' });
+            else items.push({ k: 's', n: '✓', text: 'התשובה הסופית:', math: q.final, final: true, spill: 'תשובה' });
+        }
+        return items;
+    }
+    function finalizeItems(items, mode) {
+        return items.map(function (it) {
+            var c = {}; for (var k in it) c[k] = it[k];
+            if (mode === 'single') { if (c.k === 'h') delete c.pill; else if (c.spill) c.pill = c.spill; }
+            else delete c.spill;
+            delete c.spill; return c;
+        });
+    }
+    function playVideo(items, title, onEnd) {
+        if (!window.WBVideo) return;
+        WBVideo.open({ title: title, items: items, onEnd: onEnd });
+    }
+    function sectionItems(sec) { return finalizeItems([{ k: 'h', text: sec.label }].concat(sec.items || []), 'single'); }
+    function playSection(sec) {
+        if (!(sec.items || []).length) return;
+        playVideo(sectionItems(sec), sec.label + ' · ' + lessonName, function () { markSeen(sec.key, true); });
+    }
+    function playFull() {
+        var all = [];
+        sections.forEach(function (s) { if (s.items && s.items.length) { all.push({ k: 'h', text: s.label, pill: s.short || s.label }); all = all.concat(s.items); } });
+        playVideo(finalizeItems(all, 'full'), 'שיעור מלא · ' + lessonName, function () { sections.forEach(function (s) { if (s.items && s.items.length) markSeen(s.key, true); }); });
+    }
+
+    function estSecs(items) {
+        var t = 1;
+        (items || []).forEach(function (it) {
+            var w = stripMarks((it.text || '') + ' ' + (it.term || '')).split(/\s+/).filter(Boolean).length;
+            t += (w ? Math.max(.8, w * .28) + .4 : 0) + (it.math ? 1.9 + (it.final ? .8 : 0) : 0) + .4;
+        });
+        return Math.round(t);
+    }
+    function mmss(s) { return Math.floor(s / 60) + ':' + ('0' + (s % 60)).slice(-2); }
+
+    // ---------- הגדרת החלקים ----------
+    function ptList(arr) { return '<ul class="pt-list">' + arr.map(function (t) { return '<li><i class="fa-solid fa-circle"></i><span>' + H(t) + '</span></li>'; }).join('') + '</ul>'; }
+    function exHtml(q, withFinal) {
+        var h = '<div class="ex-q">' + H(q.text) + '</div><div class="ex-steps">';
+        q.steps.forEach(function (s, i) {
+            h += '<div class="ex-step"><span class="n">' + (i + 1) + '</span><div style="flex:1;min-width:0">' +
+                (stripMarks(s.text) ? '<div>' + H(s.text) + '</div>' : '') +
+                (String(s.math).trim() ? '<div class="m">' + M(s.math) + '</div>' : '') + '</div></div>';
+        });
+        h += '</div>';
+        if (withFinal && q.final) h += '<div class="ex-final"><i class="fa-solid fa-circle-check"></i> תשובה סופית: ' + (hasHe(q.final) ? H(q.final) : M(q.final)) + '</div>';
+        return h;
+    }
+
+    function buildSections() {
+        sections = [];
+        var nEx = Q.filter(function (q) { return q.steps.length; }).length;
+        var M_ = MANAGED || {};
+
+        // 1. מבוא
+        sections.push({ key: 'intro', label: 'מבוא', short: 'מבוא', icon: 'fa-flag', color: 'var(--c-intro)', bg: 'var(--c-intro-bg)',
+            compute: function () {
+                var txt = M_.intro || ('בשיעור הזה נלמד את הנושא "' + lessonName + '" במקצוע ' + (subjectLabelMap[subject] || 'הלימוד') + '. במאגר יש ' + Q.length + ' תרגילים בנושא' + (nEx ? ', ו-' + nEx + ' מהם מגיעים עם פתרון מפורט שנראה שלב אחר שלב.' : '.'));
+                var list = ['הכלל והעיקרון של הנושא', 'שיטת פתרון עם דוגמאות מלאות', 'מלכודות שכדאי להכיר', 'בדיקה עצמית קצרה'];
+                return { html: '<p>' + H(txt) + '</p>', items: [{ k: 'p', text: txt }, { k: 'p', text: 'נעבור על: ' + list.join(', ') + '.' }] };
+            } });
+
+        // 2. הכלל והעיקרון
+        var principles = (M_.definition && M_.definition.length) ? [].concat(M_.definition) : derivePrinciples();
+        if (principles.length) sections.push({ key: 'definition', label: 'הכלל והעיקרון', short: 'כלל', icon: 'fa-lightbulb', color: 'var(--c-def)', bg: 'var(--c-def-bg)',
+            compute: function () {
+                return { html: ptList(principles) + (M_.definition ? '' : '<p class="muted" style="margin-top:8px">מתוך הרמזים והכללים שמופיעים בתרגילי הנושא.</p>'),
+                    items: principles.map(function (t, i) { return { k: 'p', text: (i + 1) + '. ' + stripMarks(t) }; }) };
+            } });
+
+        // 3. מושגי מפתח
+        var terms = (M_.keyTerms && M_.keyTerms.length) ? M_.keyTerms.map(function (t) { return { term: t.term, text: t.text }; }) : deriveTerms();
+        if (terms.length >= 2) sections.push({ key: 'keyterms', label: 'מושגי מפתח', short: 'מושגים', icon: 'fa-tags', color: 'var(--c-terms)', bg: 'var(--c-terms-bg)',
+            compute: function () {
+                return { html: '<ul class="pt-list">' + terms.map(function (t) { return '<li><i class="fa-solid fa-tag"></i><span><b>' + H(t.term) + '</b>' + (t.text ? ' – ' + H(t.text) : '') + '</span></li>'; }).join('') + '</ul>',
+                    items: terms.map(function (t) { return { k: 't', term: stripMarks(t.term), text: stripMarks(t.text || '') }; }) };
+            } });
+
+        // 4. שיטת פתרון (מהדוגמה הראשונה, או ממנוהל)
+        if ((M_.method && M_.method.length) || curEx('example1')) sections.push({ key: 'method', label: 'שיטת פתרון', short: 'שיטה', icon: 'fa-list-ol', color: 'var(--c-method)', bg: 'var(--c-method-bg)',
+            compute: function () {
+                var steps = (M_.method && M_.method.length) ? M_.method : curEx('example1').steps.map(function (s) { var f = sentences(s.text)[0]; return f || ''; }).filter(Boolean);
+                if (!steps.length) return { html: '<p class="muted">ראו את הדוגמה הראשונה למטה - שם השיטה מוצגת בפעולה.</p>', items: [] };
+                return { html: '<ol class="steps-ol">' + steps.map(function (t) { return '<li><span>' + H(t) + '</span></li>'; }).join('') + '</ol>' +
+                        (M_.method ? '' : '<p class="muted" style="margin-top:8px">מבוסס על שלבי הפתרון של הדוגמה הראשונה.</p>'),
+                    items: [{ k: 'p', text: 'כך פותרים, צעד אחר צעד:' }].concat(steps.map(function (t, i) { return { k: 's', n: i + 1, text: stripMarks(t) }; })) };
+            } });
+
+        // 5-6. דוגמאות
+        ['example1', 'example2'].forEach(function (key, idx) {
+            if (!curEx(key)) return;
+            sections.push({ key: key, label: 'דוגמה ' + (idx + 1), short: 'דוגמה ' + (idx + 1), icon: idx ? 'fa-pen-fancy' : 'fa-pen-ruler', color: idx ? 'var(--c-ex2)' : 'var(--c-ex1)', bg: idx ? 'var(--c-ex2-bg)' : 'var(--c-ex1-bg)',
+                alt: pools[key].length > 1,
+                compute: function () { var q = curEx(key); usedIds[key] = q.id; return { html: exHtml(q, true), items: exampleItems(q) }; } });
+        });
+
+        // 7. טעויות נפוצות / תשובות מפתות
+        var mistakes = (M_.commonMistakes && M_.commonMistakes.length) ? M_.commonMistakes : null;
+        var warn = mistakes ? [] : deriveMistakes();
+        var trap = pickTrap();
+        if (mistakes || warn.length || trap) sections.push({ key: 'mistake', label: 'טעות נפוצה', short: 'טעויות', icon: 'fa-circle-exclamation', color: 'var(--c-mistake)', bg: 'var(--c-mistake-bg)',
+            compute: function () {
+                var html = '', items = [];
+                if (mistakes) mistakes.forEach(function (m) {
+                    html += '<div style="margin-bottom:10px">' + (m.text ? '<p>' + H(m.text) + '</p>' : '') +
+                        (m.wrong ? '<div class="opt wrong" style="cursor:default"><i class="fa-solid fa-xmark"></i><span class="m">' + M(m.wrong) + '</span></div>' : '') +
+                        (m.right ? '<div class="opt right" style="cursor:default;margin-top:6px"><i class="fa-solid fa-check"></i><span class="m">' + M(m.right) + '</span></div>' : '') + '</div>';
+                    if (m.text) items.push({ k: 'p', text: m.text });
+                    if (m.wrong) items.push({ k: 'bad', text: 'לא נכון:', math: m.wrong });
+                    if (m.right) items.push({ k: 'good', text: 'נכון:', math: m.right });
+                });
+                if (warn.length) {
+                    html += ptList(warn) + '<p class="muted" style="margin-top:8px">הערות אזהרה מתוך הפתרונות בנושא.</p>';
+                    warn.forEach(function (w) { items.push({ k: 'p', text: w }); });
+                }
+                if (trap && !mistakes) {
+                    var opts = trap.options.map(function (o, i) {
+                        var ok = i === trap.correct;
+                        return '<div class="opt ' + (ok ? 'right good-mark' : 'wrong trap') + '" style="cursor:default"><i class="fa-solid ' + (ok ? 'fa-check' : 'fa-xmark') + '"></i><span>' + H(o) + '</span></div>';
+                    }).join('');
+                    html += '<div style="margin-top:10px"><b>תשובות מפתות - שימו לב:</b><div class="ex-q" style="margin-top:6px">' + H(trap.text) + '</div><div class="opt-row">' + opts + '</div></div>';
+                    items.push({ k: 'q', text: trap.text, label: 'שימו לב לשאלה:' });
+                    trap.options.forEach(function (o, i) { if (i !== trap.correct) items.push({ k: 'bad', text: o }); });
+                    items.push({ k: 'good', text: trap.options[trap.correct] });
+                    items.push({ k: 'p', text: 'ולמה זו התשובה הנכונה? נפתור:' });
+                    exampleItems(trap).slice(1).forEach(function (it) { items.push(it); });
+                }
+                return { html: html, items: items };
+            } });
+
+        // 8. סיכום
+        sections.push({ key: 'summary', label: 'סיכום', short: 'סיכום', icon: 'fa-flag-checkered', color: 'var(--c-summary)', bg: 'var(--c-summary-bg)',
+            compute: function () {
+                var pts = (M_.summary && M_.summary.length) ? [].concat(M_.summary) : [];
+                if (!pts.length) {
+                    pts.push('למדנו את הנושא "' + lessonName + '".');
+                    if (principles.length) pts.push('הכלל המרכזי: ' + stripMarks(principles[0]));
+                    var ex1 = curEx('example1');
+                    if (ex1 && ex1.steps.length) pts.push('פותרים בשיטה: ' + ex1.steps.length + ' שלבים - כמו בדוגמה הראשונה.');
+                    if (terms.length) pts.push('מושגים שכדאי לזכור: ' + terms.slice(0, 4).map(function (t) { return stripMarks(t.term); }).join(', ') + '.');
+                    pts.push('עכשיו בודקים את עצמנו - ואחר כך עוברים לתרגול.');
+                }
+                return { html: ptList(pts), items: pts.map(function (t) { return { k: 'p', text: stripMarks(t) }; }) };
+            } });
+
+        // 9. בדיקה עצמית
+        var quiz = pickQuiz({});
+        if (quiz.length) sections.push({ key: 'quiz', label: 'בדקו את עצמכם', short: 'בדיקה', icon: 'fa-circle-question', color: 'var(--c-quiz)', bg: 'var(--c-quiz-bg)', noVideo: true, quiz: quiz,
+            compute: function () { return { html: '', items: [] }; } });
+    }
+
+    // ---------- רינדור: חלק אחד בכל פעם, עם מפת שיעור ----------
+    function typeset(el) {
+        if (window.MathJax && MathJax.startup && MathJax.startup.promise) {
+            MathJax.startup.promise.then(function () { return MathJax.typesetPromise ? MathJax.typesetPromise([el]) : null; }).catch(function () { });
+        } else setTimeout(function () { typeset(el); }, 300);
+    }
+    var current = 0, LIVE_KEYS = { intro: 1, definition: 1, keyterms: 1, method: 1, example1: 1, example2: 1, mistake: 1, summary: 1 };
+    var KIND = { intro: 'פתיחה', definition: 'הכלל', keyterms: 'מושגים', method: 'שיטה', example1: 'דוגמה פתורה', example2: 'דוגמה פתורה', mistake: 'שימו לב', summary: 'סיכום', quiz: 'תרגול עצמי' };
+    function secByKey(k) { return sections.filter(function (s) { return s.key === k; })[0]; }
+
+    function render() {
+        var outline = $('outline'), host = $('lesson-sections'); outline.innerHTML = ''; host.innerHTML = '';
+        sections.forEach(function (sec, i) {
+            var accent = '--sec-color:' + sec.color + ';--sec-bg:' + sec.bg;
+            var chip = document.createElement('button'); chip.className = 'step'; chip.style.cssText = accent;
+            chip.innerHTML = '<span class="n">' + (i + 1) + '</span><span class="t"><b>' + escapeHtml(sec.label) + '</b><small>' + (KIND[sec.key] || '') + '</small></span><i class="fa-solid fa-circle-check ok"></i>';
+            chip.onclick = function () { show(i); }; outline.appendChild(chip); sec.chip = chip;
+
+            var card = document.createElement('section'); card.className = 'panel'; card.id = 'section-' + sec.key; card.hidden = true; card.style.cssText = accent;
+            card.innerHTML = '<div class="panel-head"><span class="ico"><i class="fa-solid ' + sec.icon + '"></i></span><div><div class="ey">חלק ' + (i + 1) + ' מתוך ' + sections.length + '</div><h2>' + escapeHtml(sec.label) + '</h2></div></div>' +
+                '<div class="ls-body"></div><div class="ls-actions"></div>';
+            host.appendChild(card);
+            sec.card = card; sec.body = card.querySelector('.ls-body'); sec.actions = card.querySelector('.ls-actions');
+            fill(sec);
+        });
+        $('panel-nav').hidden = false;
+        $('prev-btn').onclick = function () { show(current - 1); };
+        $('next-btn').onclick = function () {
+            if (sections[current]) markSeen(sections[current].key, true);
+            if (current < sections.length - 1) show(current + 1); else $('practice-cta').scrollIntoView({ behavior: 'smooth', block: 'center' });
+        };
+        var first = 0, all = true;
+        for (var i = 0; i < sections.length; i++) { if (!seen[sections[i].key]) { first = i; all = false; break; } }
+        show(all ? 0 : first, true);
+    }
+    function show(i, noScroll) {
+        if (i < 0 || i >= sections.length) return;
+        current = i;
+        sections.forEach(function (s, k) { s.card.hidden = (k !== i); s.chip.classList.toggle('active', k === i); });
+        $('prev-btn').disabled = (i === 0);
+        $('next-btn').innerHTML = (i === sections.length - 1) ? 'סיימתי <i class="fa-solid fa-check"></i>' : 'הבא <i class="fa-solid fa-arrow-left"></i>';
+        try { sections[i].chip.scrollIntoView({ inline: 'center', block: 'nearest' }); } catch (e) { }
+        if (!noScroll) { var top = $('main').getBoundingClientRect().top + window.pageYOffset - 84; if (window.pageYOffset > top) window.scrollTo({ top: Math.max(0, top), behavior: 'smooth' }); }
+        typeset(sections[i].card);
+        try { if (sections[i].items && sections[i].items.length && !sections[i].noVideo) WBVideo.prewarm(sectionItems(sections[i]), 3); } catch (e) { }
+    }
+    function mediaCard(cls, icon, title, sub) {
+        var b = document.createElement('button'); b.className = 'media-card ' + cls;
+        b.innerHTML = '<span class="thumb"><i class="fa-solid ' + icon + '"></i></span><span class="mt"><b>' + title + '</b><small>' + sub + '</small></span>';
+        return b;
+    }
+    function fill(sec) {
+        var r = sec.compute();
+        sec.items = r.items;
+        sec.body.innerHTML = r.html;
+        sec.actions.innerHTML = '';
+        var row = document.createElement('div'); row.className = 'media-row';
+        if (!sec.noVideo && r.items.length) {
+            var b = mediaCard('video', 'fa-play', 'סרטון הסבר', 'כתיבה על הלוח · כ-' + mmss(estSecs(r.items)));
+            b.onclick = function () { playSection(sec); };
+            b.onpointerenter = function () { try { WBVideo.prewarm(sectionItems(sec), 5); } catch (e) { } };
+            row.appendChild(b);
+        }
+        if (LIVE_KEYS[sec.key] && topic) {
+            var lb = mediaCard('live', 'fa-headphones-simple', 'הסבר קולי מהמורה', 'מורה פרטי · משמיע את החלק בקול');
+            lb.onclick = function () { if (typeof playLiveSection === 'function') playLiveSection(sec.key); }; row.appendChild(lb); sec.liveBtn = lb;
+        }
+        if (row.children.length) sec.actions.appendChild(row);
+        var tools = document.createElement('div'); tools.className = 'tools';
+        if (sec.alt) {
+            var c = document.createElement('button'); c.className = 'alt-btn'; c.innerHTML = '<i class="fa-solid fa-shuffle"></i> דוגמה אחרת';
+            c.onclick = function () { exState[sec.key]++; fill(sec); }; tools.appendChild(c);
+        }
+        var sp = document.createElement('span'); sp.className = 'spacer'; tools.appendChild(sp);
+        var sb = document.createElement('button'); sb.className = 'seen-btn'; sb.innerHTML = '<i class="fa-solid fa-circle-check"></i> <span></span>';
+        sb.onclick = function () { markSeen(sec.key, !seen[sec.key]); }; tools.appendChild(sb); sec.seenBtn = sb;
+        sec.actions.appendChild(tools);
+        var tx = document.createElement('details'); tx.className = 'live-tx'; tx.hidden = true; tx.innerHTML = '<summary>תמליל ההסבר הקולי</summary><div class="tx"></div>';
+        sec.actions.appendChild(tx); sec.tx = tx;
+        if (sec.quiz) renderQuiz(sec);
+        refreshSeen();
+        typeset(sec.card);
+    }
+    function renderQuiz(sec) {
+        var score = { done: 0, right: 0 }, total = sec.quiz.length;
+        var chip = document.createElement('div'); chip.className = 'score-chip'; chip.textContent = 'ענו על 0 מתוך ' + total;
+        sec.body.innerHTML = '';
+        var grid = document.createElement('div'); grid.className = 'quiz-grid'; sec.body.appendChild(grid);
+        sec.quiz.forEach(function (q, qi) {
+            var box = document.createElement('div'); box.className = 'quiz-q';
+            box.innerHTML = '<div class="qt">' + (qi + 1) + '. ' + H(q.text) + '</div><div class="opt-row"></div><div class="quiz-fb"></div><div class="quiz-solution"></div>';
+            var row = box.querySelector('.opt-row'), fb = box.querySelector('.quiz-fb');
+            q.options.forEach(function (o, oi) {
+                var b = document.createElement('button'); b.className = 'opt'; b.innerHTML = '<span>' + H(o) + '</span>';
+                b.onclick = function () {
+                    Array.prototype.forEach.call(row.children, function (x, xi) { x.disabled = true; if (xi === q.correct) x.classList.add('right'); });
+                    var ok = oi === q.correct; if (!ok) b.classList.add('wrong');
+                    fb.className = 'quiz-fb ' + (ok ? 'ok' : 'no');
+                    fb.innerHTML = ok ? '<i class="fa-solid fa-circle-check"></i> נכון!' : '<i class="fa-solid fa-circle-xmark"></i> לא בדיוק.' + (q.hint && !HINT_DEFAULT.test(q.hint) ? ' רמז: ' + H(q.hint) : '');
+                    if (q.steps.length) {
+                        var vb = document.createElement('button'); vb.className = 'vid-btn'; vb.innerHTML = '<i class="fa-solid fa-circle-play"></i> הסבר בסרטון';
+                        vb.onclick = function () { playVideo(finalizeItems(exampleItems(q), 'single'), 'פתרון · ' + lessonName); };
+                        box.querySelector('.quiz-solution').appendChild(vb);
+                    }
+                    score.done++; if (ok) score.right++;
+                    chip.textContent = 'ענו על ' + score.done + ' מתוך ' + total + ' · נכונות: ' + score.right;
+                    if (score.done === total) markSeen(sec.key, true);
+                    typeset(box);
+                };
+                row.appendChild(b);
+            });
+            grid.appendChild(box);
+        });
+        sec.body.appendChild(chip);
+    }
+
+    // ---------- התקדמות ----------
+    function markSeen(key, on) { if (on) seen[key] = 1; else delete seen[key]; saveSeen(); refreshSeen(); }
+    function refreshSeen() {
+        var n = 0;
+        sections.forEach(function (s) {
+            var on = !!seen[s.key]; if (on) n++;
+            if (s.chip) s.chip.classList.toggle('done', on);
+            if (s.seenBtn) { s.seenBtn.classList.toggle('on', on); s.seenBtn.querySelector('span').textContent = on ? 'נלמד ✓' : 'סימנתי שהבנתי'; }
+        });
+        var pct = sections.length ? Math.round(n / sections.length * 100) : 0;
+        var lb = $('progress-label'); if (lb) lb.textContent = n + ' / ' + sections.length;
+        var f = $('side-fill'); if (f) f.style.width = pct + '%';
+        var rg = $('ring-fg'); if (rg) rg.style.strokeDashoffset = String(314.16 * (1 - pct / 100));
+        var rp = $('ring-pct'); if (rp) rp.textContent = pct + '%';
+    }
+
+    // ---------- חיבור למורה החי (UI) ----------
+    window.LIVE_CFG = { cacheKey: ['v2-8sections', subject, grade, topic, subtopic].join('|').toLowerCase(), subjectLabel: subjectLabelMap[subject] || 'לימודים', topicLabel: topicLabel, subtopicLabel: subtopicLabel };
+    window.LiveUI = {
+        btn: function (key, st) {
+            var s = secByKey(key); if (!s || !s.liveBtn) return; var b = s.liveBtn;
+            b.disabled = (st === 'loading'); b.classList.toggle('playing', st === 'playing');
+            var again = window.yoniSections && window.yoniSections[key];
+            var icon = st === 'loading' ? 'fa-spinner fa-spin' : st === 'playing' ? 'fa-stop' : 'fa-headphones-simple';
+            var t = st === 'loading' ? 'מתחבר למורה…' : st === 'playing' ? 'עצור הקראה' : (again ? 'השמעה חוזרת' : 'הסבר קולי מהמורה');
+            var sub = st === 'loading' ? 'רגע, מכינים את ההסבר' : st === 'playing' ? 'המורה מסביר עכשיו' : (again ? 'מהמטמון · ללא עלות נוספת' : 'מורה פרטי · משמיע את החלק בקול');
+            b.innerHTML = '<span class="thumb"><i class="fa-solid ' + icon + '"></i></span><span class="mt"><b>' + t + '</b><small>' + sub + '</small></span>';
+        },
+        state: function () { },
+        transcript: function (key, text) {
+            var s = secByKey(key); if (!s || !s.tx) return; s.tx.hidden = false; s.tx.querySelector('.tx').innerHTML = H(text); typeset(s.tx);
+        },
+        error: function (key) {
+            var s = secByKey(key); if (!s || !s.tx) return; s.tx.hidden = false; s.tx.open = true;
+            s.tx.querySelector('.tx').textContent = 'לא הצלחנו להתחבר למורה כרגע. אפשר לנסות שוב, או לצפות בסרטון ההסבר.';
+        }
+    };
+    function restoreLive() {
+        if (typeof loadLiveCache !== 'function') return;
+        loadLiveCache().then(function (map) {
+            Object.keys(map).forEach(function (k) { var s = secByKey(k); if (s) { window.LiveUI.transcript(k, map[k].text); window.LiveUI.btn(k, 'idle'); } });
+        }).catch(function () { });
+    }
+
+    function heroInfo() {
+        var vids = sections.filter(function (s) { return s.items && s.items.length && !s.noVideo; }).length;
+        $('hero-sub').textContent = 'הסבר כתוב, סרטוני לוח שמראים כל פתרון נכתב שלב אחר שלב, ובדיקה עצמית בסוף - הכל בנוי מהתרגילים של הנושא.';
+        $('st-parts').textContent = sections.length; $('st-vids').textContent = vids; $('st-ex').textContent = Q.length;
+        var b = document.createElement('button'); b.className = 'vid-btn'; b.innerHTML = '<i class="fa-solid fa-circle-play"></i> צפו בשיעור המלא';
+        b.onclick = playFull; $('hero-actions').appendChild(b);
+        refreshSeen();
+    }
+    // מצב אדמין (?warm=1): מפיק ושומר מראש את כל ההקראות של כל סרטוני הנושא, כך שהתלמידים לא ימתינו לכלום
+    function warmUI() {
+        if (params.get('warm') !== '1') return;
+        var w = document.createElement('button'); w.className = 'vid-btn'; w.style.marginInlineStart = '10px'; w.innerHTML = '<i class="fa-solid fa-fire"></i> חימום הקראות לנושא (אדמין)';
+        w.onclick = function () {
+            w.disabled = true;
+            var lists = sections.filter(function (s) { return s.items && s.items.length && !s.noVideo; }).map(sectionItems);
+            WBVideo.warm(lists, function (d, t) { w.innerHTML = 'מחממים… ' + d + ' / ' + t; }).then(function (r) { w.innerHTML = '<i class="fa-solid fa-check"></i> הושלם: ' + (r.total - r.failed) + ' / ' + r.total + (r.failed ? ' (נכשלו ' + r.failed + ')' : ''); });
+        };
+        $('hero-actions').appendChild(w);
+    }
+    function note(html) { $('status-box').innerHTML = '<div class="empty-note">' + html + '</div>'; }
+
+    (function init() {
+        if (!topic) { $('hero-sub').textContent = ''; note('לא נבחר נושא. חזרו לרשימת הנושאים ובחרו נושא ללימוד.'); return; }
+        loadData().then(function (raw) {
+            Q = normalize(raw); MANAGED = managedLesson();
+            if (!Q.length && !MANAGED) { $('hero-sub').textContent = ''; note('נמצא קובץ נתונים לנושא, אבל לא נמצאו בו שאלות מתאימות לתת-הנושא שנבחר.'); return; }
+            pickPools(); buildSections(); render(); heroInfo(); restoreLive(); warmUI();
+            if (!Q.some(function (q) { return q.steps.length; }) && !MANAGED) note('לתרגילים בנושא הזה עדיין אין שלבי פתרון מפורטים (solution_steps), ולכן אין דוגמאות וסרטונים. אפשר להוסיף אותם בקובץ הנתונים.');
+        }).catch(function (paths) {
+            $('hero-sub').textContent = '';
+            note('לא נמצא קובץ נתונים לנושא הזה. חיפשנו:<br><span dir="ltr" style="display:block;margin-top:6px">' + (paths || []).map(escapeHtml).join('<br>') + '</span>');
+        });
+    })();
+})();
+</script>
+<script src="cookies.js" defer></script>
+<script id="kids-learn-2026-js">
+(function () { var h = document.querySelector(".hero .in"); if (!h || h.querySelector(".kl-owl")) return;
+  var d = document.createElement("div"); d.innerHTML = '<svg class="kl-owl" viewBox="0 0 200 215" aria-hidden="true">             <ellipse cx="62" cy="205" rx="20" ry="8" fill="#f59f00"/><ellipse cx="138" cy="205" rx="20" ry="8" fill="#f59f00"/>             <polygon points="42,58 52,22 78,50" fill="#7a4a24"/><polygon points="158,58 148,22 122,50" fill="#7a4a24"/>             <ellipse cx="100" cy="128" rx="76" ry="82" fill="#9a6235"/>             <ellipse cx="26" cy="140" rx="16" ry="44" fill="#7a4a24" transform="rotate(12 26 140)"/><ellipse cx="174" cy="140" rx="16" ry="44" fill="#7a4a24" transform="rotate(-12 174 140)"/>             <ellipse cx="100" cy="152" rx="48" ry="52" fill="#f6dfb8"/>             <path d="M78 150 q8 8 16 0 M106 150 q8 8 16 0 M92 168 q8 8 16 0" fill="none" stroke="#d9b98a" stroke-width="3" stroke-linecap="round"/>             <circle cx="70" cy="96" r="29" fill="#fff"/><circle cx="130" cy="96" r="29" fill="#fff"/>             <circle cx="74" cy="98" r="12" fill="#1b2440"/><circle cx="126" cy="98" r="12" fill="#1b2440"/>             <circle cx="78" cy="93" r="4" fill="#fff"/><circle cx="130" cy="93" r="4" fill="#fff"/>             <circle cx="70" cy="96" r="31" fill="none" stroke="#1b2440" stroke-width="5"/><circle cx="130" cy="96" r="31" fill="none" stroke="#1b2440" stroke-width="5"/>             <path d="M99 94 h2" stroke="#1b2440" stroke-width="5"/>             <polygon points="100,108 90,122 110,122" fill="#f59f00"/>             <polygon points="48,44 100,24 152,44 100,64" fill="#1b2440"/><rect x="78" y="50" width="44" height="14" rx="4" fill="#1b2440"/>             <path d="M152 44 v26" stroke="#ffc93c" stroke-width="4"/><circle cx="152" cy="74" r="6" fill="#ffc93c"/>         </svg>'; h.appendChild(d.firstChild); })();
+</script>
+</body>
+</html>

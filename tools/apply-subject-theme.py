@@ -13,6 +13,27 @@ CSS = open(os.path.join(HERE, 'subject-theme.css'), encoding='utf-8').read()
 FONTS = 'https://fonts.googleapis.com/css2?family=Frank+Ruhl+Libre:wght@500;700;900&family=Heebo:wght@400;500;600;700;800;900&display=swap'
 SUBJECTS = ['math', 'hebrew', 'english', 'arabic', 'finance', 'science']
 SYMBOL = {'math': 'x²', 'hebrew': 'אב', 'english': 'Aa', 'arabic': 'ع', 'finance': '₪', 'science': 'H₂O'}
+KIDS_CSS = open(os.path.join(HERE, 'kids-theme.css'), encoding='utf-8').read()
+KIDS_FONTS = FONTS.replace('&display=swap', '&family=Rubik:wght@400;500;700;800;900&display=swap')
+OWL = '''<div class="owl-wrap" aria-hidden="true"><span class="owl-say">היי! בואו נלמד יחד</span>
+<svg class="owl" viewBox="0 0 200 215" aria-hidden="true">
+<ellipse cx="62" cy="205" rx="20" ry="8" fill="#f59f00"/><ellipse cx="138" cy="205" rx="20" ry="8" fill="#f59f00"/>
+<polygon points="42,58 52,22 78,50" fill="#7a4a24"/><polygon points="158,58 148,22 122,50" fill="#7a4a24"/>
+<ellipse cx="100" cy="128" rx="76" ry="82" fill="#9a6235"/>
+<ellipse cx="26" cy="140" rx="16" ry="44" fill="#7a4a24" transform="rotate(12 26 140)"/><ellipse cx="174" cy="140" rx="16" ry="44" fill="#7a4a24" transform="rotate(-12 174 140)"/>
+<ellipse cx="100" cy="152" rx="48" ry="52" fill="#f6dfb8"/>
+<path d="M78 150 q8 8 16 0 M106 150 q8 8 16 0 M92 168 q8 8 16 0" fill="none" stroke="#d9b98a" stroke-width="3" stroke-linecap="round"/>
+<circle cx="70" cy="96" r="29" fill="#fff"/><circle cx="130" cy="96" r="29" fill="#fff"/>
+<circle cx="74" cy="98" r="12" fill="#1b2440"/><circle cx="126" cy="98" r="12" fill="#1b2440"/>
+<circle cx="78" cy="93" r="4" fill="#fff"/><circle cx="130" cy="93" r="4" fill="#fff"/>
+<ellipse class="lid" cx="70" cy="96" rx="29" ry="29" fill="#9a6235"/><ellipse class="lid" cx="130" cy="96" rx="29" ry="29" fill="#9a6235"/>
+<circle cx="70" cy="96" r="31" fill="none" stroke="#1b2440" stroke-width="5"/><circle cx="130" cy="96" r="31" fill="none" stroke="#1b2440" stroke-width="5"/>
+<path d="M99 94 h2" stroke="#1b2440" stroke-width="5"/>
+<polygon points="100,108 90,122 110,122" fill="#f59f00"/>
+<polygon points="48,44 100,24 152,44 100,64" fill="#1b2440"/><rect x="78" y="50" width="44" height="14" rx="4" fill="#1b2440"/>
+<path d="M152 44 v26" stroke="#ffc93c" stroke-width="4"/><circle cx="152" cy="74" r="6" fill="#ffc93c"/>
+</svg>
+</div>'''
 SIDE = ('learn', 'practice', 'quiz')          # הכרטיסים שבצד אריח הגיבור; כל השאר בשורה שמתחתיו
 
 SCRIPT = '''<script>
@@ -66,7 +87,7 @@ def take_element(src, start):
     raise ValueError('div לא סגור')
 
 
-def apply(path):
+def apply(path, kids=False):
     src = open(path, encoding='utf-8').read()
     name = os.path.basename(path).lower()
     subj = next((s for s in SUBJECTS if s in name), None)
@@ -74,11 +95,11 @@ def apply(path):
         raise SystemExit('לא זוהה מקצוע בשם הקובץ: ' + path)
 
     # 1. גופנים (את ה-viewport לא משנים: חסימת הזום מכוונת, נגד בעיית גלילה באנדרואיד)
-    src = re.sub(r'https://fonts\.googleapis\.com/css2\?[^"]+', FONTS, src)
+    src = re.sub(r'https://fonts\.googleapis\.com/css2\?[^"]+', KIDS_FONTS if kids else FONTS, src)
 
     # 2. גיליון העיצוב
     i, j = src.index('<style>'), src.index('</style>')
-    src = src[:i] + '<style>\n' + CSS.rstrip() + '\n    ' + src[j:]
+    src = src[:i] + '<style>\n' + CSS.rstrip() + (KIDS_CSS.rstrip() if kids else '') + '\n    ' + src[j:]
 
     # 3. פרטי הכותרת (מהמבנה המקורי או מהמעוצב)
     b = src.index('<body')
@@ -111,7 +132,7 @@ def apply(path):
     side = [h for h in html_cards if kind(h) in SIDE]
     row = [h for h in html_cards if kind(h) not in SIDE]
 
-    header = f'''<body class="subj-{subj}" data-subject="{subj}">
+    header = f'''<body class="subj-{subj}{' kids' if kids else ''}" data-subject="{subj}">
 
 <div id="floating-container" class="ambient-bg" aria-hidden="true"></div>
 
@@ -129,7 +150,7 @@ def apply(path):
             <p class="board-sub">{sub}</p>
             <div class="hero-actions"><button type="button" class="pill" id="studio-go"><i class="fa-solid fa-play" aria-hidden="true"></i><span>פותחים שיעור</span></button></div>
             <ol class="hero-path" aria-label="איך לומדים כאן"><li class="cap">המסלול המומלץ</li><li><b>1</b><span>למד אותי<small>שיעור מסודר על הנושא</small></span></li><li><b>2</b><span>תרגול<small>עם רמזים ופתרון מלא</small></span></li><li><b>3</b><span>בוחן או מבחן<small>בודקים שזה יושב</small></span></li></ol>
-            <div class="shapes" aria-hidden="true"><i class="s1"></i><i class="s2"></i><i class="s3"></i><b class="sym">{SYMBOL[subj]}</b></div>
+            {OWL if kids else '<div class="shapes" aria-hidden="true"><i class="s1"></i><i class="s2"></i><i class="s3"></i><b class="sym">' + SYMBOL[subj] + '</b></div>'}
         </section>
         <div class="studio-side">
         {(chr(10) + '        ').join(side)}
@@ -155,10 +176,12 @@ def apply(path):
 if __name__ == '__main__':
     out_dir = None
     args = sys.argv[1:]
+    kids = '--kids' in args
+    if kids: args.remove('--kids')
     if '--out' in args:
         k = args.index('--out'); out_dir = args[k + 1]; del args[k:k + 2]
     for p in args:
-        html = apply(p)
-        dest = os.path.join(out_dir, re.sub(r'^[0-9a-f]{8}-', '', os.path.basename(p))) if out_dir else p
+        html = apply(p, kids)
+        dest = os.path.join(out_dir, re.sub(r'_\d+\.html$', '.html', re.sub(r'^[0-9a-f]{8}-', '', os.path.basename(p)))) if out_dir else p
         open(dest, 'w', encoding='utf-8').write(html)
         print('עוצב:', dest)
