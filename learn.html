@@ -361,23 +361,24 @@
             radial-gradient(800px 600px at 0% 45%, rgba(124,58,237,.20), transparent 60%),
             linear-gradient(180deg, #111a36 0, #0b1226 900px) no-repeat, #0b1226; color: #fff; }
     html { background: #0b1226; }
-    @media (min-width: 1025px) { body { zoom: .9; } }
+    @media (min-width: 901px) { html, html.kids { font-size: 15.5px; } html.big, html.kids.big { font-size: 18px; } }
+    .in { max-width: 1100px; }
     .bar { background: rgba(11,18,38,.72); backdrop-filter: blur(14px); border-bottom: 1px solid var(--gline); }
-    .bar .in { height: 72px; }
-    .brand { color: #fff; font-family: var(--hand); font-weight: 900; font-size: 1.25rem; }
+    .bar .in { height: 60px; }
+    .brand { color: #fff; font-family: var(--hand); font-weight: 900; font-size: 1.1rem; }
     .brand i { background: linear-gradient(135deg, #3b82f6, #1d4ed8); color: #fff; border-radius: 13px; box-shadow: 0 10px 22px -10px rgba(59,130,246,.9); }
     .pill { background: rgba(255,255,255,.1); color: #fff; border: 1px solid var(--gline); box-shadow: none; font-weight: 700; }
     .pill:hover { background: rgba(255,255,255,.18); transform: none; }
     .pill[aria-pressed="true"] { background: #fff; color: #0b1226; }
 
     /* כותרת: אריח זכוכית */
-    .classroom .in { grid-template-columns: minmax(0, 1fr) 300px; align-items: stretch; gap: 18px; }
-    .board { border: 1px solid var(--gline); border-radius: 30px; padding: clamp(24px, 3.4vw, 42px); color: #fff;
+    .classroom .in { grid-template-columns: minmax(0, 1fr) 260px; align-items: stretch; gap: 14px; }
+    .board { border: 1px solid var(--gline); border-radius: 24px; padding: clamp(20px, 2.6vw, 30px); color: #fff;
         background: radial-gradient(600px 360px at 0% 100%, rgba(59,130,246,.26), transparent 70%), linear-gradient(160deg, rgba(255,255,255,.09), rgba(255,255,255,.03));
         box-shadow: inset 0 1px 0 rgba(255,255,255,.08), var(--shadow); }
     .board::before, .board::after, .tray { display: none; }
     .crumbs, .crumbs a { color: #b7c2e0; }
-    .board h1 { font-family: var(--hand); font-weight: 900; font-size: clamp(2.4rem, 5.4vw, 4.4rem); line-height: 1; letter-spacing: -.02em; text-shadow: none; }
+    .board h1 { font-family: var(--hand); font-weight: 900; font-size: clamp(1.8rem, 3.2vw, 2.7rem); line-height: 1; letter-spacing: -.02em; text-shadow: none; }
     .board .underline { display: block; width: 64px; height: 4px; margin-top: 16px; }
     .board .underline path { stroke: var(--sun); stroke-width: 12; }
     .board-sub { color: var(--chalk-2); }
@@ -391,18 +392,18 @@
 
     /* המורה: אריח עם טיפ, בלי הינשוף */
     .owl { display: none; }
-    .teacher { justify-content: center; border-radius: 30px; padding: 26px; color: #fff;
+    .teacher { justify-content: center; border-radius: 24px; padding: 20px; color: #fff;
         background: linear-gradient(155deg, #22304f, #0f172a); border: 1px solid rgba(147,180,255,.25); box-shadow: var(--shadow); }
-    .teacher::before { content: "\f0eb"; font-family: "Font Awesome 6 Free"; font-weight: 900; width: 52px; height: 52px; display: grid; place-items: center; border-radius: 16px; background: linear-gradient(135deg, #f5b83d, #d99a1c); color: #1a1205; font-size: 1.25rem; margin-bottom: 14px; align-self: flex-start; }
-    .bubble { background: transparent; border: 0; box-shadow: none; padding: 0; margin: 0; font-size: 1.1rem; font-weight: 600; line-height: 1.6; color: #e6ecff; min-height: 0; width: 100%; }
+    .teacher::before { content: "\f0eb"; font-family: "Font Awesome 6 Free"; font-weight: 900; width: 42px; height: 42px; display: grid; place-items: center; border-radius: 13px; background: linear-gradient(135deg, #f5b83d, #d99a1c); color: #1a1205; font-size: 1.05rem; margin-bottom: 10px; align-self: flex-start; }
+    .bubble { background: transparent; border: 0; box-shadow: none; padding: 0; margin: 0; font-size: 1rem; font-weight: 600; line-height: 1.6; color: #e6ecff; min-height: 0; width: 100%; }
     .bubble::after { display: none; }
     .bubble b { color: #fcd27a; }
 
     /* דף השיעור: כרטיס לבן */
-    .paper { border: 0; border-radius: 30px; box-shadow: var(--shadow); padding: clamp(22px, 3.2vw, 42px); color: var(--ink); }
+    .paper { border: 0; border-radius: 24px; box-shadow: var(--shadow); padding: clamp(20px, 2.6vw, 32px); color: var(--ink); }
     .paper::before, .paper::after { display: none; }
     .tab { background: #0f172a; transform: none; border-radius: 999px; padding: 6px 15px; }
-    .paper-head h2 { font-family: var(--hand); font-weight: 900; font-size: clamp(1.8rem, 3.4vw, 2.5rem); color: var(--ink); }
+    .paper-head h2 { font-family: var(--hand); font-weight: 900; font-size: clamp(1.5rem, 2.4vw, 1.9rem); color: var(--ink); }
     .h3 i { color: var(--blue); }
     .q-card { background: var(--q); border: 1px solid #e2e8f0; border-radius: 20px; }
     .q-card .lbl { color: var(--blue); }

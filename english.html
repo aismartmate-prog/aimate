@@ -68,9 +68,8 @@
             linear-gradient(180deg, var(--bg-2) 0, var(--bg) 900px) no-repeat, var(--bg); }
     button, input, select { font-family: inherit; }
     /* מחשב וטאבלט: הכל קטן ב-10% (בנייד נשאר בגודל מלא) */
-    @media (min-width: 1025px) { body { zoom: .9; } }
     :focus-visible { outline: 3px solid var(--gold); outline-offset: 3px; border-radius: 12px; }
-    .in, .container { width: 100%; max-width: 1240px; margin: 0 auto; padding-inline: clamp(14px, 3.4vw, 40px); }
+    .in, .container { width: 100%; max-width: 1140px; margin: 0 auto; padding-inline: clamp(14px, 3.4vw, 40px); }
 
     /* סמלי המקצוע המרחפים ברקע (כמו במקור) - עדינים מאוד */
     .ambient-bg { position: fixed; inset: 0; z-index: 0; pointer-events: none; overflow: hidden; }
@@ -79,63 +78,63 @@
 
     /* ---------- סרגל עליון ---------- */
     .topbar { position: sticky; top: 0; z-index: 50; background: rgba(11,18,38,.72); backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px); border-bottom: 1px solid var(--gline); }
-    .topbar .in { display: flex; align-items: center; gap: 12px; height: 72px; }
-    .brand { display: flex; align-items: center; gap: 11px; text-decoration: none; color: #fff; font-family: var(--serif); font-weight: 900; font-size: 1.25rem; margin-inline-end: auto; min-width: 0; white-space: nowrap; }
-    .brand i { width: 40px; height: 40px; flex-shrink: 0; display: grid; place-items: center; border-radius: 13px; background: linear-gradient(135deg, #3b82f6, #1d4ed8); color: #fff; font-size: 1rem; box-shadow: 0 10px 22px -10px rgba(59,130,246,.9); }
+    .topbar .in { display: flex; align-items: center; gap: 12px; height: 60px; }
+    .brand { display: flex; align-items: center; gap: 11px; text-decoration: none; color: #fff; font-family: var(--serif); font-weight: 900; font-size: 1.08rem; margin-inline-end: auto; min-width: 0; white-space: nowrap; }
+    .brand i { width: 34px; height: 34px; flex-shrink: 0; display: grid; place-items: center; border-radius: 13px; background: linear-gradient(135deg, #3b82f6, #1d4ed8); color: #fff; font-size: 1rem; box-shadow: 0 10px 22px -10px rgba(59,130,246,.9); }
     .brand em { font-style: normal; color: #93b4ff; }
-    .back-btn { display: inline-flex; align-items: center; gap: 9px; min-height: 44px; padding: 8px 20px; border-radius: 999px; background: var(--glass-2); border: 1px solid var(--gline); color: #fff; font-weight: 700; font-size: .95rem; text-decoration: none; white-space: nowrap; transition: background .25s; }
+    .back-btn { display: inline-flex; align-items: center; gap: 9px; min-height: 38px; padding: 6px 16px; border-radius: 999px; background: var(--glass-2); border: 1px solid var(--gline); color: #fff; font-weight: 700; font-size: .88rem; text-decoration: none; white-space: nowrap; transition: background .25s; }
     .back-btn:hover { background: rgba(255,255,255,.18); }
 
     /* ---------- פריסת האריחים ---------- */
-    .content { position: relative; z-index: 1; padding-top: 28px; padding-bottom: 70px; }
+    .content { position: relative; z-index: 1; padding-top: 20px; padding-bottom: 70px; }
     .welcome-text, .section-title { display: none; }
-    .studio-top { display: grid; grid-template-columns: minmax(0, 7fr) minmax(0, 5fr); gap: 18px; }
-    .studio-side { display: grid; grid-template-columns: 1fr 1fr; grid-template-rows: 1fr 1fr; gap: 18px; }
+    .studio-top { display: grid; grid-template-columns: minmax(0, 7fr) minmax(0, 5fr); gap: 14px; }
+    .studio-side { display: grid; grid-template-columns: 1fr 1fr; grid-template-rows: 1fr 1fr; gap: 14px; }
     .studio-side > .card.learn { grid-column: 1 / -1; }
-    .studio-row { display: flex; flex-wrap: wrap; gap: 18px; margin-top: 18px; }
-    .studio-row > * { flex: 1 1 200px; min-height: 220px; }
-    .studio-row .card h3 { font-size: 1.5rem; }
+    .studio-row { display: flex; flex-wrap: wrap; gap: 14px; margin-top: 14px; }
+    .studio-row > * { flex: 1 1 180px; min-height: 160px; }
+    .studio-row .card h3 { font-size: 1.2rem; }
     .card p { padding-inline-end: 0; }
     .card-arrow { display: none !important; }
 
     /* אריח הפתיחה */
-    .hero { position: relative; overflow: hidden; isolation: isolate; border-radius: 32px; padding: clamp(28px, 4vw, 52px); min-height: 480px; display: flex; flex-direction: column;
+    .hero { position: relative; overflow: hidden; isolation: isolate; border-radius: 26px; padding: clamp(22px, 3vw, 36px); min-height: 340px; display: flex; flex-direction: column;
         background: radial-gradient(600px 360px at 0% 100%, rgba(59,130,246,.28), transparent 70%), linear-gradient(160deg, rgba(255,255,255,.09), rgba(255,255,255,.03));
         border: 1px solid var(--gline); box-shadow: var(--sh); backdrop-filter: blur(6px); }
     .hero::after { content: ""; position: absolute; z-index: -1; inset: 0; border-radius: inherit; background: linear-gradient(90deg, transparent, rgba(255,255,255,.35), transparent) top / 70% 1px no-repeat; }
-    .grade-chip { align-self: flex-start; display: inline-flex; align-items: center; gap: 9px; margin: 0; padding: 7px 16px; border-radius: 999px; background: var(--glass-2); border: 1px solid var(--gline); color: #dbe5ff; font-weight: 700; font-size: .92rem; }
+    .grade-chip { align-self: flex-start; display: inline-flex; align-items: center; gap: 9px; margin: 0; padding: 5px 13px; border-radius: 999px; background: var(--glass-2); border: 1px solid var(--gline); color: #dbe5ff; font-weight: 700; font-size: .82rem; }
     .grade-chip::before { content: ""; width: 7px; height: 7px; border-radius: 50%; background: var(--gold); box-shadow: 0 0 10px var(--gold); }
-    .board-title { display: flex; align-items: center; gap: 20px; margin: 26px 0 0; font-family: var(--serif); font-weight: 900; font-size: clamp(3rem, 6.8vw, 5.6rem); line-height: 1; letter-spacing: -.02em; animation: fade .8s var(--ease) both; }
-    .board-title i { font-size: .42em; width: 2.1em; height: 2.1em; flex-shrink: 0; display: grid; place-items: center; border-radius: 22px; background: linear-gradient(135deg, #3b82f6, #1d4ed8); color: #fff; box-shadow: 0 16px 34px -14px rgba(59,130,246,.95), inset 0 1px 0 rgba(255,255,255,.3); }
+    .board-title { display: flex; align-items: center; gap: 14px; margin: 16px 0 0; font-family: var(--serif); font-weight: 900; font-size: clamp(2.1rem, 3.6vw, 3.2rem); line-height: 1.05; letter-spacing: -.02em; animation: fade .8s var(--ease) both; }
+    .board-title i { font-size: .46em; width: 2em; height: 2em; flex-shrink: 0; display: grid; place-items: center; border-radius: 14px; background: linear-gradient(135deg, #3b82f6, #1d4ed8); color: #fff; box-shadow: 0 16px 34px -14px rgba(59,130,246,.95), inset 0 1px 0 rgba(255,255,255,.3); }
     .underline { display: none; }
-    .board-sub { margin: 20px 0 0; color: var(--muted); font-size: 1.15rem; line-height: 1.65; max-width: 40ch; }
-    .hero-actions { display: flex; flex-wrap: wrap; gap: 12px; margin-top: auto; padding-top: 30px; }
-    .pill { display: inline-flex; align-items: center; gap: 10px; min-height: 54px; padding: 10px 26px; border-radius: 999px; border: 0; background: #fff; color: #0b1226; font-weight: 800; font-size: 1.02rem; text-decoration: none; cursor: pointer; box-shadow: 0 16px 34px -16px rgba(0,0,0,.8); transition: transform .25s var(--ease); max-width: 100%; }
+    .board-sub { margin: 12px 0 0; color: var(--muted); font-size: 1rem; line-height: 1.65; max-width: 40ch; }
+    .hero-actions { display: flex; flex-wrap: wrap; gap: 12px; margin-top: auto; padding-top: 20px; }
+    .pill { display: inline-flex; align-items: center; gap: 10px; min-height: 44px; padding: 8px 22px; border-radius: 999px; border: 0; background: #fff; color: #0b1226; font-weight: 800; font-size: .92rem; text-decoration: none; cursor: pointer; box-shadow: 0 16px 34px -16px rgba(0,0,0,.8); transition: transform .25s var(--ease); max-width: 100%; }
     .pill span { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
     .pill:hover { transform: translateY(-2px); }
     .shapes { display: none; }
     /* מסלול הלמידה בצד אריח הפתיחה */
-    .hero-path { list-style: none; margin: 28px 0 0; padding: 0; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px; max-width: 620px; }
-    .hero-path li { display: flex; align-items: center; gap: 12px; padding: 14px; border-radius: 18px; background: rgba(11,18,38,.4); border: 1px solid var(--gline); font-weight: 700; font-size: .98rem; color: #e6ecff; line-height: 1.25; }
-    .hero-path b { width: 32px; height: 32px; flex-shrink: 0; display: grid; place-items: center; border-radius: 10px; font-size: .92rem; color: #fff; }
+    .hero-path { list-style: none; margin: 18px 0 0; padding: 0; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px; max-width: 620px; }
+    .hero-path li { display: flex; align-items: center; gap: 10px; padding: 10px 12px; border-radius: 14px; background: rgba(11,18,38,.4); border: 1px solid var(--gline); font-weight: 700; font-size: .86rem; color: #e6ecff; line-height: 1.25; }
+    .hero-path b { width: 26px; height: 26px; flex-shrink: 0; display: grid; place-items: center; border-radius: 10px; font-size: .92rem; color: #fff; }
     .hero-path li:nth-child(2) b { background: linear-gradient(135deg, #3b82f6, #1d4ed8); } .hero-path li:nth-child(3) b { background: linear-gradient(135deg, #1a84ff, #003f8a); }
     .hero-path li:nth-child(4) b { background: linear-gradient(135deg, #9b3ff0, #4c1d95); }
-    .hero-path small { display: block; margin-top: 2px; font-size: .78rem; font-weight: 500; color: var(--muted-2); }
+    .hero-path small { display: block; margin-top: 2px; font-size: .72rem; font-weight: 500; color: var(--muted-2); }
     .hero-path .cap { display: none; }
 
     /* כרטיסי הפעילות - הגרדיאנטים המקוריים, בצורת אריח גדול */
     .card { --g1: #0072ff; --g2: #003f8a; --glow: rgba(0,114,255,.55);
-        position: relative; overflow: hidden; isolation: isolate; display: flex; flex-direction: column; align-items: flex-start; gap: 6px; min-height: 220px; padding: 26px; border-radius: 28px; cursor: pointer; color: #fff;
+        position: relative; overflow: hidden; isolation: isolate; display: flex; flex-direction: column; align-items: flex-start; gap: 4px; min-height: 160px; padding: 18px 20px; border-radius: 22px; cursor: pointer; color: #fff;
         background: linear-gradient(155deg, var(--g1) 0%, var(--g2) 100%); border: 1px solid rgba(255,255,255,.12);
         box-shadow: inset 0 1px 0 rgba(255,255,255,.2), 0 22px 44px -26px var(--glow); transition: transform .35s var(--ease), box-shadow .35s var(--ease); animation: rise .6s var(--ease) both; }
     .card::before { content: ""; position: absolute; z-index: -1; inset: 0; border-radius: inherit; background: linear-gradient(180deg, rgba(255,255,255,.14), transparent 46%); }
     .card::after { display: none; }
     .card:hover { transform: translateY(-5px); box-shadow: inset 0 1px 0 rgba(255,255,255,.24), 0 30px 60px -26px var(--glow); }
     .card:active { transform: translateY(-1px); }
-    .card-icon { width: 58px; height: 58px; flex-shrink: 0; display: grid; place-items: center; border-radius: 18px; background: rgba(255,255,255,.16); border: 1px solid rgba(255,255,255,.22); color: #fff; font-size: 1.4rem; margin-bottom: auto; box-shadow: inset 0 1px 0 rgba(255,255,255,.2); }
-    .card > div:not(.card-icon):not(.card-arrow) { margin-top: 22px; }
-    .card h3 { margin: 0; font-size: 1.85rem; font-weight: 800; line-height: 1.15; letter-spacing: -.01em; color: #fff; }
-    .card p { margin: 6px 0 0; font-size: 1rem; font-weight: 500; line-height: 1.45; color: rgba(255,255,255,.82); }
+    .card-icon { width: 44px; height: 44px; flex-shrink: 0; display: grid; place-items: center; border-radius: 13px; background: rgba(255,255,255,.16); border: 1px solid rgba(255,255,255,.22); color: #fff; font-size: 1.1rem; margin-bottom: auto; box-shadow: inset 0 1px 0 rgba(255,255,255,.2); }
+    .card > div:not(.card-icon):not(.card-arrow) { margin-top: 14px; }
+    .card h3 { margin: 0; font-size: 1.4rem; font-weight: 800; line-height: 1.15; letter-spacing: -.01em; color: #fff; }
+    .card p { margin: 4px 0 0; font-size: .88rem; font-weight: 500; line-height: 1.45; color: rgba(255,255,255,.82); }
     .card-arrow { position: absolute; bottom: 24px; inset-inline-end: 24px; width: 40px; height: 40px; border-radius: 50%; display: grid; place-items: center; background: rgba(255,255,255,.14); border: 1px solid rgba(255,255,255,.22); color: #fff; font-size: .95rem; transition: transform .35s var(--ease), background .3s; }
     .card:hover .card-arrow { transform: translateX(-4px); background: rgba(255,255,255,.24); }
 
@@ -145,7 +144,7 @@
     .card.learn { order: -1; --g1: #22304f; --g2: #0f172a; --glow: rgba(59,130,246,.45); border-color: rgba(147,180,255,.28); }
     .card.learn .card-icon { background: linear-gradient(135deg, #3b82f6, #1d4ed8); border-color: transparent; box-shadow: 0 12px 26px -12px rgba(59,130,246,.95); }
     .card.learn .card-arrow { display: none; }
-    .card.learn h3::after { content: "מתחילים כאן"; position: absolute; top: 28px; inset-inline-end: 26px; padding: 6px 14px; border-radius: 999px; background: var(--gold); color: #1a1205; font-size: .8rem; font-weight: 800; letter-spacing: .01em; }
+    .card.learn h3::after { content: "מתחילים כאן"; position: absolute; top: 20px; inset-inline-end: 20px; padding: 4px 11px; border-radius: 999px; background: var(--gold); color: #1a1205; font-size: .72rem; font-weight: 800; letter-spacing: .01em; }
     .card.bagrut { --g1: #0ea5c6; --g2: #164e63; --glow: rgba(8,145,178,.55); }
     .card.barilan { --g1: #f08a3c; --g2: #7c2d12; --glow: rgba(234,128,52,.5); }
     .card.game { --g1: #ef2b55; --g2: #7f1d1d; --glow: rgba(225,29,72,.55); }
@@ -153,16 +152,16 @@
     .card.abc-card { --g1: #14c08a; --g2: #065f46; --glow: rgba(16,185,129,.5); }
 
     /* אריח "ההתקדמות שלי" */
-    .resume { position: relative; overflow: hidden; display: flex; flex-direction: column; gap: 6px; padding: 26px; border-radius: 28px; text-decoration: none; color: #fff; cursor: pointer; min-height: 220px;
+    .resume { position: relative; overflow: hidden; display: flex; flex-direction: column; gap: 4px; padding: 18px 20px; border-radius: 22px; text-decoration: none; color: #fff; cursor: pointer; min-height: 160px;
         background: linear-gradient(160deg, rgba(255,255,255,.09), rgba(255,255,255,.03)); border: 1px solid var(--gline); box-shadow: var(--sh); transition: transform .35s var(--ease), background .3s; animation: rise .6s var(--ease) .15s both; }
     .resume:hover { transform: translateY(-5px); background: linear-gradient(160deg, rgba(255,255,255,.12), rgba(255,255,255,.05)); }
     .resume .ring { display: flex; align-items: baseline; gap: 6px; margin-bottom: auto; background: none !important; }
-    .resume .ring b { font-family: var(--serif); font-size: 2.6rem; font-weight: 900; line-height: 1; color: #fff; }
+    .resume .ring b { font-family: var(--serif); font-size: 1.9rem; font-weight: 900; line-height: 1; color: #fff; }
     div.resume .ring { display: none; }
-    div.resume::before { content: "\f201"; font-family: "Font Awesome 6 Free"; font-weight: 900; width: 58px; height: 58px; display: grid; place-items: center; border-radius: 18px; background: rgba(255,255,255,.1); border: 1px solid var(--gline); font-size: 1.3rem; margin-bottom: auto; }
-    .resume h3 { margin: 18px 0 0; font-size: 1.5rem; font-weight: 800; line-height: 1.2; }
+    div.resume::before { content: "\f201"; font-family: "Font Awesome 6 Free"; font-weight: 900; width: 44px; height: 44px; display: grid; place-items: center; border-radius: 13px; background: rgba(255,255,255,.1); border: 1px solid var(--gline); font-size: 1.3rem; margin-bottom: auto; }
+    .resume h3 { margin: 12px 0 0; font-size: 1.15rem; font-weight: 800; line-height: 1.2; }
     .resume p { margin: 4px 0 0; color: var(--muted); font-weight: 500; }
-    .resume .go { position: static; align-self: flex-start; margin-top: 16px; display: inline-flex; align-items: center; gap: 8px; padding: 8px 15px; border-radius: 999px; background: #fff; color: #0b1226; font-weight: 800; font-size: .85rem; }
+    .resume .go { position: static; align-self: flex-start; margin-top: 10px; display: inline-flex; align-items: center; gap: 8px; padding: 8px 15px; border-radius: 999px; background: #fff; color: #0b1226; font-weight: 800; font-size: .85rem; }
 
     /* ---------- חלון הבחירה ---------- */
     .modal-overlay { display: none; position: fixed; inset: 0; z-index: 100; align-items: center; justify-content: center; padding: 16px; background: rgba(5,9,22,.62); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); }
