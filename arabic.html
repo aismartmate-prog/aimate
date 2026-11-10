@@ -28,7 +28,7 @@
       })();
     </script>
 
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
     <title>ערבית - המרכז להישגים לימודיים</title>
 <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Amatic+SC:wght@700&family=Rubik:wght@400;500;600;700;800;900&display=swap" onload="this.onload=null;this.rel='stylesheet'">
     <link rel="preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" onload="this.onload=null;this.rel='stylesheet'">
@@ -41,7 +41,7 @@
     
     <style>
     /* =====================================================================
-       עיצוב "הכיתה" לעמודי המקצוע (math / hebrew / english / arabic / finance).
+       עיצוב "הכיתה" לעמודי המקצוע (math / hebrew / english / arabic / finance / science).
        אותה שפה כמו learn.html: קיר שמנת, לוח גיר ירוק במסגרת עץ, המורה יוני,
        כרטיסי פעילות צבעוניים עם צל "תלת-ממדי", וחלון בחירה בסגנון מחברת.
        מקור: tools/subject-theme.css - מוחל על העמודים עם tools/apply-subject-theme.py
@@ -62,6 +62,7 @@
     body.subj-english { --sub: #d97a00; --sub-2: #a85f00; --sub-soft: #fff1dc; }
     body.subj-arabic { --sub: #e85d04; --sub-2: #b34500; --sub-soft: #ffeadb; }
     body.subj-finance { --sub: #0e8494; --sub-2: #0a6470; --sub-soft: #dcf3f6; }
+    body.subj-science { --sub: #0f8f65; --sub-2: #0b6e4e; --sub-soft: #def5ec; }
 
     * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
     html { -webkit-text-size-adjust: 100%; scroll-behavior: smooth; }
@@ -155,7 +156,7 @@
     .modal-content::before { content: ""; position: absolute; inset-block: 0; inset-inline-start: 34px; width: 2px; background: #f6b4b4; }
     .modal-content::after { content: ""; position: absolute; inset-block: 0; inset-inline-start: 8px; width: 12px; background: radial-gradient(circle, var(--wall-2) 5px, transparent 6px) 0 20px / 12px 56px repeat-y; }
     .modal-content h2, #modal-inner-content h2 { margin: 0 0 18px; padding-inline-end: 50px; font-size: 1.7rem; font-weight: 900; color: var(--ink); line-height: 1.2; }
-    #modal-inner-content h2::after { content: ""; display: block; width: 70px; height: 6px; margin-top: 8px; border-radius: 3px; background: var(--sub); }
+    #modal-inner-content h2::after, #modal-title:not(:empty)::after { content: ""; display: block; width: 70px; height: 6px; margin-top: 8px; border-radius: 3px; background: var(--sub); }
     #modal-inner-content, #modal-inner-content * { font-family: var(--font) !important; }
     #modal-inner-content .fa-solid, #modal-inner-content .fa-regular { font-family: "Font Awesome 6 Free" !important; }
     #modal-inner-content p { color: var(--ink-2) !important; }

@@ -10,7 +10,7 @@ import os, re, sys
 HERE = os.path.dirname(os.path.abspath(__file__))
 CSS = open(os.path.join(HERE, 'subject-theme.css'), encoding='utf-8').read()
 FONTS = 'https://fonts.googleapis.com/css2?family=Amatic+SC:wght@700&family=Rubik:wght@400;500;600;700;800;900&display=swap'
-SUBJECTS = ['math', 'hebrew', 'english', 'arabic', 'finance']
+SUBJECTS = ['math', 'hebrew', 'english', 'arabic', 'finance', 'science']
 
 OWL = '''<svg class="owl" viewBox="0 0 200 215" aria-hidden="true">
             <ellipse cx="62" cy="205" rx="20" ry="8" fill="#f59f00"/><ellipse cx="138" cy="205" rx="20" ry="8" fill="#f59f00"/>
@@ -60,8 +60,7 @@ def apply(path):
     if not subj:
         raise SystemExit('לא זוהה מקצוע בשם הקובץ: ' + path)
 
-    # 1. viewport נגיש (מאפשר הגדלה) + גופנים
-    src = re.sub(r'<meta name="viewport"[^>]*>', '<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">', src, count=1)
+    # 1. גופנים (את ה-viewport לא משנים: חסימת הזום מכוונת, נגד בעיית גלילה באנדרואיד)
     src = re.sub(r'https://fonts\.googleapis\.com/css2\?[^"]+', FONTS, src)
 
     # 2. גיליון העיצוב
