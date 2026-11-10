@@ -9,26 +9,8 @@ import os, re, sys
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 CSS = open(os.path.join(HERE, 'subject-theme.css'), encoding='utf-8').read()
-FONTS = 'https://fonts.googleapis.com/css2?family=Amatic+SC:wght@700&family=Rubik:wght@400;500;600;700;800;900&display=swap'
+FONTS = 'https://fonts.googleapis.com/css2?family=Frank+Ruhl+Libre:wght@500;700;900&family=Rubik:wght@400;500;600;700;800;900&display=swap'
 SUBJECTS = ['math', 'hebrew', 'english', 'arabic', 'finance', 'science']
-
-OWL = '''<svg class="owl" viewBox="0 0 200 215" aria-hidden="true">
-            <ellipse cx="62" cy="205" rx="20" ry="8" fill="#f59f00"/><ellipse cx="138" cy="205" rx="20" ry="8" fill="#f59f00"/>
-            <polygon points="42,58 52,22 78,50" fill="#7a4a24"/><polygon points="158,58 148,22 122,50" fill="#7a4a24"/>
-            <ellipse cx="100" cy="128" rx="76" ry="82" fill="#9a6235"/>
-            <ellipse cx="26" cy="140" rx="16" ry="44" fill="#7a4a24" transform="rotate(12 26 140)"/><ellipse cx="174" cy="140" rx="16" ry="44" fill="#7a4a24" transform="rotate(-12 174 140)"/>
-            <ellipse cx="100" cy="152" rx="48" ry="52" fill="#f6dfb8"/>
-            <path d="M78 150 q8 8 16 0 M106 150 q8 8 16 0 M92 168 q8 8 16 0" fill="none" stroke="#d9b98a" stroke-width="3" stroke-linecap="round"/>
-            <circle cx="70" cy="96" r="29" fill="#fff"/><circle cx="130" cy="96" r="29" fill="#fff"/>
-            <circle cx="74" cy="98" r="12" fill="#1b2440"/><circle cx="126" cy="98" r="12" fill="#1b2440"/>
-            <circle cx="78" cy="93" r="4" fill="#fff"/><circle cx="130" cy="93" r="4" fill="#fff"/>
-            <ellipse class="lid" cx="70" cy="96" rx="29" ry="29" fill="#9a6235"/><ellipse class="lid" cx="130" cy="96" rx="29" ry="29" fill="#9a6235"/>
-            <circle cx="70" cy="96" r="31" fill="none" stroke="#1b2440" stroke-width="5"/><circle cx="130" cy="96" r="31" fill="none" stroke="#1b2440" stroke-width="5"/>
-            <path d="M99 94 h2" stroke="#1b2440" stroke-width="5"/>
-            <polygon points="100,108 90,122 110,122" fill="#f59f00"/>
-            <polygon points="48,44 100,24 152,44 100,64" fill="#1b2440"/><rect x="78" y="50" width="44" height="14" rx="4" fill="#1b2440"/>
-            <path d="M152 44 v26" stroke="#ffc93c" stroke-width="4"/><circle cx="152" cy="74" r="6" fill="#ffc93c"/>
-        </svg>'''
 
 # נגישות: הכרטיסים הם div עם onclick - הופכים אותם לכפתורים שאפשר להפעיל גם מהמקלדת
 A11Y = '''<script>
@@ -96,19 +78,13 @@ def apply(path):
 </div></header>
 
 <section class="classroom"><div class="in">
-    <div class="board-wrap">
-        <div class="board">
-            <p id="grade-display" class="grade-chip">{grade}</p>
-            <h1 class="board-title"><i class="{icon}" aria-hidden="true"></i><span>{label}</span></h1>
-            <svg class="underline" viewBox="0 0 300 12" preserveAspectRatio="none" aria-hidden="true"><path d="M4 7 C 60 1, 110 11, 160 6 S 250 2, 296 8"/></svg>
-            <p class="board-sub">{sub}</p>
-        </div>
-        <div class="tray" aria-hidden="true"></div>
+    <div class="board">
+        <p id="grade-display" class="grade-chip">{grade}</p>
+        <h1 class="board-title"><i class="{icon}" aria-hidden="true"></i><span>{label}</span></h1>
+        <span class="underline" aria-hidden="true"></span>
+        <p class="board-sub">{sub}</p>
+        <p class="board-tip"><i class="fa-solid fa-lightbulb" aria-hidden="true"></i><span>נושא חדש? מתחילים ב<b>למד אותי</b>, ואחר כך עוברים ל<b>תרגול</b>.</span></p>
     </div>
-    <aside class="teacher" aria-label="המורה יוני">
-        <div class="bubble">שלום! אני <b>יוני</b>. בחרו פעילות. נושא חדש? מתחילים ב<b>למד אותי</b> - ואחר כך <b>תרגול</b>.</div>
-        {OWL}
-    </aside>
 </div></section>
 
 <div class="container content">'''
