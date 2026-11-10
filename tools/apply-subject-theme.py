@@ -128,6 +128,7 @@ def apply(path):
             <h1 class="board-title"><i class="{icon}" aria-hidden="true"></i><span>{label}</span></h1>
             <p class="board-sub">{sub}</p>
             <div class="hero-actions"><button type="button" class="pill" id="studio-go"><i class="fa-solid fa-play" aria-hidden="true"></i><span>פותחים שיעור</span></button></div>
+            <ol class="hero-path" aria-label="איך לומדים כאן"><li class="cap">המסלול המומלץ</li><li><b>1</b><span>למד אותי<small>שיעור מסודר על הנושא</small></span></li><li><b>2</b><span>תרגול<small>עם רמזים ופתרון מלא</small></span></li><li><b>3</b><span>בוחן או מבחן<small>בודקים שזה יושב</small></span></li></ol>
             <div class="shapes" aria-hidden="true"><i class="s1"></i><i class="s2"></i><i class="s3"></i><b class="sym">{SYMBOL[subj]}</b></div>
         </section>
         <div class="studio-side">
