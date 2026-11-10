@@ -11,8 +11,8 @@ import os, re, sys
 HERE = os.path.dirname(os.path.abspath(__file__))
 CSS = open(os.path.join(HERE, 'subject-theme.css'), encoding='utf-8').read()
 FONTS = 'https://fonts.googleapis.com/css2?family=Frank+Ruhl+Libre:wght@500;700;900&family=Heebo:wght@400;500;600;700;800;900&display=swap'
-SUBJECTS = ['math', 'hebrew', 'english', 'arabic', 'finance', 'science']
-SYMBOL = {'math': 'x²', 'hebrew': 'אב', 'english': 'Aa', 'arabic': 'ع', 'finance': '₪', 'science': 'H₂O'}
+SUBJECTS = ['math', 'hebrew', 'english', 'arabic', 'finance', 'science', 'tanach']
+SYMBOL = {'math': 'x²', 'hebrew': 'אב', 'english': 'Aa', 'arabic': 'ع', 'finance': '₪', 'science': 'H₂O', 'tanach': 'א'}
 KIDS_CSS = open(os.path.join(HERE, 'kids-theme.css'), encoding='utf-8').read()
 KIDS_FONTS = FONTS.replace('&display=swap', '&family=Rubik:wght@400;500;700;800;900&display=swap')
 OWL = '''<div class="owl-wrap" aria-hidden="true"><span class="owl-say">היי! בואו נלמד יחד</span>
