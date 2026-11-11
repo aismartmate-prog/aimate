@@ -493,7 +493,20 @@
     @media (max-width: 600px) {
         .dock { background: rgba(11,18,38,.94); border-top: 1px solid var(--gline); }
     }
-</style>
+
+    /* ---------- טלפון וטאבלט: סרגל ההתקדמות קבוע בתחתית כמו באפליקציה, ולא מסתיר את הטקסט ---------- */
+    @media (max-width: 1024px) {
+        #lesson:not([hidden]) { padding-bottom: calc(104px + env(safe-area-inset-bottom)); }
+        #lesson, main.desk, .desk, .in { -webkit-backdrop-filter: none; backdrop-filter: none; transform: none; filter: none; }
+        .dock { position: fixed; inset: auto 0 0 0; z-index: 70; margin: 0; padding: 10px 16px calc(10px + env(safe-area-inset-bottom)); gap: 10px; justify-content: center;
+            background: #0d1530; border-top: 1px solid var(--gline); border-radius: 22px 22px 0 0; box-shadow: 0 -16px 34px -18px rgba(0,0,0,.75); }
+        .dock .next { flex: 1 1 0; min-width: 0; max-width: 520px; min-height: 56px; }
+        .dock .prev { min-height: 56px; min-width: 56px; }
+        .dock .prev span { display: none; }
+        .toast { bottom: calc(96px + env(safe-area-inset-bottom)); }
+        .bar { padding-top: env(safe-area-inset-top); }
+    }
+    </style>
 </head>
 <body>
 <header class="bar"><div class="in">

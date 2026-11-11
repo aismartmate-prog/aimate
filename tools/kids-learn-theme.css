@@ -96,4 +96,14 @@ html { background: #0b1226; }
     :root body .panel-head h2 { font-size: 1.5rem; }
     :root body .panel-nav { background: rgba(11,18,38,.92) !important; -webkit-backdrop-filter: blur(12px); backdrop-filter: blur(12px); border-top: 1px solid rgba(255,255,255,.1); }
 }
+/* טלפון וטאבלט: "הקודם / הבא" בסרגל קבוע בתחתית, אטום, כך שהטקסט לא מוסתר ולא "נגלל" מתחתיו */
+@media (max-width: 1024px) {
+    :root body { padding-bottom: calc(96px + env(safe-area-inset-bottom)); overscroll-behavior-y: none; }
+    :root body #main, :root body .shell, :root body .panel { -webkit-backdrop-filter: none; backdrop-filter: none; transform: none; filter: none; }
+    :root body .panel-nav:not([hidden]) { position: fixed !important; inset: auto 0 0 0 !important; z-index: 70 !important; margin: 0 !important; display: flex; gap: 10px; justify-content: center;
+        padding: 10px 16px calc(10px + env(safe-area-inset-bottom)) !important; background: #0d1530 !important; border-top: 1px solid rgba(255,255,255,.14); border-radius: 22px 22px 0 0 !important; box-shadow: 0 -16px 34px -18px rgba(0,0,0,.75); }
+    :root body .panel-nav .nav-btn { flex: 1 1 0; min-width: 0; max-width: 420px; min-height: 56px; justify-content: center; }
+    :root body .panel-nav #prev-btn { flex: 0 1 36%; }
+    :root body .appbar { padding-top: env(safe-area-inset-top); }
+}
 @media (prefers-reduced-motion: reduce) { :root body .kl-owl { animation: none; } }

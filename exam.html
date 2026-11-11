@@ -3914,6 +3914,59 @@ html body #q-nav .qn { height: 34px; }
     #notebook-window .nb26-type .nb26-sw { height: 48px; }
     #notebook-window .nb26-type { font-size: .72rem; padding: 5px 5px 7px; }
 }
+
+/* =====================================================================
+   טלפון וטאבלט — התנהגות של אפליקציה (תרגול + מבחן)
+   השאלה והתשובות ראשונות על המסך, כלי העזר מתחתיהן, וכפתורי "הקודמת / הבאה"
+   בסרגל קבוע בתחתית שלא מסתיר את התוכן. כולל שוליים בטוחים למכשירים עם מגרעת.
+   ===================================================================== */
+@media (max-width: 1024px) {
+    :root html { -webkit-text-size-adjust: 100%; }
+    :root body { padding-bottom: calc(92px + env(safe-area-inset-bottom)) !important; overscroll-behavior-y: none; }
+    /* אלמנט קבוע חייב אב בלי טשטוש/טרנספורם - אחרת הוא "נגלל" עם הדף */
+    :root body .main-content, :root body .practice-layout, :root body #quiz-area, :root body .question-area {
+        -webkit-backdrop-filter: none !important; backdrop-filter: none !important; transform: none !important; filter: none !important; perspective: none !important; contain: none !important; will-change: auto !important; }
+
+    /* כותרת קומפקטית שלא נדבקת וגוזלת מסך; שביל הפירורים בשורה אחת שנגללת */
+    :root body header { position: relative !important; top: 0 !important; padding-top: calc(10px + env(safe-area-inset-top)) !important; }
+    :root body .hdr-crumbs { flex-wrap: nowrap !important; overflow-x: auto !important; scrollbar-width: none; -webkit-overflow-scrolling: touch; max-width: 100%; justify-content: flex-start !important; }
+    :root body .hdr-crumbs::-webkit-scrollbar { display: none; }
+    :root body .hdr-crumbs > * { flex-shrink: 0 !important; }
+
+    /* סרגל ניווט קבוע בתחתית */
+    :root body #bottom-nav-area {
+        position: fixed !important; inset: auto 0 0 0 !important; z-index: 900 !important; width: auto !important; max-width: none !important; margin: 0 !important;
+        padding: 10px 14px calc(10px + env(safe-area-inset-bottom)) !important; gap: 10px !important; flex-direction: row !important; align-items: stretch !important; justify-content: center !important;
+        background: #0d1530 !important; border: 0 !important; border-top: 1px solid rgba(255,255,255,.14) !important; border-radius: 22px 22px 0 0 !important;
+        box-shadow: 0 -16px 34px -18px rgba(0,0,0,.75) !important; min-height: 0 !important; height: auto !important;
+    }
+    :root body #bottom-nav-area > button { flex: 1 1 0 !important; min-width: 0 !important; max-width: 420px !important; min-height: 54px !important; margin: 0 !important; font-size: 16.5px !important; }
+    :root body #bottom-nav-area > #btn-bottom-prev { flex: 0 1 34% !important; }
+    :root body:has(#quiz-area) #bottom-nav-area { background: #ffffff !important; border-top: 1px solid #e2e8f0 !important; box-shadow: 0 -16px 34px -20px rgba(15,23,42,.35) !important; }
+    :root body .copyright-footer { padding-bottom: 6px !important; }
+
+    /* תרגול: קודם השאלה והתשובות, אחר כך כלי העזר */
+    :root body .main-content:not(:has(#quiz-area)) > .top-bar-container { display: contents !important; }
+    :root body .main-content:not(:has(#quiz-area)) #q-number-display { order: 0 !important; align-self: center; margin: 0 0 10px !important; }
+    :root body .main-content:not(:has(#quiz-area)) #reading-btn-container { order: 1 !important; margin: 0 0 12px !important; width: 100%; }
+    :root body .main-content:not(:has(#quiz-area)) > #q-text { order: 2 !important; }
+    :root body .main-content:not(:has(#quiz-area)) > #q-options { order: 3 !important; }
+    :root body .main-content:not(:has(#quiz-area)) > #diff-group { order: 4 !important; margin-top: 18px !important; }
+    :root body .main-content:not(:has(#quiz-area)) .diff-slot { order: 5 !important; margin-top: 14px !important; width: 100%; }
+    :root body .main-content:not(:has(#quiz-area)) > .copyright-footer { order: 9 !important; }
+    :root body .btn-option { min-height: 64px !important; }
+    :root body .btn-diff { min-height: 44px !important; }
+    :root body #q-nav .qn { min-height: 44px !important; }
+}
+@media (min-width: 601px) and (max-width: 1024px) {
+    /* טאבלט: תשובות בשתי עמודות, כדי שהכול ייכנס במסך אחד */
+    :root body #q-options, :root body .options-grid { grid-template-columns: repeat(2, minmax(0, 1fr)) !important; gap: 14px !important; }
+    :root body #q-text, :root body .question-title { font-size: 25px !important; padding: 26px 30px !important; }
+}
+/* כשהאתר מותקן כאפליקציה: בלי בחירת טקסט בטעות על כפתורים ובלי הדגשת לחיצה כחולה */
+@media (display-mode: standalone) {
+    :root body button, :root body .btn-option, :root body .btn-side { -webkit-user-select: none; user-select: none; -webkit-tap-highlight-color: transparent; }
+}
 </style>
 </head>
 <body>

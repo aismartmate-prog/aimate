@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>המרכז להישגים לימודיים</title>
+<meta name="description" content="המרכז להישגים לימודיים — מערכות תרגול, בחינות ולמידה חכמה לכל הגילאים.">
+
+<link rel="manifest" href="manifest.json">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="TIRGULIM">
+<meta name="theme-color" content="#0b1226">
+<link rel="icon" href="/icon-192.png">
+<link rel="apple-touch-icon" href="/icon-192.png">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Frank+Ruhl+Libre:wght@500;700;900&family=Heebo:wght@400;500;600;700;800;900&family=Playfair+Display:ital,wght@0,700;0,900;1,700&display=swap" rel="stylesheet">
+
+<style>
+  /* מסך הכניסה לאפליקציה — אותה שפה של האתר: כחול לילה, אריחים גדולים בגרדיאנטים של המערכות */
+  :root { --bg: #0b1226; --bg-2: #111a36; --ink: #fff; --ink-dim: #c3cde8; --ink-faint: #8e9bc2; --line: rgba(255,255,255,.12); --gold: #f5b83d; --ease: cubic-bezier(.22,1,.36,1); }
+  * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+  @media (prefers-reduced-motion: reduce) { * { animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; } }
+  html { min-height: 100%; background: var(--bg); overscroll-behavior-y: none; -webkit-text-size-adjust: 100%; }
+  body { margin: 0; min-height: 100vh; min-height: 100dvh; color: var(--ink); font-family: 'Heebo', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; overflow-x: hidden;
+    background: radial-gradient(900px 480px at 88% -10%, rgba(59,130,246,.34), transparent 60%), radial-gradient(700px 420px at 0% 28%, rgba(124,58,237,.2), transparent 60%), linear-gradient(180deg, var(--bg-2) 0, var(--bg) 900px) no-repeat, var(--bg);
+    -webkit-font-smoothing: antialiased; text-rendering: optimizeLegibility; }
+  #floaters { position: fixed; inset: 0; z-index: 0; overflow: hidden; pointer-events: none; }
+  .fl { position: absolute; color: rgba(255,255,255,.045); font-family: 'Playfair Display', Georgia, serif; font-style: italic; font-weight: 900; animation: floatUp linear infinite; will-change: transform; }
+  @keyframes floatUp { 0% { transform: translateY(110vh) rotate(0); opacity: 0; } 10%,90% { opacity: 1; } 100% { transform: translateY(-14vh) rotate(300deg); opacity: 0; } }
+  :focus-visible { outline: 3px solid var(--gold); outline-offset: 3px; border-radius: 14px; }
+
+  .page { position: relative; z-index: 1; width: 100%; max-width: 1120px; margin: 0 auto; padding: max(18px, env(safe-area-inset-top)) max(20px, env(safe-area-inset-right)) max(22px, env(safe-area-inset-bottom)) max(20px, env(safe-area-inset-left)); min-height: 100vh; min-height: 100dvh; display: flex; flex-direction: column; }
+
+  /* סרגל עליון */
+  .topbar { display: flex; align-items: center; justify-content: space-between; gap: 14px; margin-bottom: clamp(18px, 4vh, 38px); }
+  .logo-line { display: flex; align-items: center; gap: 12px; min-width: 0; }
+  .logo-mark { width: 46px; height: 46px; border-radius: 15px; padding: 2px; flex: none; background: linear-gradient(135deg, #3b82f6, #1d4ed8); box-shadow: 0 14px 28px -12px rgba(59,130,246,.9); }
+  .logo-mark img { width: 100%; height: 100%; object-fit: cover; border-radius: 13px; display: block; background: #fff; }
+  .logo-txt { line-height: 1.15; min-width: 0; }
+  .logo-txt b { display: block; font-weight: 800; font-size: 1.02rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .logo-txt small { font-size: .68rem; font-weight: 700; color: #93b4ff; letter-spacing: .16em; }
+  .top-actions { display: flex; align-items: center; gap: 10px; }
+  .live-pill { display: inline-flex; align-items: center; gap: 8px; padding: 8px 15px; border-radius: 999px; background: rgba(255,255,255,.08); border: 1px solid var(--line); font-size: .8rem; font-weight: 700; color: #dbe5ff; white-space: nowrap; }
+  .live-pill i { width: 8px; height: 8px; border-radius: 50%; background: #4ade80; box-shadow: 0 0 0 0 rgba(74,222,128,.7); animation: pulse 2s infinite; }
+  @keyframes pulse { 70% { box-shadow: 0 0 0 9px rgba(74,222,128,0); } 100% { box-shadow: 0 0 0 0 rgba(74,222,128,0); } }
+  #install-btn { display: none; align-items: center; gap: 8px; min-height: 40px; padding: 8px 16px; border-radius: 999px; border: 0; background: #fff; color: #0b1226; font: 800 .84rem 'Heebo', sans-serif; cursor: pointer; white-space: nowrap; }
+  #install-btn.show { display: inline-flex; }
+  #install-btn svg { width: 16px; height: 16px; }
+
+  /* כותרת */
+  .hero { margin: 0 0 clamp(20px, 4vh, 34px); max-width: 760px; }
+  .eyebrow { display: inline-flex; align-items: center; gap: 9px; font-size: .8rem; font-weight: 700; color: #dbe5ff; padding: 6px 14px; border: 1px solid var(--line); border-radius: 999px; background: rgba(255,255,255,.07); }
+  .eyebrow::before { content: ""; width: 7px; height: 7px; border-radius: 50%; background: var(--gold); box-shadow: 0 0 10px var(--gold); }
+  h1 { font-family: 'Frank Ruhl Libre', 'Heebo', serif; font-weight: 900; font-size: clamp(2rem, 5.4vw, 3.3rem); line-height: 1.1; letter-spacing: -.02em; margin: 16px 0 12px; }
+  h1 em { font-style: normal; color: var(--gold); }
+  .lead { font-size: clamp(1rem, 2.2vw, 1.12rem); font-weight: 500; color: var(--ink-dim); margin: 0; max-width: 560px; line-height: 1.7; }
+
+  /* המשך מאיפה שעצרת */
+  #resume { display: none; margin: 20px 0 0; max-width: 460px; }
+  #resume.show { display: block; }
+  #resume a { display: flex; align-items: center; gap: 14px; text-decoration: none; color: #0b1226; padding: 10px 12px 10px 16px; border-radius: 20px; background: #fff; box-shadow: 0 22px 44px -22px rgba(0,0,0,.8); transition: transform .25s var(--ease); text-align: right; }
+  #resume a:hover { transform: translateY(-2px); }
+  #resume a:active { transform: scale(.985); }
+  #resume .rs-ic { width: 44px; height: 44px; border-radius: 14px; display: flex; align-items: center; justify-content: center; background: linear-gradient(135deg, #f5c862, #d99a1c); color: #1a1205; flex: none; }
+  #resume .rs-tx { min-width: 0; }
+  #resume .rs-tx small { display: block; font-size: .74rem; font-weight: 700; color: #64748b; }
+  #resume .rs-tx b { display: block; font-size: 1.02rem; font-weight: 800; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  #resume .rs-go { margin-inline-start: auto; flex: none; color: #64748b; }
+
+  /* אריחי המערכות */
+  .grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: clamp(14px, 1.8vw, 20px); align-items: stretch; }
+  .card { --g1: #1a84ff; --g2: #003f8a; --glow: rgba(0,114,255,.6);
+    position: relative; display: flex; flex-direction: column; text-decoration: none; color: #fff; text-align: right; padding: 24px 24px 20px; border-radius: 30px; overflow: hidden; isolation: isolate;
+    background: linear-gradient(155deg, var(--g1) 0%, var(--g2) 100%); border: 1px solid rgba(255,255,255,.14);
+    box-shadow: inset 0 1px 0 rgba(255,255,255,.22), 0 28px 54px -28px var(--glow); transition: transform .35s var(--ease), box-shadow .35s var(--ease); opacity: 0; animation: rise .7s var(--ease) both; }
+  .card:nth-child(1) { animation-delay: .1s; } .card:nth-child(2) { animation-delay: .18s; } .card:nth-child(3) { animation-delay: .26s; }
+  .card::before { content: ""; position: absolute; z-index: -1; inset: 0; border-radius: inherit; background: linear-gradient(180deg, rgba(255,255,255,.14), transparent 46%); }
+  .card:hover, .card:focus-visible { transform: translateY(-6px); box-shadow: inset 0 1px 0 rgba(255,255,255,.26), 0 38px 66px -28px var(--glow); }
+  .card:active { transform: translateY(-1px) scale(.99); }
+  .card.adults { --g1: #1a84ff; --g2: #003f8a; --glow: rgba(0,114,255,.6); }
+  .card.kids { --g1: #f5a524; --g2: #9a3d06; --glow: rgba(234,150,20,.55); }
+  .card.english { --g1: #8b4cf6; --g2: #3b0764; --glow: rgba(124,58,237,.55); }
+  .top-row { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+  .ic { width: 58px; height: 58px; border-radius: 18px; display: flex; align-items: center; justify-content: center; color: #fff; background: rgba(255,255,255,.16); border: 1px solid rgba(255,255,255,.24); box-shadow: inset 0 1px 0 rgba(255,255,255,.22); flex: none; }
+  .ic svg { width: 30px; height: 30px; }
+  .tag { display: inline-flex; margin: 0; padding: 5px 13px; border-radius: 999px; font-size: .76rem; font-weight: 800; color: #0b1226; background: #fff; }
+  .card.english .tag { background: var(--gold); color: #1a1205; }
+  .card h2 { margin: 22px 0 8px; font-size: 1.65rem; font-weight: 800; line-height: 1.15; letter-spacing: -.01em; }
+  .card p { margin: 0 0 16px; font-size: .96rem; font-weight: 500; color: rgba(255,255,255,.86); line-height: 1.6; }
+  .feats { list-style: none; margin: 0 0 20px; padding: 14px 0 0; display: grid; gap: 9px; border-top: 1px solid rgba(255,255,255,.16); }
+  .feats li { display: flex; align-items: center; gap: 10px; font-size: .9rem; font-weight: 600; color: rgba(255,255,255,.92); }
+  .feats li::before { content: ""; width: 20px; height: 20px; border-radius: 50%; flex: none; background: rgba(255,255,255,.18) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23fff' stroke-width='3.2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m5 12.5 4.5 4.5L19 7.5'/%3E%3C/svg%3E") center / 12px no-repeat; }
+  .go { margin-top: auto; display: flex; align-items: center; justify-content: space-between; gap: 10px; min-height: 54px; padding: 12px 20px; border-radius: 999px; background: #fff; color: #0b1226; font-weight: 800; font-size: 1.02rem; box-shadow: 0 16px 30px -18px rgba(0,0,0,.7); }
+  .go svg { width: 22px; height: 22px; transition: transform .25s var(--ease); }
+  .card:hover .go svg { transform: translateX(-5px); }
+  .key { position: absolute; top: 14px; left: 50%; transform: translateX(-50%); min-width: 24px; height: 24px; padding: 0 6px; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: .72rem; font-weight: 800; color: rgba(255,255,255,.75); border: 1px solid rgba(255,255,255,.25); background: rgba(0,0,0,.15); }
+  @media (hover: none) { .key { display: none; } .card:hover { transform: none; } }
+
+  /* יתרונות */
+  .trust { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 12px; margin: clamp(18px, 3vh, 28px) 0 0; }
+  .trust span { display: flex; align-items: center; gap: 10px; padding: 12px 14px; border-radius: 18px; background: rgba(255,255,255,.06); border: 1px solid var(--line); font-size: .86rem; font-weight: 700; color: #dbe5ff; }
+  .trust svg { width: 20px; height: 20px; color: var(--gold); flex: none; }
+  footer { margin-top: auto; padding-top: 24px; text-align: center; font-size: .78rem; font-weight: 600; color: var(--ink-faint); }
+
+  @keyframes rise { from { opacity: 0; transform: translateY(18px); } to { opacity: 1; transform: translateY(0); } }
+  .hero, .topbar { opacity: 0; animation: rise .7s var(--ease) both; }
+  .topbar { animation-delay: .02s; } .hero { animation-delay: .06s; }
+  .trust { opacity: 0; animation: rise .6s ease .4s both; }
+
+  /* מעבר ניווט */
+  #nav-veil { position: fixed; inset: 0; z-index: 90; pointer-events: none; opacity: 0; background: radial-gradient(circle at var(--vx,50%) var(--vy,50%), #1d4ed8, #0b1226 70%); transition: opacity .3s ease; }
+  #nav-veil.on { opacity: 1; }
+
+  /* מסך פתיחה */
+  #splash { position: fixed; inset: 0; z-index: 100; display: flex; align-items: center; justify-content: center; flex-direction: column; background: radial-gradient(700px 500px at 50% 38%, #1a2f6e, #0b1226 70%); transition: opacity .6s ease, visibility .6s ease; cursor: pointer; }
+  #splash.hide { opacity: 0; visibility: hidden; pointer-events: none; }
+  #splash .halo { position: absolute; width: 520px; height: 520px; border-radius: 50%; background: radial-gradient(closest-side, rgba(59,130,246,.45), transparent); animation: breathe 3s ease-in-out infinite; }
+  @keyframes breathe { 50% { transform: scale(1.12); opacity: .75; } }
+  .sp-in { position: relative; display: flex; flex-direction: column; align-items: center; opacity: 0; transform: translateY(8px); transition: opacity .7s ease, transform .7s ease; padding: 0 20px; }
+  .sp-in.show { opacity: 1; transform: none; }
+  .sp-logo { width: 96px; height: 96px; border-radius: 28px; padding: 3px; background: linear-gradient(135deg, #3b82f6, #1d4ed8); box-shadow: 0 24px 50px -16px rgba(0,0,0,.8), 0 0 60px -6px rgba(59,130,246,.7); margin-bottom: 22px; }
+  .sp-logo img { width: 100%; height: 100%; object-fit: cover; border-radius: 25px; background: #fff; display: block; }
+  .sp-title { font-family: 'Playfair Display', Georgia, serif; font-weight: 900; font-size: clamp(40px, 11vw, 66px); letter-spacing: .1em; direction: ltr; color: #fff; min-height: 1.15em; position: relative; }
+  .sp-title::after { content: "|"; position: absolute; right: -14px; top: -2px; font-weight: 400; color: var(--gold); animation: blink .7s infinite; }
+  .sp-title.done::after { display: none; }
+  @keyframes blink { 50% { opacity: 0; } }
+  .sp-sub { margin-top: 8px; font-family: 'Frank Ruhl Libre', 'Heebo', serif; font-weight: 700; font-size: clamp(1.1rem, 4vw, 1.5rem); color: #c3cde8; }
+  .sp-bar { margin-top: 30px; width: 220px; max-width: 62vw; height: 4px; border-radius: 4px; background: rgba(255,255,255,.14); overflow: hidden; }
+  .sp-bar i { display: block; height: 100%; width: 0; border-radius: 4px; background: linear-gradient(90deg, #3b82f6, var(--gold)); }
+  .sp-by { position: absolute; bottom: max(24px, env(safe-area-inset-bottom)); font-size: .74rem; font-weight: 600; letter-spacing: .1em; color: rgba(195,205,232,.7); direction: ltr; }
+  .sp-skip { position: absolute; top: max(18px, env(safe-area-inset-top)); left: 18px; font-size: .8rem; font-weight: 700; color: rgba(255,255,255,.8); padding: 8px 16px; border: 1px solid rgba(255,255,255,.2); border-radius: 999px; }
+
+  /* טאבלט וטלפון: אריחים רחבים וקומפקטיים, אחד מתחת לשני */
+  @media (max-width: 960px) {
+    .grid { grid-template-columns: 1fr; gap: 14px; }
+    .card { display: grid; grid-template-columns: auto minmax(0, 1fr) auto; grid-template-areas: "ic tx go"; align-items: center; column-gap: 16px; padding: 18px; border-radius: 26px; min-height: 108px; }
+    .top-row { grid-area: ic; display: block; }
+    .top-row .tag, .key { display: none; }
+    .card h2 { grid-area: tx; align-self: end; margin: 0 0 2px; font-size: 1.35rem; padding-left: 0; }
+    .card p { grid-area: tx; align-self: start; margin: 0; font-size: .88rem; line-height: 1.45; display: none; }
+    .card h2 + p { display: none; }
+    .card .sub { display: block; }
+    .feats { display: none; }
+    .go { grid-area: go; margin: 0; min-height: 0; width: 46px; height: 46px; padding: 0; justify-content: center; border-radius: 50%; align-self: center; }
+    .go span { display: none; }
+    .ic { width: 60px; height: 60px; border-radius: 20px; }
+    .card h2 { align-self: center; }
+    .card h2::after { content: attr(data-sub); display: block; margin-top: 4px; font-size: .86rem; font-weight: 500; color: rgba(255,255,255,.85); letter-spacing: 0; line-height: 1.4; }
+    .trust { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  }
+  @media (min-width: 601px) and (max-width: 960px) { .card { min-height: 124px; padding: 22px; } .card h2 { font-size: 1.55rem; } }
+  @media (max-width: 560px) {
+    .live-pill { display: none; }
+    .trust span { font-size: .78rem; padding: 10px 12px; }
+    .logo-txt b { font-size: .95rem; }
+  }
+  @media (min-width: 961px) and (max-height: 760px) { .feats { display: none; } .card p { margin-bottom: 18px; } }
+</style>
+
+</head>
+<body>
+
+<!-- מסך פתיחה -->
+<div id="splash" aria-hidden="true">
+  <div class="halo"></div>
+  <div class="sp-skip" id="sp-skip">דלג</div>
+  <div class="sp-in" id="sp-in">
+    <div class="sp-logo"><img src="/icon-192.png" alt=""></div>
+    <div class="sp-title" id="sp-title"></div>
+    <div class="sp-sub">פתרונות למידה דיגיטליים</div>
+    <div class="sp-bar"><i id="sp-fill"></i></div>
+  </div>
+  <div class="sp-by">By Hisagim Limudim</div>
+</div>
+<div id="nav-veil"></div>
+<div id="floaters"></div>
+
+<main class="page" id="app">
+
+  <header class="topbar">
+    <div class="logo-line">
+      <div class="logo-mark"><img src="/icon-192.png" alt="לוגו המרכז להישגים לימודיים"></div>
+      <div class="logo-txt"><b>המרכז להישגים לימודיים</b><small>TIRGULIM</small></div>
+    </div>
+    <div class="top-actions"><button id="install-btn" type="button"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M12 4v11M7 11l5 5 5-5M5 20h14"/></svg>התקנת האפליקציה</button><div class="live-pill"><i></i> המערכת פעילה 24/7</div></div>
+  </header>
+
+  <section class="hero">
+    <span class="eyebrow">מערכת למידה חכמה</span>
+    <h1>הדרך שלך <em>להישגים</em> מתחילה כאן</h1>
+    <p class="lead">תרגול, בחינות ולמידה אישית עם מורה פרטי חי — בחרו את המערכת שמתאימה לכם ונתחיל.</p>
+    <div id="resume"><a id="resume-link" href="#"><span class="rs-ic"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M8 5v14l11-7z" fill="currentColor"/></svg></span><span class="rs-tx"><small>המשך מאיפה שעצרת</small><b id="resume-name"></b></span><svg class="rs-go" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="m15 6-6 6 6 6"/></svg></a></div>
+  </section>
+
+  <nav class="grid" aria-label="בחירת מערכת">
+
+    <a class="card adults" data-id="adults" data-name="מערכת תרגולים — ה׳–יב׳" href="https://tirgulim.co.il/tirgul.html">
+      <span class="key">1</span>
+      <div class="top-row"><div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M22 10 12 5 2 10l10 5 10-5z"/><path d="M6 12v5c3 2.4 9 2.4 12 0v-5"/><path d="M22 10v6"/></svg></div><span class="tag">כיתות ה׳–יב׳</span></div>
+      <h2 data-sub="תרגול, בחינות ולמידה לכיתות ה׳–יב׳">מערכת תרגולים</h2>
+      <p>תרגול חכם, בחינות סימולציה ולמידה אישית מותאמת לתוכנית הלימודים של משרד החינוך.</p>
+      <ul class="feats"><li>תרגול לפי נושא ורמת קושי</li><li>מבחני סימולציה עם טיימר</li><li>רמז, פתרון מלא וסרטוני הסבר</li><li>מורה פרטי חי בקול</li></ul>
+      <div class="go"><span>כניסה למערכת</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="m15 6-6 6 6 6"/></svg></div>
+    </a>
+
+    <a class="card kids" data-id="kids" data-name="קידס — יסודי א׳–ד׳" href="https://kids.tirgulim.co.il">
+      <span class="key">2</span>
+      <div class="top-row"><div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="m12 3 2.6 5.6 6.1.7-4.5 4.2 1.2 6L12 16.5 6.6 19.5l1.2-6L3.3 9.3l6.1-.7z"/></svg></div><span class="tag">כיתות א׳–ד׳</span></div>
+      <h2 data-sub="למידה חווייתית לכיתות א׳–ד׳">קידס — יסודי</h2>
+      <p>עולם צבעוני וחוויתי שהופך תרגול לכיף, עם הסברים פשוטים וקול של מורה אוהב.</p>
+      <ul class="feats"><li>ממשק גדול וידידותי לילדים</li><li>הסברים בקול ובסרטונים</li><li>משחקים, נקודות ואותות הצטיינות</li><li>מותאם ללוח הלימודים</li></ul>
+      <div class="go"><span>כניסה לקידס</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="m15 6-6 6 6 6"/></svg></div>
+    </a>
+
+    <a class="card english" data-id="english" data-name="קורס לימוד אנגלית מדוברת" href="https://tirgulim.co.il/englishcourse.html">
+      <span class="key">3</span>
+      <div class="top-row"><div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12a8 8 0 0 1-11.6 7.1L4 20.5l1.5-4.6A8 8 0 1 1 21 12z"/><path d="M8.5 10.5h7M8.5 13.5h4.5"/></svg></div><span class="tag">קורס חדש</span></div>
+      <h2 data-sub="קורס חדש · לדבר, להבין ולהגיב בביטחון">אנגלית מדוברת</h2>
+      <p>קורס ללימוד אנגלית מדוברת: לדבר, להבין ולהגיב בביטחון, צעד אחר צעד ובקצב אישי.</p>
+      <ul class="feats"><li>דיבור ושיחה בשימוש יומיומי</li><li>תרגול הגייה והאזנה</li><li>למידה בקצב אישי</li><li>זמין בכל מכשיר, בכל שעה</li></ul>
+      <div class="go"><span>כניסה לקורס</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="m15 6-6 6 6 6"/></svg></div>
+    </a>
+
+  </nav>
+
+  <div class="trust">
+    <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3 4 6v6c0 4.6 3.2 7.8 8 9 4.8-1.2 8-4.4 8-9V6z"/></svg>מותאם לתוכנית משרד החינוך</span>
+    <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="3" width="6" height="11" rx="3"/><path d="M5 11a7 7 0 0 0 14 0M12 18v3"/></svg>מורה פרטי בקול</span>
+    <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>זמין בכל שעה</span>
+    <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="12" rx="2"/><path d="M8 20h8M12 16v4"/></svg>עובד בכל מכשיר</span>
+  </div>
+
+  <footer>המרכז להישגים לימודיים © 2026 · כל הזכויות שמורות</footer>
+</main>
+
+<script>
+(function () {
+  // ---------- מסך פתיחה: פעם אחת בכל סשן, ואפשר לדלג ----------
+  var splash = document.getElementById('splash'), inner = document.getElementById('sp-in'), title = document.getElementById('sp-title'), fill = document.getElementById('sp-fill');
+  var seen = false; try { seen = sessionStorage.getItem('splashSeen') === '1'; } catch (e) {}
+  var finished = false;
+  function finish() { if (finished) return; finished = true; try { sessionStorage.setItem('splashSeen', '1'); } catch (e) {} splash.classList.add('hide'); setTimeout(function () { splash.remove(); }, 700); }
+  if (seen) { splash.remove(); finished = true; }
+  else {
+    var txt = 'TIRGULIM', i = 0;
+    setTimeout(function () { inner.classList.add('show'); (function t() { if (i < txt.length) { title.textContent += txt.charAt(i++); setTimeout(t, 100); } else title.classList.add('done'); })(); }, 150);
+    var t0 = null, DUR = 1500;
+    setTimeout(function () { requestAnimationFrame(function step(ts) { if (!t0) t0 = ts; var p = Math.min(1, (ts - t0) / DUR); fill.style.width = (p * 100) + '%'; if (p < 1) requestAnimationFrame(step); }); }, 500);
+    setTimeout(finish, 2400);
+    splash.addEventListener('click', finish);
+  }
+
+  // ---------- סימנים צפים ----------
+  var fl = document.getElementById('floaters'), sy = ['∑', 'π', '√', '∞', '∫', '∆', 'a²', 'Ω', '%', '≈', 'ABC', '?'];
+  for (var k = 0; k < 9; k++) { var e = document.createElement('span'); e.className = 'fl'; e.textContent = sy[Math.floor(Math.random() * sy.length)]; e.style.fontSize = (Math.random() * 2 + 1.4) + 'rem'; e.style.left = (Math.random() * 100) + '%'; e.style.animationDuration = (Math.random() * 20 + 22) + 's'; e.style.animationDelay = '-' + (Math.random() * 22) + 's'; fl.appendChild(e); }
+
+  // ---------- ניתוב: זיכרון בחירה, "המשך מאיפה שעצרת", קיצורי מקלדת, מעבר חלק ----------
+  var cards = Array.prototype.slice.call(document.querySelectorAll('.card'));
+  var veil = document.getElementById('nav-veil');
+  function remember(c) { try { localStorage.setItem('lastSystemChoice', c.href); localStorage.setItem('lastSystemId', c.getAttribute('data-id')); localStorage.setItem('lastSystemName', c.getAttribute('data-name')); } catch (e) {} }
+  function go(c, ev) {
+    remember(c);
+    if (ev && ev.clientX != null) { veil.style.setProperty('--vx', ev.clientX + 'px'); veil.style.setProperty('--vy', ev.clientY + 'px'); }
+    veil.classList.add('on'); setTimeout(function () { location.href = c.href; }, 260);
+  }
+  cards.forEach(function (c) {
+    c.addEventListener('click', function (ev) { if (ev.metaKey || ev.ctrlKey || ev.shiftKey || ev.button === 1) { remember(c); return; } ev.preventDefault(); go(c, ev); });
+    c.addEventListener('auxclick', function () { remember(c); });
+  });
+  document.addEventListener('keydown', function (ev) { var n = parseInt(ev.key, 10); if (n >= 1 && n <= cards.length && !ev.ctrlKey && !ev.metaKey && !ev.altKey) go(cards[n - 1]); });
+  // חזרה לדף (bfcache): מסירים את מסך המעבר
+  window.addEventListener('pageshow', function () { veil.classList.remove('on'); });
+
+  var lastHref = null, lastName = null; try { lastHref = localStorage.getItem('lastSystemChoice'); lastName = localStorage.getItem('lastSystemName'); } catch (e) {}
+  if (lastHref) {
+    var hit = cards.filter(function (c) { return c.href === lastHref || c.getAttribute('href') === lastHref; })[0];
+    if (hit) {
+      document.getElementById('resume-name').textContent = lastName || hit.getAttribute('data-name');
+      var rl = document.getElementById('resume-link'); rl.href = hit.href; rl.addEventListener('click', function (ev) { ev.preventDefault(); go(hit, ev); });
+      document.getElementById('resume').classList.add('show');
+      hit.style.borderColor = 'rgba(251,191,36,.7)';
+    }
+  }
+
+  // ---------- התקנה כאפליקציה (מופיע רק כשהדפדפן מאפשר, ולא כשכבר מותקן) ----------
+  var ib = document.getElementById('install-btn'), deferred = null;
+  window.addEventListener('beforeinstallprompt', function (ev) { ev.preventDefault(); deferred = ev; ib.classList.add('show'); });
+  ib.addEventListener('click', function () { if (!deferred) return; deferred.prompt(); deferred.userChoice.then(function () { deferred = null; ib.classList.remove('show'); }); });
+  window.addEventListener('appinstalled', function () { ib.classList.remove('show'); });
+
+  if ('serviceWorker' in navigator) { try { navigator.serviceWorker.register('sw.js'); } catch (e) {} }
+})();
+</script>
+</body>
+</html>
