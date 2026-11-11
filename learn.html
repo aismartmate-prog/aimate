@@ -1089,10 +1089,48 @@
         Array.prototype.forEach.call(t.content.querySelectorAll('*'), function (el) {
             Array.prototype.slice.call(el.attributes).forEach(function (a) { if (/^on/i.test(a.name) || /javascript:/i.test(a.value) || a.name === 'href' || a.name === 'src') el.removeAttribute(a.name); });
         });
+        // טקסט מהמאגר שיש בו מתמטיקה בלי סימוני נוסחה (למשל "2^3" או "\text{...} \to ...") - הופך לנוסחה או לטקסט נקי, לעולם לא קוד גולמי
+        var w = document.createTreeWalker(t.content, NodeFilter.SHOW_TEXT, null), nodes = [], n;
+        while ((n = w.nextNode())) nodes.push(n);
+        nodes.forEach(function (node) {
+            var v = node.nodeValue, par = node.parentNode;
+            if (!v || !/[\\^]/.test(v) || /\\\(|\\\[|\$/.test(v)) return;
+            for (var a = par; a && a.nodeType === 1; a = a.parentNode) { if (/^(svg|script|style|code|pre|textarea)$/i.test(a.nodeName)) return; }
+            var html = autoMath(v); if (html === null) return;
+            var holder = document.createElement('span'); holder.innerHTML = html;
+            while (holder.firstChild) par.insertBefore(holder.firstChild, node);
+            par.removeChild(node);
+        });
         return t.innerHTML;
     }
     function hasHe(s) { return /[֐-׿]/.test(s); }
-    function Mx(s) { s = String(s == null ? '' : s).trim(); return (hasHe(s) || /\\\(|\$/.test(s)) ? R(s) : '\\(' + escapeHtml(s) + '\\)'; }      // ביטוי מתמטי ← MathJax
+    var HE_RUN = /[֐-׿](?:[֐-׿\s"'.,:;!?()\-־]*[֐-׿.!?])?/g;
+    var SIMPLE_TEX = { to: '←', rightarrow: '←', Rightarrow: '⇐', leftarrow: '→', cdot: '·', times: '×', div: '÷', leq: '≤', le: '≤', geq: '≥', ge: '≥', neq: '≠', ne: '≠', approx: '≈', pm: '±', quad: ' ', qquad: '  ', ldots: '…', dots: '…', degree: '°', circ: '°', pi: 'π', infty: '∞' };
+    // מחרוזת LaTeX בלי סימוני נוסחה ← HTML. טקסט עברי עם סימנים פשוטים בלבד נשאר טקסט רגיל (מימין לשמאל); כל השאר הופך לנוסחה, והעברית נעטפת ב-\text
+    function texLine(s) {
+        s = String(s == null ? '' : s).trim();
+        var bare = s.replace(/\\(?:text|textbf|mathrm|textit)\s*\{([^{}]*)\}/g, '$1');
+        var rest = bare.replace(/\\([a-zA-Z]+)/g, function (m, c) { return SIMPLE_TEX.hasOwnProperty(c) ? '' : m; }).replace(/\\[,;! ]/g, '');
+        if (hasHe(s) && !/[\\^_{}]/.test(rest)) {
+            var txt = bare.replace(/\\([a-zA-Z]+)\s*/g, function (m, c) { return ' ' + SIMPLE_TEX[c] + ' '; }).replace(/\\[,;! ]/g, ' ').replace(/\s+/g, ' ').trim();
+            return '<span dir="rtl">' + escapeHtml(txt) + '</span>';
+        }
+        var out = '', i = 0, m, re = /\\(?:text|textbf|mathrm|textit)\s*\{[^{}]*\}/g, last = 0;
+        function wrap(seg) { return seg.replace(HE_RUN, function (h) { return '\\;\\text{' + h + '}\\;'; }); }
+        while ((m = re.exec(s))) { out += wrap(s.slice(last, m.index)) + m[0]; last = m.index + m[0].length; }
+        out += wrap(s.slice(last));
+        return '\\(' + escapeHtml(out) + '\\)';
+    }
+    // טקסט חופשי: פקודות LaTeX ← texLine; חזקות פשוטות כמו 2^3 או x^{10} ← נוסחה בתוך השורה. מחזיר null אם אין מה לשנות
+    function autoMath(v) {
+        if (/\\[a-zA-Z]+/.test(v)) return texLine(v);
+        if (!/\^/.test(v)) return null;
+        var re = /(\([^()\n]{1,20}\)|[A-Za-z0-9.]+)\^(\{[^{}\n]{1,20}\}|\([^()\n]{1,20}\)|-?[A-Za-z0-9.]+)/g, out = '', last = 0, m, hit = false;
+        while ((m = re.exec(v))) { hit = true; var ex = m[2].replace(/^\{|\}$/g, '').replace(/^\((.*)\)$/, '$1'); out += escapeHtml(v.slice(last, m.index)) + '\\(' + escapeHtml(m[1] + '^{' + ex + '}') + '\\)'; last = m.index + m[0].length; }
+        if (!hit) return null;
+        return out + escapeHtml(v.slice(last));
+    }
+    function Mx(s) { s = String(s == null ? '' : s).trim(); if (/\\\(|\\\[|\$/.test(s) || /<[a-z]/i.test(s)) return R(s); if (hasHe(s) && !/\\[a-zA-Z]/.test(s)) return R(s); return texLine(s); }      // ביטוי מתמטי ← MathJax
     function plain(s) { return String(s || '').replace(/<[^>]*>/g, ' ').replace(/&[a-z]+;/g, ' ').replace(/\*\*/g, '').replace(/\\[()]/g, '').replace(/\s+/g, ' ').trim(); }
     function store(k, v) { try { if (v === undefined) return JSON.parse(localStorage.getItem(k) || 'null'); localStorage.setItem(k, JSON.stringify(v)); } catch (e) { } return null; }
     function seenKeyFor(sj, g, t, sub) { return ['learnSeen', sj, g, t, sub].join('|').toLowerCase(); }
@@ -1109,9 +1147,25 @@
     function toast(msg) { var t = $('toast'); t.textContent = msg; t.classList.add('on'); clearTimeout(toastT); toastT = setTimeout(function () { t.classList.remove('on'); }, 2800); }
     function say(html) { $('coach').innerHTML = html; }
     function setTitle(t) { $('hero-title').innerHTML = '<span>' + escapeHtml(t) + '</span>'; document.title = t + ' · הכיתה שלי'; }
+    // MathJax מניח כל אות בנפרד משמאל לימין, ולכן עברית בתוך נוסחה (\text{...}) יוצאת הפוכה. מסדרים מחדש: עברית מימין לשמאל, מספרים ולטינית נשארים כסדרם
+    function fixHebrewInMath(root) {
+        if (!root || !root.querySelectorAll) return;
+        Array.prototype.forEach.call(root.querySelectorAll('mjx-mtext:not([data-he])'), function (mt) {
+            mt.setAttribute('data-he', '1');
+            var kids = Array.prototype.slice.call(mt.children); if (kids.length < 2) return;
+            function ch(k) { if (k.textContent) return k.textContent; var m = /mjx-c([0-9A-F]+)/i.exec(k.className || ''); return m ? String.fromCharCode(parseInt(m[1], 16)) : 'x'; }
+            var chars = kids.map(ch); if (!chars.some(hasHe)) return;
+            var tokens = [], run = null;
+            kids.forEach(function (k, i) {
+                var c = chars[i], neutral = hasHe(c) || /^[\s\u00a0.,:;!?"'()\-־]$/.test(c);
+                if (neutral) { run = null; tokens.push([k]); } else { if (!run) { run = []; tokens.push(run); } run.push(k); }
+            });
+            tokens.reverse().forEach(function (t) { t.forEach(function (k) { mt.appendChild(k); }); });
+        });
+    }
     function typeset(el) {
         if (window.MathJax && MathJax.startup && MathJax.startup.promise) {
-            MathJax.startup.promise.then(function () { return MathJax.typesetPromise ? MathJax.typesetPromise([el]) : null; }).catch(function () { });
+            MathJax.startup.promise.then(function () { return MathJax.typesetPromise ? MathJax.typesetPromise([el]) : null; }).then(function () { fixHebrewInMath(el); }).catch(function () { });
         } else setTimeout(function () { typeset(el); }, 300);
     }
     function confetti() {
