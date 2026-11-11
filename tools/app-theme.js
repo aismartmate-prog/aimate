@@ -182,3 +182,14 @@
     if (window.ResizeObserver) { var rq = 0; new ResizeObserver(function () { if (!isOpen()) return; cancelAnimationFrame(rq); rq = requestAnimationFrame(function () { resizePadCanvas(); }); }).observe(area); }
     applyLook(); paint();
 })();
+
+/* אורך השאלה ← גודל הכתב שלה (קצרה / בינונית / ארוכה), כך ששאלה ארוכה לא תתפוס מסך שלם אבל תמיד תישאר גדולה מהתשובות */
+(function () {
+    var q = document.getElementById('q-text'); if (!q || !window.MutationObserver) return;
+    function mark() {
+        var c = q.cloneNode(true); Array.prototype.forEach.call(c.querySelectorAll('mjx-container, svg, script, style'), function (n) { n.remove(); });
+        var n = (c.textContent || '').replace(/\s+/g, ' ').trim().length, v = n > 320 ? 'l' : n > 170 ? 'm' : 's';
+        if (q.getAttribute('data-qlen') !== v) q.setAttribute('data-qlen', v);
+    }
+    new MutationObserver(mark).observe(q, { childList: true, subtree: true, characterData: true }); mark();
+})();

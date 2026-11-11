@@ -354,3 +354,34 @@
 @media (display-mode: standalone) {
     :root body button, :root body .btn-option, :root body .btn-side { -webkit-user-select: none; user-select: none; -webkit-tap-highlight-color: transparent; }
 }
+
+/* =====================================================================
+   פרופורציה בין השאלה לתשובות
+   הטקסט שבתוך השאלה הגיע עם גודל משלו (קטן), ולכן התשובות נראו גדולות ממנה.
+   עכשיו כל טקסט השאלה בגודל אחד וברור, והתשובות תמיד מעט קטנות ממנו.
+   נוסחאות (MathJax), שרטוטים, טבלאות וחזקות שומרים על הגודל היחסי שלהם.
+   ===================================================================== */
+:root body #q-text > div, :root body .question-title > div { font-size: inherit !important; line-height: 1.75 !important; }
+:root body #q-text :not(mjx-container):not(mjx-container *):not(svg):not(svg *):not(sup):not(sub):not(table):not(table *):not(button):not(button *):not(i),
+:root body .btn-option .btn-option-content, :root body .btn-option .btn-option-content :not(mjx-container):not(mjx-container *):not(svg):not(svg *):not(sup):not(sub):not(i) { font-size: inherit !important; }
+:root body #q-text br + br { display: none; }
+@media (min-width: 1025px) {
+    :root body #q-text, :root body .question-title { font-size: 26px !important; }
+    :root body #q-text[data-qlen="m"] { font-size: 24px !important; }
+    :root body #q-text[data-qlen="l"] { font-size: 22px !important; }
+    :root body .btn-option { font-size: 21px !important; }
+    :root body #q-options[data-len="m"] .btn-option { font-size: 20px !important; }
+    :root body #q-options[data-len="l"] .btn-option { font-size: 19px !important; }
+}
+@media (max-width: 1024px) {
+    :root body #q-text, :root body .question-title { font-size: 22px !important; }
+    :root body #q-text[data-qlen="m"] { font-size: 21px !important; }
+    :root body #q-text[data-qlen="l"] { font-size: 20px !important; }
+    :root body .btn-option, :root body #q-options[data-len] .btn-option { font-size: 19px !important; }
+    :root body #q-options[data-len="l"] .btn-option { font-size: 18px !important; }
+}
+@media (min-width: 601px) and (max-width: 1024px) { :root body #q-text, :root body .question-title { font-size: 24px !important; } :root body .btn-option { font-size: 20px !important; } }
+/* למבחן יש כלל הקטנה משלו לשאלות בינוניות וארוכות (data-len) שהקטין אותן מתחת לתשובות - מיישרים אותו לאותם גדלים */
+@media (min-width: 1025px) { :root body #q-text[data-len="m"] { font-size: 24px !important; } :root body #q-text[data-len="l"] { font-size: 22px !important; } }
+@media (max-width: 1024px) { :root body #q-text[data-len="m"] { font-size: 21px !important; } :root body #q-text[data-len="l"] { font-size: 20px !important; } }
+@media (min-width: 601px) and (max-width: 1024px) { :root body #q-text[data-len="m"] { font-size: 23px !important; } :root body #q-text[data-len="l"] { font-size: 21px !important; } }
