@@ -11,7 +11,7 @@
 :root body { zoom: 1 !important; -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; text-rendering: optimizeLegibility; }
 
 /* מחשב וטאבלט: הכל קטן ב-10% (בנייד נשאר בגודל מלא) */
-@media (min-width: 1025px) { :root body { zoom: .9 !important; } }
+@media (min-width: 1025px) { :root body { zoom: .81 !important; } }
 /* אותו רוחב עמוד בתרגול ובמבחן (ותואם לשאר דפי האתר), כדי שהמעבר ביניהם לא ייראה כמו קפיצת זום */
 @media (min-width: 1025px) { :root body header, :root body .practice-layout { max-width: 1480px !important; margin-inline: auto !important; box-sizing: border-box; } }
 
@@ -63,7 +63,7 @@
     :root body .btn-option { min-height: 84px !important; font-size: 21px !important; }
     :root body .bottom-nav-btn, :root body .btn-side-nav { min-height: 56px !important; }
     /* המבחן: אזור העבודה ממלא את גובה המסך, השאלה במרכז והניווט בתחתית */
-    :root body .main-content:has(#quiz-area) { display: flex !important; flex-direction: column !important; min-height: calc((100vh - 120px) / .9) !important; padding: 26px 34px 18px !important; }
+    :root body .main-content:has(#quiz-area) { display: flex !important; flex-direction: column !important; min-height: calc((100vh - 120px) / .81) !important; padding: 26px 34px 18px !important; }
     :root body #quiz-area { flex: 1 1 auto !important; flex-direction: column !important; }
     :root body #quiz-area .question-area { flex: 1 1 auto !important; }
     :root body #quiz-area #q-text { margin-top: auto !important; }

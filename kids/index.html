@@ -7151,6 +7151,9 @@ html body #login-modal .forgot-pass-link { color:#2563eb !important; cursor:poin
 }
 @media (max-width: 340px) { :root body .fin-grid { grid-template-columns: 1fr; } }
 @media (prefers-reduced-motion: reduce) { :root body .fin-card { transition: none !important; animation: none !important; } }
+/* מחשב: דף הבית מוקטן ב-10% (הכותרת והכרטיסיות), כדי שלא ייראה גדול מדי */
+@media (min-width: 1025px) { :root body .fin-zoom { zoom: 1.08 !important; } }
+@supports (-webkit-touch-callout: none) { @media (min-width: 1025px) and (max-width: 1366px) { :root body .fin-zoom { zoom: 1.035 !important; } } }
 
 /* ---------- קידס: אותו סגנון, ידידותי יותר - אותיות עגולות, אריחים "לחיצים", אייקון לבן בצבע המקצוע ---------- */
 
