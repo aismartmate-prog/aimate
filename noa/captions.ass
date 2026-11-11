@@ -1,0 +1,17 @@
+[Script Info]
+ScriptType: v4.00+
+PlayResX: 1080
+PlayResY: 1920
+WrapStyle: 2
+
+[V4+ Styles]
+Format: Name, Fontname, Fontsize, PrimaryColour, SecondaryColour, OutlineColour, BackColour, Bold, Italic, Underline, StrikeOut, ScaleX, ScaleY, Spacing, Angle, BorderStyle, Outline, Shadow, Alignment, MarginL, MarginR, MarginV, Encoding
+Style: Cap,Heebo ExtraBold,78,&H00FFFFFF,&H00FFFFFF,&H00000000,&H64000000,0,0,0,0,100,100,0,0,1,6,3,2,80,80,430,177
+
+[Events]
+Format: Layer, Start, End, Style, Name, MarginL, MarginR, MarginV, Effect, Text
+Dialogue: 0,0:00:00.05,0:00:04.77,Cap,,0,0,0,,{\fad(120,80)}‏היי, אני נועה,‏\N‏ואני לא באמת קיימת‏
+Dialogue: 0,0:00:04.87,0:00:08.37,Cap,,0,0,0,,{\fad(120,80)}‏אני יכולה להיות‏\N‏בבוקר בבנק...‏
+Dialogue: 0,0:00:08.47,0:00:11.56,Cap,,0,0,0,,{\fad(120,80)}‏...ואחר הצהריים‏\N‏בכותל‏
+Dialogue: 0,0:00:11.66,0:00:15.78,Cap,,0,0,0,,{\fad(120,80)}‏והכול ביום אחד,‏\N‏בלי לצאת מהבית‏
+Dialogue: 0,0:00:15.88,0:00:19.28,Cap,,0,0,0,,{\fad(120,80)}‏רוצים דמות כמוני‏\N‏לעסק שלכם?‏
