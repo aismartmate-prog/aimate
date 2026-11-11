@@ -494,6 +494,8 @@
         .dock { background: rgba(11,18,38,.94); border-top: 1px solid var(--gline); }
     }
 
+    /* מחשב: 90% מהגודל המקורי, כמו שאר דפי האתר */
+    @media (min-width: 1025px) { body { zoom: .9; min-height: calc(100vh / .9); } }
     /* ---------- טלפון וטאבלט: סרגל ההתקדמות קבוע בתחתית כמו באפליקציה, ולא מסתיר את הטקסט ---------- */
     @media (max-width: 1024px) {
         #lesson:not([hidden]) { padding-bottom: calc(104px + env(safe-area-inset-bottom)); }

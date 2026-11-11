@@ -107,3 +107,5 @@ html { background: #0b1226; }
     :root body .appbar { padding-top: env(safe-area-inset-top); }
 }
 @media (prefers-reduced-motion: reduce) { :root body .kl-owl { animation: none; } }
+/* מחשב: 90% מהגודל המקורי, כמו שאר דפי האתר */
+@media (min-width: 1025px) { :root body { zoom: .9; min-height: calc(100vh / .9); } }

@@ -134,6 +134,8 @@
   .sp-by { position: absolute; bottom: max(24px, env(safe-area-inset-bottom)); font-size: .74rem; font-weight: 600; letter-spacing: .1em; color: rgba(195,205,232,.7); direction: ltr; }
   .sp-skip { position: absolute; top: max(18px, env(safe-area-inset-top)); left: 18px; font-size: .8rem; font-weight: 700; color: rgba(255,255,255,.8); padding: 8px 16px; border: 1px solid rgba(255,255,255,.2); border-radius: 999px; }
 
+  /* מחשב: 90% מהגודל המקורי, כמו שאר דפי האתר */
+  @media (min-width: 1025px) { body { zoom: .9; min-height: calc(100vh / .9); } .page { min-height: calc(100vh / .9); } #splash, #nav-veil, #floaters { zoom: 1.1112; } }
   /* טאבלט וטלפון: אריחים רחבים וקומפקטיים, אחד מתחת לשני */
   @media (max-width: 960px) {
     .grid { grid-template-columns: 1fr; gap: 14px; }
