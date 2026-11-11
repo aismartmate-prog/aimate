@@ -15523,5 +15523,471 @@ html body #login-modal .netflix-remember input { width:16px; height:16px; accent
 html body #login-modal .forgot-pass-link { color:#2563eb !important; cursor:pointer; font-size:.92rem; text-decoration:underline; font-weight:600; }
 @media (max-width:480px) { html body #login-modal .login-card.auth-card-premium { padding:30px 20px 22px !important; border-radius:22px !important; } html body #login-modal .premium-auth-title { font-size:1.5rem !important; } }
 </style>
+<!-- parents-report-kids:start -->
+<!-- דוח הורים: עיצוב חדש על נייר שמנת + ניתוח נתונים מורחב + ייצוא PDF/הדפסה. הדוח הישן נשאר בקוד (מוסתר) והלוגיקה שלו רצה כרגיל -->
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Frank+Ruhl+Libre:wght@500;700;900&display=swap">
+<style id="parents-report-2026">
+
+
+
+html body #parents-modal:not(#_x1):not(#_x2){background:rgba(11,29,77,.45) !important;backdrop-filter:blur(8px) !important;-webkit-backdrop-filter:blur(8px) !important;padding:14px !important;align-items:center !important;justify-content:center !important}
+html body #parents-modal:not(#_x1):not(#_x2).pr-on > .pd-shell{display:none !important}
+html body #parents-modal:not(#_x1):not(#_x2) .pr-shell{position:relative !important;width:min(1120px,100%) !important;height:min(94vh,1100px) !important;display:flex !important;flex-direction:column !important;overflow:hidden !important;border-radius:26px !important;background:#F4EFE4 !important;box-shadow:0 60px 140px -40px rgba(11,29,77,.65),0 0 0 1px rgba(11,29,77,.08) !important;animation:prPop .6s cubic-bezier(.16,1,.3,1) both !important;text-align:right !important;direction:rtl !important;color:#0B1D4D !important;font-family:'Heebo',sans-serif !important}
+html body #parents-modal:not(#_x1):not(#_x2) .pr-top{flex:none !important;display:flex !important;align-items:center !important;gap:10px !important;padding:12px 18px !important;background:#0B1D4D !important;color:#F4EFE4 !important}
+html body #parents-modal:not(#_x1):not(#_x2) .pr-top .pr-brand{display:flex !important;align-items:center !important;gap:10px !important;font:700 .95rem 'Heebo',sans-serif !important;color:#F4EFE4 !important;margin-inline-end:auto !important}
+html body #parents-modal:not(#_x1):not(#_x2) .pr-top .pr-brand i{width:30px !important;height:30px !important;border-radius:9px !important;display:grid !important;place-items:center !important;background:#FFE14A !important;color:#0B1D4D !important;font-size:.85rem !important}
+html body #parents-modal:not(#_x1):not(#_x2) .pr-btn{display:inline-flex !important;align-items:center !important;gap:8px !important;height:40px !important;padding:0 16px !important;border-radius:999px !important;font:800 .92rem 'Heebo',sans-serif !important;cursor:pointer !important;border:1px solid rgba(244,239,228,.35) !important;background:transparent !important;color:#F4EFE4 !important;transition:transform .25s cubic-bezier(.16,1,.3,1),background .2s,box-shadow .25s !important;white-space:nowrap !important}
+html body #parents-modal:not(#_x1):not(#_x2) .pr-btn i{font-size:.9rem !important;color:inherit !important}
+html body #parents-modal:not(#_x1):not(#_x2) .pr-btn.gold{background:linear-gradient(135deg,#FFE98A,#FFD43B 55%,#E9B90C) !important;color:#0B1D4D !important;border-color:transparent !important;box-shadow:0 10px 26px -10px rgba(255,212,59,.75),inset 0 1px 0 rgba(255,255,255,.7) !important}
+html body #parents-modal:not(#_x1):not(#_x2) .pr-btn.x{width:40px !important;padding:0 !important;justify-content:center !important}
+@media (hover:hover) and (pointer:fine){html body #parents-modal:not(#_x1):not(#_x2) .pr-btn:hover{transform:translateY(-2px) !important}html body #parents-modal:not(#_x1):not(#_x2) .pr-btn.x:hover{background:#D3263A !important;border-color:#D3263A !important}}
+html body #parents-modal:not(#_x1):not(#_x2) .pr-btn[disabled]{opacity:.6 !important;cursor:wait !important}
+html body #parents-modal:not(#_x1):not(#_x2) .pr-scroll{flex:1 !important;min-height:0 !important;overflow-y:auto !important;overflow-x:hidden !important;scroll-behavior:smooth !important;scrollbar-width:thin !important;scrollbar-color:rgba(11,29,77,.25) transparent !important}
+
+
+html body #parents-modal:not(#_x1):not(#_x2) .pr{--ink:#0B1D4D !important;--ink2:#1F3170 !important;--mut:#5A6385 !important;--paper:#F4EFE4 !important;--paper2:#EBE4D4 !important;--paper3:#FBF8F1 !important;--blue:#2747D9 !important;--sky:#C9D6FF !important;--hl:#FFE14A !important;--good:#137A4A !important;--goodbg:#E3F4EA !important;--warn:#A86400 !important;--warnbg:#FFF1D6 !important;--bad:#C21F33 !important;--badbg:#FCE6E8 !important;direction:rtl !important;text-align:right !important;color:var(--ink) !important;font:400 16px/1.65 'Heebo',Arial,sans-serif !important;padding:0 0 30px !important;background:var(--paper) !important}
+html body #parents-modal:not(#_x1):not(#_x2) .pr *{box-sizing:border-box !important}
+html body #parents-modal:not(#_x1):not(#_x2) .pr h1,html body #parents-modal:not(#_x1):not(#_x2) .pr h2,html body #parents-modal:not(#_x1):not(#_x2) .pr h3,html body #parents-modal:not(#_x1):not(#_x2) .pr h4{-webkit-text-fill-color:currentColor !important;text-shadow:none !important;font-family:'Frank Ruhl Libre',Georgia,serif !important;color:var(--ink) !important;margin:0 !important;letter-spacing:-.01em !important}
+html body #parents-modal:not(#_x1):not(#_x2) .pr .mut{color:var(--mut) !important}
+html body #parents-modal:not(#_x1):not(#_x2) .pr mark{background:linear-gradient(transparent 55%,var(--hl) 55%) !important;color:inherit !important;padding:0 .1em !important}
+
+html body #parents-modal:not(#_x1):not(#_x2) .pr-hero{position:relative !important;padding:34px 34px 26px !important;border-bottom:2px solid var(--ink) !important;background:radial-gradient(600px 220px at 0% 0%,rgba(201,214,255,.55),transparent 70%),var(--paper) !important}
+html body #parents-modal:not(#_x1):not(#_x2) .pr-eyebrow{display:inline-flex !important;align-items:center !important;gap:8px !important;font:800 .78rem 'Heebo',sans-serif !important;letter-spacing:.14em !important;color:var(--blue) !important;text-transform:uppercase !important}
+html body #parents-modal:not(#_x1):not(#_x2) .pr-eyebrow::before{content:"" !important;width:26px !important;height:2px !important;background:var(--blue) !important}
+html body #parents-modal:not(#_x1):not(#_x2) .pr-hero h1{font-size:clamp(2.3rem,5.5vw,3.6rem) !important;font-weight:900 !important;line-height:1 !important;margin:10px 0 6px !important}
+html body #parents-modal:not(#_x1):not(#_x2) .pr-hero h1 span{display:block !important;font-size:.42em !important;font-weight:500 !important;color:var(--mut) !important;margin-bottom:6px !important;letter-spacing:0 !important}
+html body #parents-modal:not(#_x1):not(#_x2) .pr-meta{display:flex !important;flex-wrap:wrap !important;gap:6px 18px !important;font-size:.9rem !important;color:var(--mut) !important}
+html body #parents-modal:not(#_x1):not(#_x2) .pr-meta b{color:var(--ink) !important;font-weight:700 !important}
+html body #parents-modal:not(#_x1):not(#_x2) .pr-stamp{position:absolute !important;left:30px !important;top:28px !important;width:104px !important;height:104px !important;border-radius:50% !important;border:2px dashed rgba(39,71,217,.55) !important;display:grid !important;place-items:center !important;text-align:center !important;transform:rotate(-12deg) !important;color:var(--blue) !important;font:800 .72rem/1.25 'Heebo',sans-serif !important;letter-spacing:.06em !important}
+html body #parents-modal:not(#_x1):not(#_x2) .pr-stamp b{display:block !important;font:900 1.5rem/1 'Frank Ruhl Libre',serif !important;letter-spacing:0 !important}
+html body #parents-modal:not(#_x1):not(#_x2) .pr-filters{display:flex !important;flex-wrap:wrap !important;align-items:center !important;gap:8px !important;margin-top:18px !important}
+html body #parents-modal:not(#_x1):not(#_x2) .pr-chipbtn{height:34px !important;padding:0 14px !important;border-radius:999px !important;border:1.5px solid var(--ink) !important;background:transparent !important;color:var(--ink) !important;font:700 .86rem 'Heebo',sans-serif !important;cursor:pointer !important}
+html body #parents-modal:not(#_x1):not(#_x2) .pr-chipbtn.on{background:var(--ink) !important;color:var(--paper) !important}
+html body #parents-modal:not(#_x1):not(#_x2) .pr-nav{display:flex !important;gap:4px !important;flex-wrap:wrap !important;margin-inline-start:auto !important}
+html body #parents-modal:not(#_x1):not(#_x2) .pr-nav a{font:700 .82rem 'Heebo',sans-serif !important;color:var(--ink2) !important;text-decoration:none !important;padding:6px 10px !important;border-radius:8px !important}
+@media (hover:hover) and (pointer:fine){html body #parents-modal:not(#_x1):not(#_x2) .pr-nav a:hover{background:var(--sky) !important}}
+
+html body #parents-modal:not(#_x1):not(#_x2) .pr-sec{padding:28px 34px 6px !important;scroll-margin-top:10px !important}
+html body #parents-modal:not(#_x1):not(#_x2) .pr-sec-h{display:flex !important;align-items:baseline !important;gap:14px !important;margin:0 0 16px !important;padding-bottom:10px !important;border-bottom:1px solid rgba(11,29,77,.18) !important}
+html body #parents-modal:not(#_x1):not(#_x2) .pr-sec-h .n{font:900 1rem 'Frank Ruhl Libre',serif !important;color:var(--blue) !important}
+html body #parents-modal:not(#_x1):not(#_x2) .pr-sec-h h2{font-size:1.65rem !important;font-weight:900 !important}
+html body #parents-modal:not(#_x1):not(#_x2) .pr-sec-h p{margin:0 auto 0 0 !important;font-size:.88rem !important;color:var(--mut) !important}
+html body #parents-modal:not(#_x1):not(#_x2) .pr-card{background:var(--paper3) !important;border:1px solid rgba(11,29,77,.12) !important;border-radius:18px !important;padding:18px 20px !important;box-shadow:0 1px 0 rgba(255,255,255,.8) inset,0 16px 30px -26px rgba(11,29,77,.45) !important;break-inside:avoid !important}
+html body #parents-modal:not(#_x1):not(#_x2) .pr-card h3{font-size:1.15rem !important;font-weight:700 !important;margin-bottom:10px !important}
+html body #parents-modal:not(#_x1):not(#_x2) .pr-grid2{display:grid !important;grid-template-columns:1fr 1fr !important;gap:16px !important}
+html body #parents-modal:not(#_x1):not(#_x2) .pr-grid-60{display:grid !important;grid-template-columns:1.45fr 1fr !important;gap:16px !important}
+
+html body #parents-modal:not(#_x1):not(#_x2) .pr-bottom{display:grid !important;grid-template-columns:auto 1fr !important;gap:26px !important;align-items:center !important;background:var(--ink) !important;color:var(--paper) !important;border-radius:22px !important;padding:24px 26px !important;position:relative !important;overflow:hidden !important}
+html body #parents-modal:not(#_x1):not(#_x2) .pr-bottom::after{content:"" !important;position:absolute !important;inset:auto -60px -80px auto !important;width:260px !important;height:260px !important;border-radius:50% !important;background:radial-gradient(circle,rgba(255,225,74,.18),transparent 65%) !important}
+html body #parents-modal:not(#_x1):not(#_x2) .pr-gauge{position:relative !important;width:150px !important;height:150px !important}
+html body #parents-modal:not(#_x1):not(#_x2) .pr-gauge svg{width:150px !important;height:150px !important;transform:rotate(-90deg) !important}
+html body #parents-modal:not(#_x1):not(#_x2) .pr-gauge .trk{fill:none !important;stroke:rgba(244,239,228,.14) !important;stroke-width:12 !important}
+html body #parents-modal:not(#_x1):not(#_x2) .pr-gauge .val{fill:none !important;stroke:var(--hl) !important;stroke-width:12 !important;stroke-linecap:round !important;stroke-dasharray:100 !important;stroke-dashoffset:var(--off,100);animation:prGauge 1.4s cubic-bezier(.16,1,.3,1) .2s both !important}
+html body #parents-modal:not(#_x1):not(#_x2) .pr-gauge .lbl{position:absolute !important;inset:0 !important;display:grid !important;place-items:center !important;text-align:center !important;color:var(--paper) !important}
+html body #parents-modal:not(#_x1):not(#_x2) .pr-gauge .lbl b{display:block !important;font:900 2.6rem/1 'Frank Ruhl Libre',serif !important;color:#fff !important}
+html body #parents-modal:not(#_x1):not(#_x2) .pr-gauge .lbl small{font:700 .72rem 'Heebo',sans-serif !important;letter-spacing:.08em !important;color:#C9D6FF !important}
+html body #parents-modal:not(#_x1):not(#_x2) .pr-bottom h2{color:#fff !important;font-size:1.5rem !important;margin-bottom:8px !important}
+html body #parents-modal:not(#_x1):not(#_x2) .pr-bottom p{margin:0 !important;font-size:1.05rem !important;line-height:1.75 !important;color:#E9E4D8 !important}
+html body #parents-modal:not(#_x1):not(#_x2) .pr-bottom p b{color:#fff !important}
+html body #parents-modal:not(#_x1):not(#_x2) .pr-bottom p mark{background:linear-gradient(transparent 60%,rgba(255,225,74,.45) 60%) !important;color:#fff !important}
+html body #parents-modal:not(#_x1):not(#_x2) .pr-tags{display:flex !important;flex-wrap:wrap !important;gap:8px !important;margin-top:14px !important}
+html body #parents-modal:not(#_x1):not(#_x2) .pr-tag{display:inline-flex !important;align-items:center !important;gap:7px !important;padding:6px 12px !important;border-radius:999px !important;font:700 .82rem 'Heebo',sans-serif !important;background:rgba(244,239,228,.1) !important;color:#F4EFE4 !important;border:1px solid rgba(244,239,228,.22) !important}
+html body #parents-modal:not(#_x1):not(#_x2) .pr-tag i{font-size:.8rem !important}
+html body #parents-modal:not(#_x1):not(#_x2) .pr-tag.good{background:rgba(74,222,155,.16) !important;border-color:rgba(74,222,155,.45) !important;color:#B9F5D6 !important}
+html body #parents-modal:not(#_x1):not(#_x2) .pr-tag.warn{background:rgba(255,190,70,.16) !important;border-color:rgba(255,190,70,.5) !important;color:#FFE2A8 !important}
+html body #parents-modal:not(#_x1):not(#_x2) .pr-tag.bad{background:rgba(255,107,107,.16) !important;border-color:rgba(255,107,107,.5) !important;color:#FFC6C6 !important}
+
+html body #parents-modal:not(#_x1):not(#_x2) .pr-kpis{display:grid !important;grid-template-columns:repeat(6,1fr) !important;gap:12px !important;margin-top:16px !important}
+html body #parents-modal:not(#_x1):not(#_x2) .pr-kpi{background:var(--paper3) !important;border:1px solid rgba(11,29,77,.12) !important;border-radius:16px !important;padding:14px 14px 12px !important;position:relative !important;overflow:hidden !important;break-inside:avoid !important}
+html body #parents-modal:not(#_x1):not(#_x2) .pr-kpi::before{content:"" !important;position:absolute !important;top:0 !important;right:0 !important;left:0 !important;height:4px !important;background:var(--c,var(--blue)) !important}
+html body #parents-modal:not(#_x1):not(#_x2) .pr-kpi i{color:var(--c,var(--blue)) !important;font-size:.95rem !important}
+html body #parents-modal:not(#_x1):not(#_x2) .pr-kpi .v{font:900 1.85rem/1.05 'Frank Ruhl Libre',serif !important;color:var(--ink) !important;margin:8px 0 2px !important;white-space:nowrap !important}
+html body #parents-modal:not(#_x1):not(#_x2) .pr-kpi .v small{font:700 .8rem 'Heebo',sans-serif !important;color:var(--mut) !important;margin-inline-start:3px !important}
+html body #parents-modal:not(#_x1):not(#_x2) .pr-kpi .t{font:700 .8rem 'Heebo',sans-serif !important;color:var(--mut) !important}
+html body #parents-modal:not(#_x1):not(#_x2) .pr-kpi .s{font-size:.74rem !important;color:var(--mut) !important;margin-top:2px !important}
+
+html body #parents-modal:not(#_x1):not(#_x2) .pr-chart svg{width:100% !important;height:auto !important;display:block !important;overflow:visible !important}
+html body #parents-modal:not(#_x1):not(#_x2) .pr-chart text{font-family:'Heebo',sans-serif !important;fill:var(--mut) !important;font-size:11px !important}
+html body #parents-modal:not(#_x1):not(#_x2) .pr-stats{display:flex !important;flex-wrap:wrap !important;gap:8px 18px !important;margin-top:10px !important;font-size:.88rem !important;color:var(--mut) !important}
+html body #parents-modal:not(#_x1):not(#_x2) .pr-stats b{color:var(--ink) !important;font-size:1rem !important}
+html body #parents-modal:not(#_x1):not(#_x2) .pr-empty{display:flex !important;align-items:center !important;gap:10px !important;padding:18px !important;border-radius:14px !important;border:1.5px dashed rgba(11,29,77,.25) !important;color:var(--mut) !important;font-size:.95rem !important}
+html body #parents-modal:not(#_x1):not(#_x2) .pr-empty i{color:var(--blue) !important}
+html body #parents-modal:not(#_x1):not(#_x2) .pr-hbar{display:grid !important;grid-template-columns:1fr auto !important;grid-template-areas:'nm vl' 'tr tr' !important;align-items:center !important;gap:6px 10px !important;margin:12px 0 14px !important}
+html body #parents-modal:not(#_x1):not(#_x2) .pr-hbar .tr{grid-area:tr !important}html body #parents-modal:not(#_x1):not(#_x2) .pr-hbar .nm{grid-area:nm !important}html body #parents-modal:not(#_x1):not(#_x2) .pr-hbar .vl{grid-area:vl !important}
+html body #parents-modal:not(#_x1):not(#_x2) .pr-hbar .nm{display:flex !important;align-items:center !important;gap:7px !important;font-weight:700 !important;font-size:.95rem !important}
+html body #parents-modal:not(#_x1):not(#_x2) .pr-hbar .nm i{width:10px !important;height:10px !important;border-radius:3px !important;background:var(--c) !important}
+html body #parents-modal:not(#_x1):not(#_x2) .pr-hbar .tr{height:12px !important;border-radius:999px !important;background:var(--paper2) !important;overflow:hidden !important}
+html body #parents-modal:not(#_x1):not(#_x2) .pr-hbar .tr span{display:block !important;height:100% !important;border-radius:999px !important;background:var(--c) !important;animation:prGrow 1s cubic-bezier(.16,1,.3,1) both !important}
+html body #parents-modal:not(#_x1):not(#_x2) .pr-hbar .vl{font:700 .85rem 'Heebo',sans-serif !important;color:var(--ink) !important;white-space:nowrap !important}
+
+html body #parents-modal:not(#_x1):not(#_x2) .pr-subjects{display:grid !important;grid-template-columns:repeat(auto-fill,minmax(250px,1fr)) !important;gap:14px !important}
+html body #parents-modal:not(#_x1):not(#_x2) .pr-subj{position:relative !important;background:var(--paper3) !important;border:1px solid rgba(11,29,77,.12) !important;border-radius:18px !important;padding:16px 18px !important;overflow:hidden !important;break-inside:avoid !important}
+html body #parents-modal:not(#_x1):not(#_x2) .pr-subj::before{content:"" !important;position:absolute !important;top:0 !important;bottom:0 !important;right:0 !important;width:5px !important;background:var(--c) !important}
+html body #parents-modal:not(#_x1):not(#_x2) .pr-subj-h{display:flex !important;align-items:center !important;gap:8px !important;margin-bottom:10px !important}
+html body #parents-modal:not(#_x1):not(#_x2) .pr-subj-h h3{font-size:1.3rem !important;font-weight:900 !important;margin:0 !important}
+html body #parents-modal:not(#_x1):not(#_x2) .pr-st{display:inline-flex !important;align-items:center !important;gap:6px !important;padding:4px 10px !important;border-radius:999px !important;font:800 .74rem 'Heebo',sans-serif !important;margin-inline-start:auto !important;white-space:nowrap !important}
+html body #parents-modal:not(#_x1):not(#_x2) .pr-st.good{background:var(--goodbg) !important;color:var(--good) !important}
+html body #parents-modal:not(#_x1):not(#_x2) .pr-st.warn{background:var(--warnbg) !important;color:var(--warn) !important}
+html body #parents-modal:not(#_x1):not(#_x2) .pr-st.bad{background:var(--badbg) !important;color:var(--bad) !important}
+html body #parents-modal:not(#_x1):not(#_x2) .pr-st.info{background:#E6EBFF !important;color:var(--blue) !important}
+html body #parents-modal:not(#_x1):not(#_x2) .pr-st.gray{background:var(--paper2) !important;color:var(--mut) !important}
+html body #parents-modal:not(#_x1):not(#_x2) .pr-ready{display:flex !important;align-items:center !important;gap:10px !important;margin:6px 0 10px !important}
+html body #parents-modal:not(#_x1):not(#_x2) .pr-ready .tr{flex:1 !important;height:10px !important;border-radius:999px !important;background:var(--paper2) !important;overflow:hidden !important}
+html body #parents-modal:not(#_x1):not(#_x2) .pr-ready .tr span{display:block !important;height:100% !important;background:var(--c) !important;border-radius:999px !important;animation:prGrow 1.1s cubic-bezier(.16,1,.3,1) both !important}
+html body #parents-modal:not(#_x1):not(#_x2) .pr-ready b{font:900 1.2rem 'Frank Ruhl Libre',serif !important;min-width:3ch !important}
+html body #parents-modal:not(#_x1):not(#_x2) .pr-subj dl{display:grid !important;grid-template-columns:repeat(3,1fr) !important;gap:6px !important;margin:0 !important}
+html body #parents-modal:not(#_x1):not(#_x2) .pr-subj dt{font-size:.72rem !important;color:var(--mut) !important;font-weight:700 !important}
+html body #parents-modal:not(#_x1):not(#_x2) .pr-subj dd{margin:0 !important;font:800 .98rem 'Heebo',sans-serif !important;color:var(--ink) !important}
+html body #parents-modal:not(#_x1):not(#_x2) .pr-subj .last{margin-top:10px !important;padding-top:8px !important;border-top:1px dashed rgba(11,29,77,.15) !important;font-size:.82rem !important;color:var(--mut) !important}
+
+html body #parents-modal:not(#_x1):not(#_x2) .pr-list{list-style:none !important;margin:0 !important;padding:0 !important;display:grid !important;gap:8px !important}
+html body #parents-modal:not(#_x1):not(#_x2) .pr-list li{display:grid !important;grid-template-columns:auto 1fr auto !important;align-items:center !important;gap:10px !important;padding:10px 12px !important;border-radius:12px !important;background:#fff !important;border:1px solid rgba(11,29,77,.08) !important;break-inside:avoid !important}
+html body #parents-modal:not(#_x1):not(#_x2) .pr-list li .ic{width:30px !important;height:30px !important;border-radius:9px !important;display:grid !important;place-items:center !important;font-size:.85rem !important}
+html body #parents-modal:not(#_x1):not(#_x2) .pr-list.good li .ic{background:var(--goodbg) !important;color:var(--good) !important}
+html body #parents-modal:not(#_x1):not(#_x2) .pr-list.bad li .ic{background:var(--badbg) !important;color:var(--bad) !important}
+html body #parents-modal:not(#_x1):not(#_x2) .pr-list li .tp{font-weight:700 !important;font-size:.95rem !important;line-height:1.35 !important}
+html body #parents-modal:not(#_x1):not(#_x2) .pr-list li .tp small{display:block !important;font-weight:500 !important;color:var(--mut) !important;font-size:.78rem !important}
+html body #parents-modal:not(#_x1):not(#_x2) .pr-list li .sc{font:900 1.25rem 'Frank Ruhl Libre',serif !important}
+html body #parents-modal:not(#_x1):not(#_x2) .pr-list.good li .sc{color:var(--good) !important}
+html body #parents-modal:not(#_x1):not(#_x2) .pr-list.bad li .sc{color:var(--bad) !important}
+html body #parents-modal:not(#_x1):not(#_x2) .pr-list li.mid .ic{background:var(--warnbg) !important;color:var(--warn) !important}
+html body #parents-modal:not(#_x1):not(#_x2) .pr-list li.mid .sc{color:var(--warn) !important}
+
+html body #parents-modal:not(#_x1):not(#_x2) .pr-recs{list-style:none !important;margin:0 !important;padding:0 !important;display:grid !important;gap:10px !important;counter-reset:rc !important}
+html body #parents-modal:not(#_x1):not(#_x2) .pr-recs li{counter-increment:rc !important;display:grid !important;grid-template-columns:44px 1fr !important;gap:14px !important;align-items:start !important;padding:14px 16px !important;border-radius:16px !important;background:var(--paper3) !important;border:1px solid rgba(11,29,77,.12) !important;break-inside:avoid !important}
+html body #parents-modal:not(#_x1):not(#_x2) .pr-recs li::before{content:counter(rc) !important;width:44px !important;height:44px !important;border-radius:12px !important;display:grid !important;place-items:center !important;font:900 1.4rem 'Frank Ruhl Libre',serif !important;color:var(--paper) !important;background:var(--ink) !important}
+html body #parents-modal:not(#_x1):not(#_x2) .pr-recs li.bad::before{background:var(--bad) !important}
+html body #parents-modal:not(#_x1):not(#_x2) .pr-recs li.warn::before{background:#D98A00 !important}
+html body #parents-modal:not(#_x1):not(#_x2) .pr-recs li.good::before{background:var(--good) !important}
+html body #parents-modal:not(#_x1):not(#_x2) .pr-recs li.info::before{background:var(--blue) !important}
+html body #parents-modal:not(#_x1):not(#_x2) .pr-recs h4{margin:0 0 3px !important;font:800 1rem 'Heebo',sans-serif !important;color:var(--ink) !important}
+html body #parents-modal:not(#_x1):not(#_x2) .pr-recs p{margin:0 !important;font-size:.94rem !important;color:var(--ink2) !important;line-height:1.6 !important}
+
+html body #parents-modal:not(#_x1):not(#_x2) .pr-heat{display:flex !important;gap:10px !important;align-items:flex-start !important;overflow-x:auto !important}
+html body #parents-modal:not(#_x1):not(#_x2) .pr-heat svg{flex:none !important;width:auto !important;max-width:none !important;height:auto !important}
+html body #parents-modal:not(#_x1):not(#_x2) .pr-legend{display:flex !important;align-items:center !important;gap:6px !important;font-size:.78rem !important;color:var(--mut) !important;margin-top:8px !important}
+html body #parents-modal:not(#_x1):not(#_x2) .pr-legend i{width:13px !important;height:13px !important;border-radius:3px !important;display:inline-block !important}
+
+html body #parents-modal:not(#_x1):not(#_x2) .pr-table-wrap{overflow-x:auto !important;border-radius:16px !important;border:1px solid rgba(11,29,77,.12) !important;background:var(--paper3) !important}
+html body #parents-modal:not(#_x1):not(#_x2) .pr-table{width:100% !important;border-collapse:collapse !important;min-width:620px !important;font-size:.92rem !important}
+html body #parents-modal:not(#_x1):not(#_x2) .pr-table th{position:sticky !important;top:0 !important;background:var(--ink) !important;color:var(--paper) !important;font:700 .82rem 'Heebo',sans-serif !important;text-align:right !important;padding:11px 14px !important}
+html body #parents-modal:not(#_x1):not(#_x2) .pr-table td{padding:10px 14px !important;border-bottom:1px solid rgba(11,29,77,.08) !important;color:var(--ink) !important;vertical-align:middle !important}
+html body #parents-modal:not(#_x1):not(#_x2) .pr-table tr:nth-child(even) td{background:rgba(235,228,212,.35) !important}
+html body #parents-modal:not(#_x1):not(#_x2) .pr-table .ty{display:inline-block !important;padding:3px 10px !important;border-radius:999px !important;font:800 .74rem 'Heebo',sans-serif !important}
+html body #parents-modal:not(#_x1):not(#_x2) .pr-table .ty.ex{background:#E6EBFF !important;color:var(--blue) !important}
+html body #parents-modal:not(#_x1):not(#_x2) .pr-table .ty.pr{background:var(--goodbg) !important;color:var(--good) !important}
+html body #parents-modal:not(#_x1):not(#_x2) .pr-table .sc{font:900 1.05rem 'Frank Ruhl Libre',serif !important}
+html body #parents-modal:not(#_x1):not(#_x2) .pr-table .num{text-align:center !important;white-space:nowrap !important}
+html body #parents-modal:not(#_x1):not(#_x2) .pr-foot{margin:26px 34px 0 !important;padding-top:14px !important;border-top:2px solid var(--ink) !important;display:flex !important;justify-content:space-between !important;flex-wrap:wrap !important;gap:8px !important;font-size:.8rem !important;color:var(--mut) !important}
+html body #parents-modal:not(#_x1):not(#_x2) .pr-foot b{font-family:'Frank Ruhl Libre',serif !important;color:var(--ink) !important;font-size:.95rem !important}
+html body #parents-modal:not(#_x1):not(#_x2) .pr-reveal{animation:prIn .7s cubic-bezier(.16,1,.3,1) both !important;animation-delay:var(--d,0ms) !important}
+
+@media (max-width:760px){
+  html body #parents-modal:not(#_x1):not(#_x2){padding:0 !important}
+  html body #parents-modal:not(#_x1):not(#_x2) .pr-shell{height:100vh !important;height:100dvh !important;border-radius:0 !important}
+  html body #parents-modal:not(#_x1):not(#_x2) .pr-top{padding:10px 12px !important;gap:6px !important}
+  html body #parents-modal:not(#_x1):not(#_x2) .pr-top .pr-brand span{display:none !important}
+  html body #parents-modal:not(#_x1):not(#_x2) .pr-btn{height:38px !important;padding:0 12px !important;font-size:.84rem !important}
+  html body #parents-modal:not(#_x1):not(#_x2) .pr-btn .lbl-long{display:none !important}
+  html body #parents-modal:not(#_x1):not(#_x2) .pr-hero{padding:24px 16px 18px !important}
+  html body #parents-modal:not(#_x1):not(#_x2) .pr-stamp{display:none !important}
+  html body #parents-modal:not(#_x1):not(#_x2) .pr-sec{padding:22px 16px 4px !important}
+  html body #parents-modal:not(#_x1):not(#_x2) .pr-sec-h{flex-wrap:wrap !important}
+  html body #parents-modal:not(#_x1):not(#_x2) .pr-sec-h h2{font-size:1.35rem !important}
+  html body #parents-modal:not(#_x1):not(#_x2) .pr-sec-h p{margin:0 !important;width:100% !important}
+  html body #parents-modal:not(#_x1):not(#_x2) .pr-bottom{grid-template-columns:1fr !important;justify-items:center !important;text-align:center !important;padding:22px 18px !important}
+  html body #parents-modal:not(#_x1):not(#_x2) .pr-tags{justify-content:center !important}
+  html body #parents-modal:not(#_x1):not(#_x2) .pr-kpis{grid-template-columns:repeat(2,1fr) !important}
+  html body #parents-modal:not(#_x1):not(#_x2) .pr-grid2,html body #parents-modal:not(#_x1):not(#_x2) .pr-grid-60{grid-template-columns:1fr !important}
+  html body #parents-modal:not(#_x1):not(#_x2) .pr-nav{display:none !important}
+  html body #parents-modal:not(#_x1):not(#_x2) .pr-foot{margin:20px 16px 0 !important}
+}
+@media (min-width:761px) and (max-width:1000px){html body #parents-modal:not(#_x1):not(#_x2) .pr-kpis{grid-template-columns:repeat(3,1fr) !important}}
+
+@keyframes prPop{from{opacity:0;transform:translateY(20px) scale(.98)}to{opacity:1;transform:none}}
+@keyframes prIn{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
+@keyframes prGrow{from{transform:scaleX(0);transform-origin:right}to{transform:scaleX(1);transform-origin:right}}
+@keyframes prGauge{from{stroke-dashoffset:100}}
+@media (prefers-reduced-motion:reduce){html body #parents-modal:not(#_x1):not(#_x2) .pr *,html body #parents-modal:not(#_x1):not(#_x2) .pr-shell{animation:none !important}}
+
+</style>
+<script id="parents-report-2026-js">
+window.__PR_DOC_CSS="\n\n\n.pr{--ink:#0B1D4D;--ink2:#1F3170;--mut:#5A6385;--paper:#F4EFE4;--paper2:#EBE4D4;--paper3:#FBF8F1;--blue:#2747D9;--sky:#C9D6FF;--hl:#FFE14A;--good:#137A4A;--goodbg:#E3F4EA;--warn:#A86400;--warnbg:#FFF1D6;--bad:#C21F33;--badbg:#FCE6E8;direction:rtl;text-align:right;color:var(--ink);font:400 16px/1.65 'Heebo',Arial,sans-serif;padding:0 0 30px;background:var(--paper)}\n.pr *{box-sizing:border-box}\n.pr h1,.pr h2,.pr h3,.pr h4{-webkit-text-fill-color:currentColor;text-shadow:none;font-family:'Frank Ruhl Libre',Georgia,serif;color:var(--ink);margin:0;letter-spacing:-.01em}\n.pr .mut{color:var(--mut)}\n.pr mark{background:linear-gradient(transparent 55%,var(--hl) 55%);color:inherit;padding:0 .1em}\n\n.pr-hero{position:relative;padding:34px 34px 26px;border-bottom:2px solid var(--ink);background:radial-gradient(600px 220px at 0% 0%,rgba(201,214,255,.55),transparent 70%),var(--paper)}\n.pr-eyebrow{display:inline-flex;align-items:center;gap:8px;font:800 .78rem 'Heebo',sans-serif;letter-spacing:.14em;color:var(--blue);text-transform:uppercase}\n.pr-eyebrow::before{content:\"\";width:26px;height:2px;background:var(--blue)}\n.pr-hero h1{font-size:clamp(2.3rem,5.5vw,3.6rem);font-weight:900;line-height:1;margin:10px 0 6px}\n.pr-hero h1 span{display:block;font-size:.42em;font-weight:500;color:var(--mut);margin-bottom:6px;letter-spacing:0}\n.pr-meta{display:flex;flex-wrap:wrap;gap:6px 18px;font-size:.9rem;color:var(--mut)}\n.pr-meta b{color:var(--ink);font-weight:700}\n.pr-stamp{position:absolute;left:30px;top:28px;width:104px;height:104px;border-radius:50%;border:2px dashed rgba(39,71,217,.55);display:grid;place-items:center;text-align:center;transform:rotate(-12deg);color:var(--blue);font:800 .72rem/1.25 'Heebo',sans-serif;letter-spacing:.06em}\n.pr-stamp b{display:block;font:900 1.5rem/1 'Frank Ruhl Libre',serif;letter-spacing:0}\n.pr-filters{display:flex;flex-wrap:wrap;align-items:center;gap:8px;margin-top:18px}\n.pr-chipbtn{height:34px;padding:0 14px;border-radius:999px;border:1.5px solid var(--ink);background:transparent;color:var(--ink);font:700 .86rem 'Heebo',sans-serif;cursor:pointer}\n.pr-chipbtn.on{background:var(--ink);color:var(--paper)}\n.pr-nav{display:flex;gap:4px;flex-wrap:wrap;margin-inline-start:auto}\n.pr-nav a{font:700 .82rem 'Heebo',sans-serif;color:var(--ink2);text-decoration:none;padding:6px 10px;border-radius:8px}\n@media (hover:hover) and (pointer:fine){.pr-nav a:hover{background:var(--sky)}}\n\n.pr-sec{padding:28px 34px 6px;scroll-margin-top:10px}\n.pr-sec-h{display:flex;align-items:baseline;gap:14px;margin:0 0 16px;padding-bottom:10px;border-bottom:1px solid rgba(11,29,77,.18)}\n.pr-sec-h .n{font:900 1rem 'Frank Ruhl Libre',serif;color:var(--blue)}\n.pr-sec-h h2{font-size:1.65rem;font-weight:900}\n.pr-sec-h p{margin:0 auto 0 0;font-size:.88rem;color:var(--mut)}\n.pr-card{background:var(--paper3);border:1px solid rgba(11,29,77,.12);border-radius:18px;padding:18px 20px;box-shadow:0 1px 0 rgba(255,255,255,.8) inset,0 16px 30px -26px rgba(11,29,77,.45);break-inside:avoid}\n.pr-card h3{font-size:1.15rem;font-weight:700;margin-bottom:10px}\n.pr-grid2{display:grid;grid-template-columns:1fr 1fr;gap:16px}\n.pr-grid-60{display:grid;grid-template-columns:1.45fr 1fr;gap:16px}\n\n.pr-bottom{display:grid;grid-template-columns:auto 1fr;gap:26px;align-items:center;background:var(--ink);color:var(--paper);border-radius:22px;padding:24px 26px;position:relative;overflow:hidden}\n.pr-bottom::after{content:\"\";position:absolute;inset:auto -60px -80px auto;width:260px;height:260px;border-radius:50%;background:radial-gradient(circle,rgba(255,225,74,.18),transparent 65%)}\n.pr-gauge{position:relative;width:150px;height:150px}\n.pr-gauge svg{width:150px;height:150px;transform:rotate(-90deg)}\n.pr-gauge .trk{fill:none;stroke:rgba(244,239,228,.14);stroke-width:12}\n.pr-gauge .val{fill:none;stroke:var(--hl);stroke-width:12;stroke-linecap:round;stroke-dasharray:100;stroke-dashoffset:var(--off,100);animation:prGauge 1.4s cubic-bezier(.16,1,.3,1) .2s both}\n.pr-gauge .lbl{position:absolute;inset:0;display:grid;place-items:center;text-align:center;color:var(--paper)}\n.pr-gauge .lbl b{display:block;font:900 2.6rem/1 'Frank Ruhl Libre',serif;color:#fff}\n.pr-gauge .lbl small{font:700 .72rem 'Heebo',sans-serif;letter-spacing:.08em;color:#C9D6FF}\n.pr-bottom h2{color:#fff;font-size:1.5rem;margin-bottom:8px}\n.pr-bottom p{margin:0;font-size:1.05rem;line-height:1.75;color:#E9E4D8}\n.pr-bottom p b{color:#fff}\n.pr-bottom p mark{background:linear-gradient(transparent 60%,rgba(255,225,74,.45) 60%);color:#fff}\n.pr-tags{display:flex;flex-wrap:wrap;gap:8px;margin-top:14px}\n.pr-tag{display:inline-flex;align-items:center;gap:7px;padding:6px 12px;border-radius:999px;font:700 .82rem 'Heebo',sans-serif;background:rgba(244,239,228,.1);color:#F4EFE4;border:1px solid rgba(244,239,228,.22)}\n.pr-tag i{font-size:.8rem}\n.pr-tag.good{background:rgba(74,222,155,.16);border-color:rgba(74,222,155,.45);color:#B9F5D6}\n.pr-tag.warn{background:rgba(255,190,70,.16);border-color:rgba(255,190,70,.5);color:#FFE2A8}\n.pr-tag.bad{background:rgba(255,107,107,.16);border-color:rgba(255,107,107,.5);color:#FFC6C6}\n\n.pr-kpis{display:grid;grid-template-columns:repeat(6,1fr);gap:12px;margin-top:16px}\n.pr-kpi{background:var(--paper3);border:1px solid rgba(11,29,77,.12);border-radius:16px;padding:14px 14px 12px;position:relative;overflow:hidden;break-inside:avoid}\n.pr-kpi::before{content:\"\";position:absolute;top:0;right:0;left:0;height:4px;background:var(--c,var(--blue))}\n.pr-kpi i{color:var(--c,var(--blue));font-size:.95rem}\n.pr-kpi .v{font:900 1.85rem/1.05 'Frank Ruhl Libre',serif;color:var(--ink);margin:8px 0 2px;white-space:nowrap}\n.pr-kpi .v small{font:700 .8rem 'Heebo',sans-serif;color:var(--mut);margin-inline-start:3px}\n.pr-kpi .t{font:700 .8rem 'Heebo',sans-serif;color:var(--mut)}\n.pr-kpi .s{font-size:.74rem;color:var(--mut);margin-top:2px}\n\n.pr-chart svg{width:100%;height:auto;display:block;overflow:visible}\n.pr-chart text{font-family:'Heebo',sans-serif;fill:var(--mut);font-size:11px}\n.pr-stats{display:flex;flex-wrap:wrap;gap:8px 18px;margin-top:10px;font-size:.88rem;color:var(--mut)}\n.pr-stats b{color:var(--ink);font-size:1rem}\n.pr-empty{display:flex;align-items:center;gap:10px;padding:18px;border-radius:14px;border:1.5px dashed rgba(11,29,77,.25);color:var(--mut);font-size:.95rem}\n.pr-empty i{color:var(--blue)}\n.pr-hbar{display:grid;grid-template-columns:1fr auto;grid-template-areas:'nm vl' 'tr tr';align-items:center;gap:6px 10px;margin:12px 0 14px}\n.pr-hbar .tr{grid-area:tr}.pr-hbar .nm{grid-area:nm}.pr-hbar .vl{grid-area:vl}\n.pr-hbar .nm{display:flex;align-items:center;gap:7px;font-weight:700;font-size:.95rem}\n.pr-hbar .nm i{width:10px;height:10px;border-radius:3px;background:var(--c)}\n.pr-hbar .tr{height:12px;border-radius:999px;background:var(--paper2);overflow:hidden}\n.pr-hbar .tr span{display:block;height:100%;border-radius:999px;background:var(--c);animation:prGrow 1s cubic-bezier(.16,1,.3,1) both}\n.pr-hbar .vl{font:700 .85rem 'Heebo',sans-serif;color:var(--ink);white-space:nowrap}\n\n.pr-subjects{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:14px}\n.pr-subj{position:relative;background:var(--paper3);border:1px solid rgba(11,29,77,.12);border-radius:18px;padding:16px 18px;overflow:hidden;break-inside:avoid}\n.pr-subj::before{content:\"\";position:absolute;top:0;bottom:0;right:0;width:5px;background:var(--c)}\n.pr-subj-h{display:flex;align-items:center;gap:8px;margin-bottom:10px}\n.pr-subj-h h3{font-size:1.3rem;font-weight:900;margin:0}\n.pr-st{display:inline-flex;align-items:center;gap:6px;padding:4px 10px;border-radius:999px;font:800 .74rem 'Heebo',sans-serif;margin-inline-start:auto;white-space:nowrap}\n.pr-st.good{background:var(--goodbg);color:var(--good)}\n.pr-st.warn{background:var(--warnbg);color:var(--warn)}\n.pr-st.bad{background:var(--badbg);color:var(--bad)}\n.pr-st.info{background:#E6EBFF;color:var(--blue)}\n.pr-st.gray{background:var(--paper2);color:var(--mut)}\n.pr-ready{display:flex;align-items:center;gap:10px;margin:6px 0 10px}\n.pr-ready .tr{flex:1;height:10px;border-radius:999px;background:var(--paper2);overflow:hidden}\n.pr-ready .tr span{display:block;height:100%;background:var(--c);border-radius:999px;animation:prGrow 1.1s cubic-bezier(.16,1,.3,1) both}\n.pr-ready b{font:900 1.2rem 'Frank Ruhl Libre',serif;min-width:3ch}\n.pr-subj dl{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;margin:0}\n.pr-subj dt{font-size:.72rem;color:var(--mut);font-weight:700}\n.pr-subj dd{margin:0;font:800 .98rem 'Heebo',sans-serif;color:var(--ink)}\n.pr-subj .last{margin-top:10px;padding-top:8px;border-top:1px dashed rgba(11,29,77,.15);font-size:.82rem;color:var(--mut)}\n\n.pr-list{list-style:none;margin:0;padding:0;display:grid;gap:8px}\n.pr-list li{display:grid;grid-template-columns:auto 1fr auto;align-items:center;gap:10px;padding:10px 12px;border-radius:12px;background:#fff;border:1px solid rgba(11,29,77,.08);break-inside:avoid}\n.pr-list li .ic{width:30px;height:30px;border-radius:9px;display:grid;place-items:center;font-size:.85rem}\n.pr-list.good li .ic{background:var(--goodbg);color:var(--good)}\n.pr-list.bad li .ic{background:var(--badbg);color:var(--bad)}\n.pr-list li .tp{font-weight:700;font-size:.95rem;line-height:1.35}\n.pr-list li .tp small{display:block;font-weight:500;color:var(--mut);font-size:.78rem}\n.pr-list li .sc{font:900 1.25rem 'Frank Ruhl Libre',serif}\n.pr-list.good li .sc{color:var(--good)}\n.pr-list.bad li .sc{color:var(--bad)}\n.pr-list li.mid .ic{background:var(--warnbg);color:var(--warn)}\n.pr-list li.mid .sc{color:var(--warn)}\n\n.pr-recs{list-style:none;margin:0;padding:0;display:grid;gap:10px;counter-reset:rc}\n.pr-recs li{counter-increment:rc;display:grid;grid-template-columns:44px 1fr;gap:14px;align-items:start;padding:14px 16px;border-radius:16px;background:var(--paper3);border:1px solid rgba(11,29,77,.12);break-inside:avoid}\n.pr-recs li::before{content:counter(rc);width:44px;height:44px;border-radius:12px;display:grid;place-items:center;font:900 1.4rem 'Frank Ruhl Libre',serif;color:var(--paper);background:var(--ink)}\n.pr-recs li.bad::before{background:var(--bad)}\n.pr-recs li.warn::before{background:#D98A00}\n.pr-recs li.good::before{background:var(--good)}\n.pr-recs li.info::before{background:var(--blue)}\n.pr-recs h4{margin:0 0 3px;font:800 1rem 'Heebo',sans-serif;color:var(--ink)}\n.pr-recs p{margin:0;font-size:.94rem;color:var(--ink2);line-height:1.6}\n\n.pr-heat{display:flex;gap:10px;align-items:flex-start;overflow-x:auto}\n.pr-heat svg{flex:none;width:auto;max-width:none;height:auto}\n.pr-legend{display:flex;align-items:center;gap:6px;font-size:.78rem;color:var(--mut);margin-top:8px}\n.pr-legend i{width:13px;height:13px;border-radius:3px;display:inline-block}\n\n.pr-table-wrap{overflow-x:auto;border-radius:16px;border:1px solid rgba(11,29,77,.12);background:var(--paper3)}\n.pr-table{width:100%;border-collapse:collapse;min-width:620px;font-size:.92rem}\n.pr-table th{position:sticky;top:0;background:var(--ink);color:var(--paper);font:700 .82rem 'Heebo',sans-serif;text-align:right;padding:11px 14px}\n.pr-table td{padding:10px 14px;border-bottom:1px solid rgba(11,29,77,.08);color:var(--ink);vertical-align:middle}\n.pr-table tr:nth-child(even) td{background:rgba(235,228,212,.35)}\n.pr-table .ty{display:inline-block;padding:3px 10px;border-radius:999px;font:800 .74rem 'Heebo',sans-serif}\n.pr-table .ty.ex{background:#E6EBFF;color:var(--blue)}\n.pr-table .ty.pr{background:var(--goodbg);color:var(--good)}\n.pr-table .sc{font:900 1.05rem 'Frank Ruhl Libre',serif}\n.pr-table .num{text-align:center;white-space:nowrap}\n.pr-foot{margin:26px 34px 0;padding-top:14px;border-top:2px solid var(--ink);display:flex;justify-content:space-between;flex-wrap:wrap;gap:8px;font-size:.8rem;color:var(--mut)}\n.pr-foot b{font-family:'Frank Ruhl Libre',serif;color:var(--ink);font-size:.95rem}\n.pr-reveal{animation:prIn .7s cubic-bezier(.16,1,.3,1) both;animation-delay:var(--d,0ms)}\n\n@media (max-width:540px){\n  .pr-hero{padding:24px 16px 18px}\n  .pr-stamp{display:none}\n  .pr-sec{padding:22px 16px 4px}\n  .pr-sec-h{flex-wrap:wrap}\n  .pr-sec-h h2{font-size:1.35rem}\n  .pr-sec-h p{margin:0;width:100%}\n  .pr-bottom{grid-template-columns:1fr;justify-items:center;text-align:center;padding:22px 18px}\n  .pr-tags{justify-content:center}\n  .pr-kpis{grid-template-columns:repeat(2,1fr)}\n  .pr-grid2,.pr-grid-60{grid-template-columns:1fr}\n  .pr-nav{display:none}\n  .pr-foot{margin:20px 16px 0}\n}\n@media (min-width:541px) and (max-width:900px){.pr-kpis{grid-template-columns:repeat(3,1fr)}}\n\n@keyframes prPop{from{opacity:0;transform:translateY(20px) scale(.98)}to{opacity:1;transform:none}}\n@keyframes prIn{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}\n@keyframes prGrow{from{transform:scaleX(0);transform-origin:right}to{transform:scaleX(1);transform-origin:right}}\n@keyframes prGauge{from{stroke-dashoffset:100}}\n\nhtml,body{margin:0;background:#F4EFE4}\n.pr-doc{max-width:1000px;margin:0 auto}\n.pr *{animation:none!important}\n.pr-wait{position:fixed;inset:0;background:rgba(244,239,228,.94);display:grid;place-items:center;z-index:9;font-family:Heebo,sans-serif}\n.pr-wait div{text-align:center;background:#0B1D4D;color:#F4EFE4;padding:22px 30px;border-radius:18px;box-shadow:0 30px 60px -30px rgba(11,29,77,.6)}\n.pr-wait b{display:block;font-size:1.2rem;margin-bottom:4px}.pr-wait span{opacity:.8;font-size:.9rem}\n@media print{@page{size:A4;margin:9mm}html,body{-webkit-print-color-adjust:exact;print-color-adjust:exact}.pr-wait{display:none}\n.pr-card,.pr-kpi,.pr-subj,.pr-recs li,.pr-bottom,.pr-list li,tr{break-inside:avoid}.pr-sec-h{break-after:avoid}.pr-table th{position:static}.pr-table-wrap{overflow:visible}.pr-doc{max-width:none}}\n";
+(function(){
+  'use strict';
+  var orig=window.renderParentsDashboard;
+  if(typeof orig!=='function')return;
+  var CSS_DOC=window.__PR_DOC_CSS||'';
+  var COLORS={'חשבון':'#D3263A','עברית':'#7A3FD1','תנ"ך':'#0E7C93','טריוויה':'#C2185B','מתמטיקה':'#D3263A','אנגלית':'#D98A00','לשון':'#7A3FD1','מדעים':'#137A4A','ערבית':'#C2541B','חינוך פיננסי':'#0E7C93'};
+  var FALLBACK=['#2747D9','#0E7C93','#7A3FD1','#137A4A','#D98A00','#D3263A'];
+  var subjColorMap={};
+  function col(s){if(COLORS[s])return COLORS[s];if(!subjColorMap[s])subjColorMap[s]=FALLBACK[Object.keys(subjColorMap).length%FALLBACK.length];return subjColorMap[s];}
+  var esc=function(s){return String(s==null?'':s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');};
+  function fmt(min){min=Math.max(0,Math.round(min||0));if(min<60)return min+" דק'";var h=Math.floor(min/60),m=min%60;return m?h+" שע' ו-"+m+" דק'":h+" שע'";}
+  function fmtShort(min){min=Math.round(min||0);if(min<60)return {v:min,u:"דק'"};return {v:(min/60).toFixed(min<600?1:0).replace(/\.0$/,''),u:"שעות"};}
+  function parseD(s){var m=String(s||'').match(/(\d{1,2})[./-](\d{1,2})[./-](\d{2,4})/);if(!m)return null;var y=+m[3];if(y<100)y+=2000;var d=new Date(y,+m[2]-1,+m[1]);return isNaN(d)?null:d;}
+  function dkey(d){return d.getFullYear()+'-'+(d.getMonth()+1)+'-'+d.getDate();}
+  function dstr(d){return d.getDate()+'/'+(d.getMonth()+1)+'/'+d.getFullYear();}
+  var DAY=86400000;
+  function today0(){var t=new Date();t.setHours(0,0,0,0);return t;}
+  var DOW=['ראשון','שני','שלישי','רביעי','חמישי','שישי','שבת'];
+  var DOWS=['א׳','ב׳','ג׳','ד׳','ה׳','ו׳','ש׳'];
+  function isExam(t){return t==='מבחן'||t==='בוחן';}
+  function avg(a){return a.length?a.reduce(function(x,y){return x+y;},0)/a.length:0;}
+
+  /* ═════ ניתוח הנתונים ═════ */
+  function analyze(all,range){
+    var t0=today0(),items=all.map(function(it){var d=parseD(it.date);return Object.assign({},it,{_d:d});}).filter(function(it){return it._d;});
+    if(range>0){var from=new Date(t0.getTime()-(range-1)*DAY);items=items.filter(function(it){return it._d>=from;});}
+    items.sort(function(a,b){return a._d-b._d;});
+    var M={items:items,range:range,total:0,practice:0,exams:0,subjects:{},days:{},dow:[0,0,0,0,0,0,0],hours:{},hourN:0};
+    items.forEach(function(it){
+      var mins=+it.durationMinutes||0,s=it.subject||'כללי';M.total+=mins;
+      var S=M.subjects[s]||(M.subjects[s]={name:s,minutes:0,sessions:0,practice:0,scores:[],tests:[],last:null,topics:{}});
+      S.minutes+=mins;S.sessions++;S.last=it._d;if(it.topic)S.topics[it.topic]=(S.topics[it.topic]||0)+1;
+      if(isExam(it.type)&&it.score!=null&&it.score!==''){M.exams++;S.scores.push(+it.score);S.tests.push(it);}else{M.practice++;S.practice++;}
+      var k=dkey(it._d);M.days[k]=(M.days[k]||0)+(mins||1);M.dow[it._d.getDay()]+=(mins||1);
+      var hr=null;if(typeof it.hour==='number')hr=it.hour;else if(it.time&&/^\d{1,2}:/.test(it.time))hr=parseInt(it.time,10);else if(it.timestamp){var td=new Date(it.timestamp);if(!isNaN(td))hr=td.getHours();}
+      if(hr!=null&&hr>=0&&hr<24){M.hourN++;var b=hr<6?'לילה':hr<12?'בוקר':hr<16?'צהריים':hr<19?'אחה״צ':'ערב';M.hours[b]=(M.hours[b]||0)+(mins||1);}
+    });
+    M.tests=items.filter(function(it){return isExam(it.type)&&it.score!=null&&it.score!=='';});
+    M.avgScore=M.tests.length?Math.round(avg(M.tests.map(function(x){return +x.score;}))):null;
+    M.activeDays=Object.keys(M.days).length;
+    M.first=items.length?items[0]._d:null;M.last=items.length?items[items.length-1]._d:null;
+    M.sinceLast=M.last?Math.round((t0-M.last)/DAY):null;
+    /* רצף ימים */
+    var set=M.days,cur=0,best=0,run=0,keys=Object.keys(set).map(function(k){var p=k.split('-');return new Date(+p[0],+p[1]-1,+p[2]).getTime();}).sort(function(a,b){return a-b;});
+    keys.forEach(function(t,i){run=(i&&t-keys[i-1]===DAY)?run+1:1;if(run>best)best=run;});
+    for(var d=t0.getTime();set[dkey(new Date(d))];d-=DAY)cur++;
+    if(!cur&&set[dkey(new Date(t0.getTime()-DAY))]){for(d=t0.getTime()-DAY;set[dkey(new Date(d))];d-=DAY)cur++;}
+    M.streak=cur;M.bestStreak=best;
+    M.avgSession=items.length?Math.round(M.total/items.length):0;
+    var spanDays=M.first?Math.max(7,Math.round((t0-M.first)/DAY)+1):7;M.weeks=spanDays/7;M.perWeek=Math.round(M.total/M.weeks);
+    /* מגמה */
+    M.trend=null;
+    if(M.tests.length>=4){var h=Math.floor(M.tests.length/2);M.trend=Math.round(avg(M.tests.slice(h).map(function(x){return +x.score;}))-avg(M.tests.slice(0,h).map(function(x){return +x.score;})));}
+    /* מוכנות + שליטה (אותן נוסחאות כמו בדוח הקודם) */
+    Object.keys(M.subjects).forEach(function(k){var S=M.subjects[k];S.avg=S.scores.length?Math.round(avg(S.scores)):null;S.ready=S.avg==null?null:Math.min(100,Math.round(S.avg*.85+Math.min(15,S.sessions*2)));
+      S.trend=null;if(S.scores.length>=3){var h2=Math.floor(S.scores.length/2);S.trend=Math.round(avg(S.scores.slice(h2))-avg(S.scores.slice(0,h2)));}
+      S.status=S.ready==null?['gray','fa-solid fa-hourglass-half','תרגול בלבד']:S.ready>=85?['good','fa-solid fa-circle-check','מוכן/ה למבחן']:S.ready>=70?['info','fa-solid fa-thumbs-up','כמעט מוכן/ה']:S.ready>=55?['warn','fa-solid fa-circle-exclamation','דורש חיזוק']:['bad','fa-solid fa-triangle-exclamation','דורש תרגול יסודי'];
+    });
+    M.subjList=Object.keys(M.subjects).map(function(k){return M.subjects[k];}).sort(function(a,b){return b.minutes-a.minutes;});
+    var bonus=Math.min(20,items.length*1.5);M.mastery=items.length?Math.min(100,Math.round(((M.avgScore||0)*.8)+bonus)):0;
+    M.masteryLabel=M.mastery>=90?'מצוינות':M.mastery>=75?'טוב מאוד':M.mastery>=60?'במגמת שיפור':M.mastery>0?'נדרש תרגול נוסף':'טרם החל';
+    /* חוזקות/חולשות */
+    M.strong=M.tests.filter(function(x){return +x.score>=90;}).sort(function(a,b){return b.score-a.score;});
+    M.weak=M.tests.filter(function(x){return +x.score<75;}).sort(function(a,b){return a.score-b.score;});
+    M.untested=M.subjList.filter(function(S){return !S.scores.length&&S.sessions>=2;});
+    M.recs=recs(M);
+    return M;
+  }
+  function recs(M){
+    var R=[];
+    if(M.sinceLast!=null&&M.sinceLast>=5)R.push({c:'bad',h:'לחזור לשגרה',p:'לא נרשמה פעילות כבר '+M.sinceLast+' ימים. הפסקות ארוכות גורמות לשכחה — מומלץ לקבוע כבר השבוע 2–3 מפגשי תרגול קצרים.'});
+    M.subjList.forEach(function(S){
+      if(S.ready!=null&&S.ready<55)R.push({c:'bad',h:S.name+': לבנות בסיס מחדש',p:'רמת המוכנות נמוכה ('+S.ready+'%, ממוצע '+S.avg+'). כדאי להקצות זמן קבוע למקצוע הזה, להתחיל מתרגולים קלים ולעלות בהדרגה.'});
+      else if(S.ready!=null&&S.ready<70)R.push({c:'warn',h:S.name+': חיזוק לפני המבחן הבא',p:'מוכנות בינונית ('+S.ready+'%). עוד 3–4 תרגולים ממוקדים בנושאים שבהם הציון היה נמוך יקפיצו את השליטה.'});
+      if(S.trend!=null&&S.trend<=-8)R.push({c:'warn',h:S.name+': ירידה בציונים',p:'הממוצע במבחנים האחרונים ירד ב-'+Math.abs(S.trend)+' נקודות. שווה לשבת יחד ולבדוק איזה נושא חדש פחות ברור.'});
+    });
+    if(M.trend!=null&&M.trend<=-5)R.push({c:'bad',h:'מגמת ירידה כללית',p:'הממוצע הכללי ירד ב-'+Math.abs(M.trend)+' נקודות לעומת התקופה הקודמת. מומלץ לבדוק עומס, ריכוז ונושאים חדשים.'});
+    M.untested.forEach(function(S){R.push({c:'info',h:S.name+': לבדוק את רמת השליטה',p:'יש כבר '+S.sessions+' תרגולים במקצוע, אבל אף מבחן. בוחן קצר ייתן תמונת מצב מדויקת.'});});
+    if(M.items.length&&M.perWeek<60)R.push({c:'warn',h:'להגדיל את זמן התרגול',p:'בממוצע '+fmt(M.perWeek)+' בשבוע. היעד המומלץ הוא כשעתיים בשבוע, מחולקות ל-4 מפגשים של כ-30 דקות.'});
+    if(M.items.length&&M.activeDays>=3&&M.avgSession>55)R.push({c:'info',h:'מפגשים קצרים ותכופים',p:'אורך מפגש ממוצע '+fmt(M.avgSession)+'. מפגשים של 25–40 דקות עם הפסקה יעילים יותר לזכירה לטווח ארוך.'});
+    M.subjList.forEach(function(S){if(S.scores.filter(function(x){return x>=90;}).length>=2)R.push({c:'good',h:S.name+': מוכן/ה לאתגר',p:'שליטה מצוינת ועקבית. אפשר לעבור לרמת קושי גבוהה יותר או לחומר מתקדם.'});});
+    if(M.trend!=null&&M.trend>=5)R.push({c:'good',h:'לחזק את ההצלחה',p:'שיפור של '+M.trend+' נקודות בממוצע! מילה טובה והכרה במאמץ עושות פלאים להמשך המוטיבציה.'});
+    if(M.items.length&&!M.exams)R.push({c:'info',h:'מבחן ראשון',p:'עד כה בוצעו תרגולים בלבד. מבחן או בוחן ראשון ייתן תמונת מצב מדויקת של השליטה בחומר.'});
+    if(!R.length&&M.items.length)R.push({c:'good',h:'להמשיך באותה שגרה',p:'הנתונים מאוזנים ותקינים — שגרת הלמידה הנוכחית עובדת.'});
+    var order={bad:0,warn:1,info:2,good:3};R.sort(function(a,b){return order[a.c]-order[b.c];});
+    return R.slice(0,7);
+  }
+
+  /* ═════ גרפים (SVG) ═════ */
+  function scoreChart(tests){
+    if(tests.length<2)return '<div class="pr-empty"><i class="fa-solid fa-chart-line"></i>הגרף יופיע אחרי שני מבחנים לפחות'+(tests.length?' (בוצע מבחן אחד, ציון '+tests[0].score+')':'')+'.</div>';
+    var W=640,H=250,L=34,Rr=14,T=14,B=34,iw=W-L-Rr,ih=H-T-B,n=tests.length;
+    var X=function(i){return L+(n===1?iw/2:i*iw/(n-1));},Y=function(v){return T+ih-(v/100)*ih;};
+    var s='<svg viewBox="0 0 '+W+' '+H+'" role="img" aria-label="ציוני מבחנים לאורך זמן" direction="ltr">';
+    s+='<defs><linearGradient id="prArea" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#2747D9" stop-opacity=".22"/><stop offset="1" stop-color="#2747D9" stop-opacity="0"/></linearGradient></defs>';
+    s+='<rect x="'+L+'" y="'+Y(100)+'" width="'+iw+'" height="'+(Y(80)-Y(100))+'" fill="#137A4A" opacity=".06"/>';
+    s+='<rect x="'+L+'" y="'+Y(60)+'" width="'+iw+'" height="'+(Y(0)-Y(60))+'" fill="#C21F33" opacity=".05"/>';
+    [0,20,40,60,80,100].forEach(function(v){s+='<line x1="'+L+'" x2="'+(W-Rr)+'" y1="'+Y(v)+'" y2="'+Y(v)+'" stroke="#0B1D4D" stroke-opacity="'+(v===60||v===80?.22:.08)+'" '+(v===60||v===80?'stroke-dasharray="4 4"':'')+'/><text x="'+(L-8)+'" y="'+(Y(v)+4)+'" text-anchor="end">'+v+'</text>';});
+    var pts=tests.map(function(t,i){return [X(i),Y(+t.score)];});
+    var line=pts.map(function(p,i){return (i?'L':'M')+p[0].toFixed(1)+' '+p[1].toFixed(1);}).join(' ');
+    s+='<path d="'+line+' L'+pts[n-1][0]+' '+Y(0)+' L'+pts[0][0]+' '+Y(0)+' Z" fill="url(#prArea)"/>';
+    s+='<path d="'+line+'" fill="none" stroke="#2747D9" stroke-width="2.5" stroke-linejoin="round" stroke-linecap="round"/>';
+    var step=Math.max(1,Math.ceil(n/6));
+    tests.forEach(function(t,i){var p=pts[i],sc=+t.score,c=sc>=80?'#137A4A':sc>=60?'#D98A00':'#C21F33';
+      s+='<g><circle cx="'+p[0]+'" cy="'+p[1]+'" r="14" fill="transparent"/><circle cx="'+p[0]+'" cy="'+p[1]+'" r="5.5" fill="'+c+'" stroke="#FBF8F1" stroke-width="2.5"/><title>'+esc(dstr(t._d)+' · '+(t.subject||'')+' · '+(t.topic||'')+' — ציון '+sc)+'</title></g>';
+      if(i%step===0||i===n-1)s+='<text x="'+p[0]+'" y="'+(H-10)+'" text-anchor="middle">'+t._d.getDate()+'/'+(t._d.getMonth()+1)+'</text>';
+    });
+    var lp=pts[n-1];s+='<text x="'+(lp[0]-10)+'" y="'+(lp[1]-12)+'" text-anchor="end" style="font-weight:800;fill:#0B1D4D;font-size:13px">'+tests[n-1].score+'</text>';
+    return s+'</svg>';
+  }
+  function heatmap(M){
+    var weeks=14,cell=15,gap=4,t0=today0(),end=new Date(t0.getTime()+(6-t0.getDay())*DAY),start=new Date(end.getTime()-(weeks*7-1)*DAY);
+    var max=0;Object.keys(M.days).forEach(function(k){if(M.days[k]>max)max=M.days[k];});
+    var ramp=['#E5DDCB','#C9D6FF','#8FA6F5','#4F6FE8','#2747D9'];
+    var W=weeks*(cell+gap)+26,H=7*(cell+gap)+22,s='<svg viewBox="0 0 '+W+' '+H+'" width="'+W+'" height="'+H+'" role="img" aria-label="מפת ימי למידה" direction="ltr">';
+    var mPrev=-1;
+    for(var w=0;w<weeks;w++){for(var d=0;d<7;d++){var dt=new Date(start.getTime()+(w*7+d)*DAY);if(dt>t0)continue;
+      var v=M.days[dkey(dt)]||0,lv=!v?0:v<=max*.25?1:v<=max*.5?2:v<=max*.75?3:4;
+      var x=W-26-(w+1)*(cell+gap)+gap,y=18+d*(cell+gap);
+      s+='<rect x="'+x+'" y="'+y+'" width="'+cell+'" height="'+cell+'" rx="4" fill="'+ramp[lv]+'"><title>'+esc(DOW[dt.getDay()]+' '+dstr(dt)+(v?' — '+fmt(v):' — אין פעילות'))+'</title></rect>';
+      if(d===0&&dt.getMonth()!==mPrev){mPrev=dt.getMonth();s+='<text x="'+(x+cell)+'" y="11" text-anchor="end">'+['ינו׳','פבר׳','מרץ','אפר׳','מאי','יוני','יולי','אוג׳','ספט׳','אוק׳','נוב׳','דצמ׳'][dt.getMonth()]+'</text>';}
+    }}
+    [0,2,4,6].forEach(function(d){s+='<text x="'+(W-4)+'" y="'+(18+d*(cell+gap)+11)+'" text-anchor="end">'+DOWS[d]+'</text>';});
+    s+='</svg>';
+    return '<div class="pr-heat">'+s+'</div><div class="pr-legend">פחות '+ramp.map(function(c){return '<i style="background:'+c+'"></i>';}).join('')+' יותר</div>';
+  }
+  function barsV(labels,vals,hi){
+    var max=Math.max.apply(null,vals)||1,W=labels.length*54,H=150,s='<svg viewBox="0 0 '+W+' '+H+'" role="img" direction="ltr">';
+    labels.forEach(function(l,i){var v=vals[i],h=Math.max(v?6:2,(v/max)*100),x=W-(i+1)*54+12,y=118-h;
+      s+='<rect x="'+x+'" y="'+y+'" width="30" height="'+h+'" rx="5" fill="'+(v===max&&v?'#2747D9':'#C9D6FF')+'"><title>'+esc(l+' — '+fmt(v))+'</title></rect>';
+      s+='<text x="'+(x+15)+'" y="138" text-anchor="middle">'+esc(l)+'</text>';
+      if(v){var fv=fmtShort(v);s+='<text x="'+(x+15)+'" y="'+(y-6)+'" text-anchor="middle" style="fill:#0B1D4D;font-weight:700">'+fv.v+(fv.u==="דק'"?"ד׳":"ש׳")+'</text>';}
+    });
+    return s+'</svg>';
+  }
+
+  /* ═════ בניית הדוח ═════ */
+  function report(M,name,doc){
+    var o='',dd=0,R=function(){dd+=60;return ' pr-reveal" style="--d:'+dd+'ms';};
+    var rangeTxt=M.range===7?'7 הימים האחרונים':M.range===30?'30 הימים האחרונים':'כל התקופה';
+    var period=M.first?(dstr(M.first)+' – '+dstr(M.last)):'—';
+    o+='<div class="pr-hero"><div class="pr-eyebrow">דוח התקדמות אישי</div><h1><span>נכתב עבור ההורים של</span>'+esc(name)+'</h1>';
+    o+='<div class="pr-meta"><span>תקופה: <b>'+esc(rangeTxt)+'</b></span><span>טווח נתונים: <b>'+esc(period)+'</b></span><span>הופק: <b>'+esc(dstr(new Date()))+'</b></span></div>';
+    if(doc)o+='<div class="pr-stamp"><div><b>'+M.mastery+'%</b>מדד<br>שליטה</div></div>';
+    if(!doc)o+='<div class="pr-filters"><button type="button" class="pr-chipbtn'+(M.range===0?' on':'')+'" data-pr-range="0">כל התקופה</button><button type="button" class="pr-chipbtn'+(M.range===30?' on':'')+'" data-pr-range="30">30 יום</button><button type="button" class="pr-chipbtn'+(M.range===7?' on':'')+'" data-pr-range="7">7 ימים</button>'+
+      '<nav class="pr-nav"><a href="#pr-s1">סיכום</a><a href="#pr-s2">ציונים</a><a href="#pr-s3">מקצועות</a><a href="#pr-s4">חוזקות</a><a href="#pr-s5">המלצות</a><a href="#pr-s6">הרגלים</a><a href="#pr-s7">יומן</a></nav></div>';
+    o+='</div>';
+    if(!M.items.length){
+      return o+'<section class="pr-sec"><div class="pr-empty"><i class="fa-solid fa-seedling"></i>'+(M.range?'אין פעילות בתקופה שנבחרה. אפשר לבחור "כל התקופה" למעלה.':'טרם בוצעו תרגולים או מבחנים תחת פרופיל זה. ברגע שתהיה פעילות ראשונה — הדוח יתמלא אוטומטית.')+'</div></section>';
+    }
+    /* 1. בשורה התחתונה */
+    var best=M.subjList.filter(function(S){return S.avg!=null;}).sort(function(a,b){return b.avg-a.avg;});
+    var head='<b>'+esc(name)+'</b> למד/ה <mark>'+fmt(M.total)+'</mark> ב-<b>'+M.activeDays+'</b> ימי למידה, השלים/ה <b>'+M.practice+'</b> תרגולים'+(M.exams?' ו-<b>'+M.exams+'</b> מבחנים בממוצע <mark>'+M.avgScore+'</mark>':'')+'. ';
+    if(best.length>1)head+='החוזקה הבולטת היא <b>'+esc(best[0].name)+'</b> (ממוצע '+best[0].avg+')'+(best[best.length-1].avg<75?', ו<b>'+esc(best[best.length-1].name)+'</b> צריך/ה תשומת לב (ממוצע '+best[best.length-1].avg+')':'')+'.';
+    else if(best.length===1)head+='ב'+esc(best[0].name)+' הממוצע עומד על '+best[0].avg+'.';
+    else head+='עדיין אין מבחנים, ולכן מדד השליטה מבוסס בעיקר על היקף התרגול.';
+    var tags=[];
+    if(M.trend!=null)tags.push(M.trend>=5?['good','fa-solid fa-arrow-trend-up','מגמת שיפור +'+M.trend]:M.trend<=-5?['bad','fa-solid fa-arrow-trend-down','מגמת ירידה '+M.trend]:['', 'fa-solid fa-arrows-left-right','ביצועים יציבים']);
+    tags.push(M.streak>=2?['good','fa-solid fa-fire','רצף של '+M.streak+' ימים']:['','fa-solid fa-fire','רצף שיא: '+M.bestStreak+' ימים']);
+    if(M.sinceLast!=null)tags.push(M.sinceLast<=2?['good','fa-solid fa-clock','פעילות אחרונה: '+(M.sinceLast===0?'היום':M.sinceLast===1?'אתמול':'לפני יומיים')]:M.sinceLast<=5?['warn','fa-solid fa-clock','פעילות אחרונה לפני '+M.sinceLast+' ימים']:['bad','fa-solid fa-clock','ללא פעילות '+M.sinceLast+' ימים']);
+    o+='<section class="pr-sec" id="pr-s1"><div class="pr-bottom'+R()+'"><div class="pr-gauge"><svg viewBox="0 0 120 120"><circle class="trk" cx="60" cy="60" r="50" pathLength="100"/><circle class="val" cx="60" cy="60" r="50" pathLength="100" style="--off:'+(100-M.mastery)+'"/></svg><div class="lbl"><div><b>'+M.mastery+'</b><small>'+esc(M.masteryLabel)+'</small></div></div></div>'+
+      '<div><h2>בשורה התחתונה</h2><p>'+head+'</p><div class="pr-tags">'+tags.map(function(t){return '<span class="pr-tag '+t[0]+'"><i class="'+t[1]+'"></i>'+esc(t[2])+'</span>';}).join('')+'</div></div></div>';
+    var k=[
+      ['#2747D9','fa-solid fa-hourglass-half','זמן למידה',fmtShort(M.total),'בממוצע '+fmt(M.perWeek)+' בשבוע'],
+      ['#137A4A','fa-solid fa-calendar-check','ימי למידה',{v:M.activeDays,u:''},'רצף שיא: '+M.bestStreak+' ימים'],
+      ['#0E7C93','fa-solid fa-pen-ruler','תרגולים',{v:M.practice,u:''},'מפגש ממוצע: '+fmt(M.avgSession)],
+      ['#7A3FD1','fa-solid fa-file-signature','מבחנים ובחנים',{v:M.exams,u:''},M.tests.length?'אחרון: '+dstr(M.tests[M.tests.length-1]._d):'טרם בוצעו'],
+      ['#D98A00','fa-solid fa-star','ממוצע ציונים',{v:M.avgScore==null?'—':M.avgScore,u:''},M.tests.length?'טווח: '+Math.min.apply(null,M.tests.map(function(x){return +x.score;}))+'–'+Math.max.apply(null,M.tests.map(function(x){return +x.score;})):'יחושב אחרי מבחן'],
+      ['#D3263A','fa-solid fa-book-open','מקצועות',{v:M.subjList.length,u:''},M.subjList.length?'עיקרי: '+M.subjList[0].name:'']
+    ];
+    o+='<div class="pr-kpis">'+k.map(function(x){return '<div class="pr-kpi'+R()+';--c:'+x[0]+'"><i class="'+x[1]+'"></i><div class="v">'+esc(x[3].v)+(x[3].u?'<small>'+x[3].u+'</small>':'')+'</div><div class="t">'+x[2]+'</div><div class="s">'+esc(x[4])+'</div></div>';}).join('')+'</div></section>';
+    /* 2. ציונים + זמן */
+    var tstats='';
+    if(M.tests.length){var sc=M.tests.map(function(x){return +x.score;});tstats='<div class="pr-stats"><span>ציון אחרון <b>'+sc[sc.length-1]+'</b></span><span>הגבוה <b>'+Math.max.apply(null,sc)+'</b></span><span>הנמוך <b>'+Math.min.apply(null,sc)+'</b></span><span>מעל 80: <b>'+sc.filter(function(v){return v>=80;}).length+'/'+sc.length+'</b></span></div>';}
+    var tot=M.total||1;
+    o+='<section class="pr-sec" id="pr-s2"><div class="pr-sec-h"><span class="n">01</span><h2>ציונים וזמן למידה</h2><p>הקו המקווקו: 60 (עובר) ו-80 (טוב)</p></div><div class="pr-grid-60">'+
+      '<div class="pr-card pr-chart'+R()+'"><h3>ציוני מבחנים לאורך זמן</h3>'+scoreChart(M.tests)+tstats+'</div>'+
+      '<div class="pr-card'+R()+'"><h3>איפה הזמן הולך?</h3>'+M.subjList.map(function(S){var p=Math.round(S.minutes/tot*100);return '<div class="pr-hbar" style="--c:'+col(S.name)+'"><span class="nm"><i></i>'+esc(S.name)+'</span><span class="tr"><span style="width:'+Math.max(2,p)+'%"></span></span><span class="vl">'+fmt(S.minutes)+' · '+p+'%</span></div>';}).join('')+'</div></div></section>';
+    /* 3. מקצועות */
+    o+='<section class="pr-sec" id="pr-s3"><div class="pr-sec-h"><span class="n">02</span><h2>תמונת מצב לפי מקצוע</h2><p>מוכנות = ממוצע ציונים + היקף תרגול</p></div><div class="pr-subjects">'+M.subjList.map(function(S){
+      var tp=Object.keys(S.topics).sort(function(a,b){return S.topics[b]-S.topics[a];}).slice(0,3);
+      return '<article class="pr-subj'+R()+';--c:'+col(S.name)+'"><div class="pr-subj-h"><h3>'+esc(S.name)+'</h3><span class="pr-st '+S.status[0]+'"><i class="'+S.status[1]+'"></i>'+S.status[2]+'</span></div>'+
+        (S.ready!=null?'<div class="pr-ready"><span class="tr"><span style="width:'+S.ready+'%"></span></span><b>'+S.ready+'%</b></div>':'<div class="pr-ready mut" style="font-size:.85rem">רמת המוכנות תחושב אחרי מבחן ראשון</div>')+
+        '<dl><div><dt>ממוצע</dt><dd>'+(S.avg==null?'—':S.avg)+(S.trend!=null&&Math.abs(S.trend)>=3?' <small style="color:'+(S.trend>0?'#137A4A':'#C21F33')+'">'+(S.trend>0?'▲':'▼')+Math.abs(S.trend)+'</small>':'')+'</dd></div><div><dt>זמן</dt><dd>'+fmt(S.minutes)+'</dd></div><div><dt>פעילויות</dt><dd>'+S.sessions+'</dd></div></dl>'+
+        '<div class="last">'+(tp.length?'נושאים: '+tp.map(esc).join(' · ')+'<br>':'')+'פעילות אחרונה: '+dstr(S.last)+'</div></article>';
+    }).join('')+'</div></section>';
+    /* 4. חוזקות / חיזוק */
+    function li(x,cls,ic){return '<li class="'+cls+'"><span class="ic"><i class="'+ic+'"></i></span><span class="tp">'+esc(x.topic||'—')+'<small>'+esc((x.subject||'')+' · '+x.type+' · '+dstr(x._d))+'</small></span><span class="sc">'+esc(x.score)+'</span></li>';}
+    var weakH=M.weak.length?'<ul class="pr-list bad">'+M.weak.slice(0,6).map(function(x){return li(x,+x.score<60?'':'mid',+x.score<60?'fa-solid fa-triangle-exclamation':'fa-solid fa-circle-exclamation');}).join('')+'</ul>'+(M.weak.length>6?'<div class="mut" style="margin-top:8px;font-size:.85rem">ועוד '+(M.weak.length-6)+' מבחנים מתחת ל-75 — מפורטים ביומן הפעילות</div>':''):'<div class="pr-empty"><i class="fa-solid fa-circle-check"></i>'+(M.exams?'מצוין! אין מבחנים עם ציון מתחת ל-75.':'יתמלא אחרי המבחן הראשון.')+'</div>';
+    var strongH=M.strong.length?'<ul class="pr-list good">'+M.strong.slice(0,6).map(function(x){return li(x,'','fa-solid fa-star');}).join('')+'</ul>':'<div class="pr-empty"><i class="fa-solid fa-star"></i>'+(M.exams?'עוד אין ציון 90+ — יופיע כאן ברגע שיושג.':'יתמלא אחרי המבחן הראשון.')+'</div>';
+    o+='<section class="pr-sec" id="pr-s4"><div class="pr-sec-h"><span class="n">03</span><h2>חוזקות ונושאים לחיזוק</h2><p>לפי ציוני מבחנים בפועל</p></div><div class="pr-grid2"><div class="pr-card'+R()+'"><h3>במה '+esc(name)+' מצטיין/ת</h3>'+strongH+'</div><div class="pr-card'+R()+'"><h3>נושאים שדורשים חיזוק</h3>'+weakH+'</div></div></section>';
+    /* 5. המלצות */
+    o+='<section class="pr-sec" id="pr-s5"><div class="pr-sec-h"><span class="n">04</span><h2>מה כדאי לעשות עכשיו</h2><p>המלצות להורים, מסודרות לפי חשיבות</p></div><ol class="pr-recs">'+M.recs.map(function(r){return '<li class="'+r.c+R()+'"><div><h4>'+esc(r.h)+'</h4><p>'+esc(r.p)+'</p></div></li>';}).join('')+'</ol></section>';
+    /* 6. הרגלים */
+    var bestDow=M.dow.indexOf(Math.max.apply(null,M.dow));
+    var hb=['בוקר','צהריים','אחה״צ','ערב','לילה'];
+    o+='<section class="pr-sec" id="pr-s6"><div class="pr-sec-h"><span class="n">05</span><h2>הרגלי למידה</h2><p>מתי ובאיזו תדירות לומדים</p></div><div class="pr-grid-60">'+
+      '<div class="pr-card pr-chart'+R()+'"><h3>מפת ימי למידה · 14 שבועות</h3>'+heatmap(M)+'</div>'+
+      '<div class="pr-card pr-chart'+R()+'"><h3>'+(M.hourN?'שעות הלמידה':'ימים בשבוע')+'</h3>'+(M.hourN?barsV(hb,hb.map(function(b){return M.hours[b]||0;})):barsV(DOWS,M.dow))+'<div class="pr-stats"><span>היום הפעיל ביותר: <b>'+DOW[bestDow]+'</b></span><span>אורך מפגש ממוצע: <b>'+fmt(M.avgSession)+'</b></span></div></div></div></section>';
+    /* 7. יומן */
+    var rows=M.items.slice().reverse().map(function(it){var ex=isExam(it.type)&&it.score!=null&&it.score!=='';var sc=+it.score;
+      return '<tr><td class="num">'+esc(dstr(it._d))+'</td><td><b style="color:'+col(it.subject||'כללי')+'">'+esc(it.subject||'')+'</b> — '+esc(it.topic||'')+(it.grade&&!/כיתה/.test(it.topic||'')?' <span class="mut">('+esc(it.grade)+')</span>':'')+'</td><td><span class="ty '+(ex?'ex':'pr')+'">'+esc(it.type||'תרגול')+'</span></td><td class="num">'+esc(it.durationMinutes||0)+" דק'</td><td class=\"num\">"+(ex?'<span class="sc" style="color:'+(sc>=80?'#137A4A':sc>=60?'#A86400':'#C21F33')+'">'+esc(it.score)+'</span>':'<span class="mut">—</span>')+'</td></tr>';}).join('');
+    o+='<section class="pr-sec" id="pr-s7"><div class="pr-sec-h"><span class="n">06</span><h2>יומן פעילות מלא</h2><p>'+M.items.length+' פעילויות</p></div><div class="pr-table-wrap"><table class="pr-table"><thead><tr><th>תאריך</th><th>מקצוע ונושא</th><th>סוג</th><th class="num">זמן</th><th class="num">ציון</th></tr></thead><tbody>'+rows+'</tbody></table></div></section>';
+    o+='<footer class="pr-foot"><span><b>המרכז להישגים לימודיים</b> · kids.tirgulim.co.il</span><span>הדוח מבוסס אך ורק על פעילות שנרשמה במערכת</span></footer>';
+    return o;
+  }
+
+  /* ═════ חלון, סינון, ייצוא ═════ */
+  var state={all:[],range:0,name:''};
+  function studentName(h){
+    var el=document.getElementById('parents-student-name'),t=el?el.textContent:'';
+    var m=t.split(':');if(m.length>1&&m[1].trim())return m[1].trim();
+    return (h&&h[0]&&h[0].studentName)||localStorage.getItem('activeProfile')||'התלמיד/ה';
+  }
+  function ensureShell(){
+    var modal=document.getElementById('parents-modal');if(!modal)return null;
+    var sh=modal.querySelector('.pr-shell');
+    if(!sh){
+      sh=document.createElement('div');sh.className='pr-shell';sh.setAttribute('role','dialog');sh.setAttribute('aria-label','דוח הורים');
+      sh.innerHTML='<div class="pr-top"><div class="pr-brand"><i class="fa-solid fa-chart-line"></i><span>מעקב הורים · המרכז להישגים לימודיים</span></div>'+
+        '<button type="button" class="pr-btn gold" data-pr-act="pdf"><i class="fa-solid fa-file-arrow-down"></i>הורדת PDF</button>'+
+        '<button type="button" class="pr-btn" data-pr-act="print"><i class="fa-solid fa-print"></i><span class="lbl-long">הדפסה</span></button>'+
+        '<button type="button" class="pr-btn x" data-pr-act="close" aria-label="סגירה"><i class="fa-solid fa-xmark"></i></button></div><div class="pr-scroll"><div class="pr"></div></div>';
+      modal.appendChild(sh);
+      sh.addEventListener('click',function(e){
+        var b=e.target.closest('[data-pr-act],[data-pr-range],.pr-nav a');if(!b)return;
+        if(b.matches('.pr-nav a')){e.preventDefault();var tg=sh.querySelector(b.getAttribute('href'));if(tg)tg.scrollIntoView({behavior:'smooth',block:'start'});return;}
+        if(b.hasAttribute('data-pr-range')){state.range=+b.getAttribute('data-pr-range');draw();return;}
+        var a=b.getAttribute('data-pr-act');
+        if(a==='close')modal.style.display='none';
+        else if(a==='print')exportDoc(false);
+        else if(a==='pdf')exportDoc(true,b);
+      });
+    }
+    modal.classList.add('pr-on');
+    return sh;
+  }
+  function draw(){
+    var sh=ensureShell();if(!sh)return;
+    var M=analyze(state.all,state.range);
+    sh.querySelector('.pr').innerHTML=report(M,state.name,false);
+    sh.querySelector('.pr-scroll').scrollTop=0;
+  }
+  function exportDoc(pdf,btn){
+    var M=analyze(state.all,state.range),fname='דוח התקדמות - '+state.name;
+    var html='<!doctype html><html lang="he" dir="rtl"><head><meta charset="utf-8"><title>'+esc(fname)+'</title>'+
+      '<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Frank+Ruhl+Libre:wght@500;700;900&family=Heebo:wght@400;500;700;800;900&display=swap">'+
+      '<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">'+
+      '<style>'+CSS_DOC+'</style></head><body><div class="pr pr-doc">'+report(M,state.name,true)+'</div>'+
+      (pdf?'<div class="pr-wait" id="prWait"><div><b>מכין את קובץ ה-PDF…</b><span>זה לוקח כמה שניות</span></div></div><script src="https://cdn.jsdelivr.net/npm/html2pdf.js@0.10.2/dist/html2pdf.bundle.min.js"><\/script>':'')+
+      '<script>(function(){var go=function(){'+(pdf?
+        'var el=document.querySelector(".pr");if(!window.html2pdf){document.getElementById("prWait").remove();window.print();return;}'+
+        'html2pdf().set({margin:[8,8,10,8],filename:'+JSON.stringify(fname+'.pdf')+',image:{type:"jpeg",quality:0.96},html2canvas:{scale:2,useCORS:true,backgroundColor:"#F4EFE4"},jsPDF:{unit:"mm",format:"a4",orientation:"portrait"},pagebreak:{mode:["css","legacy"],avoid:[".pr-card",".pr-kpi",".pr-subj",".pr-recs li",".pr-list li","tr",".pr-bottom"]}}).from(el).save().then(function(){var w=document.getElementById("prWait");w.innerHTML="<div><b>הקובץ ירד בהצלחה ✓</b><span>אפשר לסגור את החלון</span></div>";setTimeout(function(){w.remove();},2500);});'
+        :'window.print();')+
+      '};var ready=function(){(document.fonts&&document.fonts.ready?document.fonts.ready:Promise.resolve()).then(function(){setTimeout(go,350);});};if(document.readyState==="complete")ready();else window.addEventListener("load",ready);})();<\/script></body></html>';
+    var w=window.open('','_blank');
+    if(!w){alert('הדפדפן חסם את החלון. יש לאפשר חלונות קופצים לאתר ולנסות שוב.');return;}
+    w.document.open();w.document.write(html);w.document.close();
+  }
+  window.renderParentsDashboard=function(historyArr){
+    try{orig.apply(this,arguments);}catch(e){console.warn(e);}
+    try{state.all=(historyArr||[]).slice();state.range=0;state.name=studentName(historyArr);draw();}catch(e){console.warn('[pr]',e);var m=document.getElementById('parents-modal');if(m)m.classList.remove('pr-on');}
+  };
+  window.__prAnalyze=analyze;
+})();
+
+</script>
+<script id="parents-report-2026-zoom">
+(function(){
+  var m=document.getElementById('parents-modal');if(!m)return;
+  function fit(){var z=parseFloat(getComputedStyle(document.body).zoom)||1;m.style.setProperty('zoom',String(Math.round(10000/z)/10000),'important');}
+  fit();window.addEventListener('resize',fit);window.addEventListener('orientationchange',fit);
+  new MutationObserver(fit).observe(m,{attributes:true,attributeFilter:['style','class']});
+})();
+</script>
+<!-- parents-report-kids:end -->
 </body>
 </html>
