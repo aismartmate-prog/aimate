@@ -4910,86 +4910,116 @@ html body #login-modal .forgot-pass-link { color:#2563eb !important; cursor:poin
 @media (max-width:480px) { html body #login-modal .login-card.auth-card-premium { padding:30px 20px 22px !important; border-radius:22px !important; } html body #login-modal .premium-auth-title { font-size:1.5rem !important; } }
 </style>
 <style id="home-cards-2026">
+@import url('https://fonts.googleapis.com/css2?family=Frank+Ruhl+Libre:wght@700;900&display=swap');
 /* =====================================================================
-   home-cards-2026 — כרטיסיות דף הבית (בחירת מקצוע + "איך זה עובד").
-   אותה שפה של דפי המקצועות: אריחים גדולים ומעוגלים בגרדיאנטים העמוקים
-   של האתר, בלי בועות וקישוטים. עיצוב בלבד - הלחיצות והקישורים כמו קודם.
+   home-cards-2026 — דף הבית: "קיר פוסטרים" של מקצועות.
+   כל מקצוע הוא אריח-פוסטר: סמל ענק בקווי מתאר שגולש מהקצה (x², Aa, אב...),
+   מספר סידורי, כותרת גדולה, וזרקור שעוקב אחרי העכבר. הפריסה א-סימטרית:
+   אריח גדול ושניים קטנים בכל שורה. שלושת הצעדים הופכים למסלול אחד מחובר.
+   עיצוב בלבד - הלחיצות והקישורים כמו קודם.
    מקור: tools/home-theme.css · מוחל עם tools/apply-home-theme.py
    ===================================================================== */
 :root body .fin-main { max-width: 1180px !important; }
+:root body .fin-title { font-family: 'Frank Ruhl Libre', 'Heebo', serif !important; font-weight: 900 !important; font-size: clamp(2.3rem, 4.4vw, 3.4rem) !important; letter-spacing: -.02em !important; line-height: 1.05 !important; margin: 14px 0 6px !important; }
+:root body .fin-sub { font-size: 1.1rem !important; margin-bottom: 22px !important; }
+:root body .fin-sub::after { width: 56px !important; height: 4px !important; background: #f5b83d !important; }
 
-/* ---------- "איך זה עובד": שלושה צעדים על זכוכית כחולה-לילה ---------- */
-:root body .fin-how { width: 100%; box-sizing: border-box; max-width: 1100px !important; gap: 12px !important; margin: 0 auto 26px !important; counter-reset: none; }
-:root body .fin-how-step {
-    position: relative; align-items: center !important; gap: 14px !important; padding: 16px 18px !important; border-radius: 22px !important;
-    background: linear-gradient(160deg, rgba(22,34,74,.9), rgba(11,18,38,.92)) !important; border: 1px solid rgba(147,180,255,.18) !important;
-    box-shadow: inset 0 1px 0 rgba(255,255,255,.08), 0 20px 40px -24px rgba(5,9,22,.8) !important;
-    -webkit-backdrop-filter: blur(12px) !important; backdrop-filter: blur(12px) !important;
-}
-:root body .fin-how-step .hs-ico { width: 44px !important; height: 44px !important; border-radius: 14px !important; font-size: 1.1rem !important; color: #fff !important; box-shadow: inset 0 1px 0 rgba(255,255,255,.25), 0 10px 22px -12px rgba(0,0,0,.8); }
+/* ---------- המסלול: למידה ← תרגול ← מבחן, בפס אחד מחובר ---------- */
+:root body .fin-how { width: 100%; box-sizing: border-box; max-width: 1100px !important; gap: 0 !important; margin: 0 auto 26px !important; padding: 8px !important; border-radius: 28px !important;
+    background: linear-gradient(160deg, rgba(22,34,74,.92), rgba(11,18,38,.94)) !important; border: 1px solid rgba(147,180,255,.2) !important;
+    box-shadow: inset 0 1px 0 rgba(255,255,255,.1), 0 26px 50px -30px rgba(5,9,22,.9) !important; -webkit-backdrop-filter: blur(12px); backdrop-filter: blur(12px); }
+:root body .fin-how-step { position: relative; align-items: center !important; gap: 14px !important; padding: 14px 18px !important; border-radius: 22px !important; background: transparent !important; border: 0 !important; box-shadow: none !important; -webkit-backdrop-filter: none !important; backdrop-filter: none !important; transition: background .3s; }
+:root body .fin-how-step:hover { background: rgba(255,255,255,.06) !important; }
+:root body .fin-how-step + .fin-how-step::before { content: ""; position: absolute; inset-inline-start: -7px; top: 50%; width: 12px; height: 12px; margin-top: -6px; border-top: 2.5px solid #f5b83d; border-left: 2.5px solid #f5b83d; transform: rotate(-45deg); opacity: .9; }
+:root body .fin-how-step .hs-ico { width: 48px !important; height: 48px !important; border-radius: 15px !important; font-size: 1.15rem !important; color: #fff !important; box-shadow: inset 0 1px 0 rgba(255,255,255,.28), 0 12px 22px -12px rgba(0,0,0,.9); }
 :root body .fin-how-step:nth-child(1) .hs-ico { background: linear-gradient(135deg, #1fb880, #0a5c46) !important; }
 :root body .fin-how-step:nth-child(2) .hs-ico { background: linear-gradient(135deg, #1a84ff, #003f8a) !important; }
 :root body .fin-how-step:nth-child(3) .hs-ico { background: linear-gradient(135deg, #9b3ff0, #4c1d95) !important; }
-:root body .fin-how-step b { color: #fff !important; font-size: 1.05rem !important; font-weight: 800 !important; margin-bottom: 3px !important; }
+:root body .fin-how-step b { color: #fff !important; font-size: 1.08rem !important; font-weight: 800 !important; margin-bottom: 2px !important; }
 :root body .fin-how-step span.hs-t { color: #b7c2e0 !important; font-size: .82rem !important; line-height: 1.45 !important; }
 
-/* ---------- כרטיסיות המקצועות: אריחים גדולים ---------- */
-:root body .fin-grid { display: grid !important; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 18px !important; width: 100%; max-width: 1100px; margin: 0 auto; box-sizing: border-box; }
+/* ---------- קיר הפוסטרים ---------- */
+:root body .fin-grid { display: grid !important; grid-template-columns: repeat(12, minmax(0, 1fr)); grid-auto-rows: 214px; gap: 18px !important; width: 100%; max-width: 1100px; margin: 0 auto; box-sizing: border-box; counter-reset: fin; perspective: 1400px; }
 :root body .fin-card {
-    --g1: #1a84ff; --g2: #003f8a; --glow: rgba(0,114,255,.55);
-    width: auto !important; min-height: 196px !important; padding: 22px 24px !important; gap: 4px !important; isolation: isolate;
-    align-items: flex-start !important; justify-content: flex-start !important; text-align: right !important;
-    border-radius: 26px !important; border: 1px solid rgba(255,255,255,.14) !important;
-    background: linear-gradient(155deg, var(--g1) 0%, var(--g2) 100%) !important;
-    box-shadow: inset 0 1px 0 rgba(255,255,255,.22), 0 24px 48px -26px var(--glow) !important;
-    transition: transform .35s cubic-bezier(.22,1,.36,1), box-shadow .35s ease !important;
+    --g1: #1a84ff; --g2: #003f8a; --glow: rgba(0,114,255,.55); --mx: 50%; --my: 0%; --rx: 0deg; --ry: 0deg;
+    counter-increment: fin; grid-column: span 3; width: auto !important; min-height: 0 !important; height: auto !important; padding: 22px 24px !important; gap: 2px !important; isolation: isolate;
+    align-items: flex-start !important; justify-content: flex-end !important; text-align: right !important; border-radius: 30px !important; border: 1px solid rgba(255,255,255,.16) !important; overflow: hidden !important;
+    background:
+        radial-gradient(360px circle at var(--mx) var(--my), rgba(255,255,255,.26), transparent 62%),
+        linear-gradient(to top, rgba(4,8,22,.55), rgba(4,8,22,0) 58%),
+        linear-gradient(150deg, var(--g1) 0%, var(--g2) 100%) !important;
+    box-shadow: inset 0 1px 0 rgba(255,255,255,.26), 0 30px 56px -28px var(--glow) !important;
+    transform: rotateX(var(--rx)) rotateY(var(--ry)) translateZ(0); transform-style: preserve-3d;
+    transition: transform .45s cubic-bezier(.16,1,.3,1), box-shadow .45s cubic-bezier(.16,1,.3,1) !important;
 }
-/* בלי בועות: רק הברקה עדינה מלמעלה */
-:root body .fin-card::before { background: linear-gradient(180deg, rgba(255,255,255,.14), transparent 50%) !important; z-index: -1 !important; }
-:root body .fin-card::after { display: none !important; }
-:root body .fin-card:focus-visible { outline: 3px solid #fff !important; outline-offset: 3px; }
+:root body .fin-card:nth-child(4n+1) { grid-column: span 6; }
+/* מספר סידורי */
+:root body .fin-card::before { content: "0" counter(fin) !important; position: absolute !important; inset: auto !important; top: 20px !important; left: 24px !important; z-index: 2 !important; width: auto !important; height: auto !important;
+    background: none !important; border-radius: 0 !important; font: 800 .82rem/1 'Heebo', sans-serif !important; letter-spacing: .14em; color: rgba(255,255,255,.72) !important; }
+/* הסמל הענק של המקצוע */
+:root body .fin-card::after { content: attr(data-glyph) !important; display: block !important; position: absolute !important; z-index: -1 !important; inset: auto !important; left: -6px !important; bottom: -34px !important; top: auto !important; width: auto !important;
+    background: none !important; transform: rotate(-8deg) !important; transition: transform .7s cubic-bezier(.16,1,.3,1), opacity .4s !important;
+    font: 900 172px/1 'Frank Ruhl Libre', Georgia, serif !important; letter-spacing: -.04em; color: transparent !important; -webkit-text-stroke: 2px rgba(255,255,255,.3); white-space: nowrap; direction: ltr; pointer-events: none; }
+:root body .fin-card:nth-child(4n+1)::after { font-size: 230px !important; bottom: -48px !important; left: 18px !important; -webkit-text-stroke: 2.5px rgba(255,255,255,.34); }
+:root body .fin-card:focus-visible { outline: 3px solid #f5b83d !important; outline-offset: 4px; }
 @media (hover: hover) and (pointer: fine) {
-    :root body .fin-card:hover { transform: translateY(-5px) !important; filter: none !important; box-shadow: inset 0 1px 0 rgba(255,255,255,.26), 0 32px 60px -26px var(--glow) !important; }
-    :root body .fin-card:hover .fc-icon { transform: none !important; background: rgba(255,255,255,.24) !important; }
-    :root body .fin-card:hover .fc-go { transform: translateX(-4px) !important; background: rgba(255,255,255,.26) !important; }
+    :root body .fin-card:hover { filter: none !important; box-shadow: inset 0 1px 0 rgba(255,255,255,.34), 0 44px 70px -26px var(--glow) !important; z-index: 2; }
+    :root body .fin-card:hover::after { transform: rotate(-3deg) scale(1.08) !important; }
+    :root body .fin-card:hover .fc-icon { transform: translateY(-3px) !important; background: #fff !important; }
+    :root body .fin-card:hover .fc-go { background: #fff !important; color: #0b1226 !important; padding-inline: 18px 14px; }
+    :root body .fin-card:hover .fc-go::before { max-width: 90px; opacity: 1; margin-inline-end: 8px; }
 }
-:root body .fin-card:active { transform: translateY(-1px) !important; }
-:root body .fin-card .fc-icon {
-    width: 50px !important; height: 50px !important; border-radius: 15px !important; margin: 0 0 auto !important; font-size: 1.25rem !important;
-    background: rgba(255,255,255,.16) !important; border: 1px solid rgba(255,255,255,.24) !important; -webkit-backdrop-filter: none !important; backdrop-filter: none !important;
-    box-shadow: inset 0 1px 0 rgba(255,255,255,.22) !important; text-shadow: none !important;
-}
-:root body .fin-card h3 { margin-top: 18px !important; font-size: 1.55rem !important; font-weight: 800 !important; letter-spacing: -.01em; line-height: 1.15 !important; text-shadow: none !important; }
-:root body .fin-card .fc-sub { font-size: .9rem !important; font-weight: 500 !important; color: rgba(255,255,255,.82) !important; text-shadow: none !important; }
-:root body .fin-card .fc-go {
-    top: 22px !important; bottom: auto !important; left: 22px !important; width: 40px; height: 40px; border-radius: 50%;
-    display: grid; place-items: center; color: #fff !important; font-size: .95rem !important;
-    background: rgba(255,255,255,.14); border: 1px solid rgba(255,255,255,.24);
-    transition: transform .3s cubic-bezier(.22,1,.36,1), background .3s !important;
-}
+:root body .fin-card:active { transform: scale(.985) !important; }
+:root body .fin-card .fc-icon { position: absolute !important; top: 20px; right: 22px; z-index: 2; width: 54px !important; height: 54px !important; border-radius: 17px !important; margin: 0 !important; font-size: 1.35rem !important;
+    background: rgba(255,255,255,.94) !important; border: 0 !important; -webkit-backdrop-filter: none !important; backdrop-filter: none !important; box-shadow: 0 14px 26px -14px rgba(0,0,0,.7) !important; text-shadow: none !important;
+    transition: transform .4s cubic-bezier(.16,1,.3,1), background .3s !important; }
+:root body .fin-card .fc-icon i { color: var(--g2) !important; }
+:root body .fin-card h3 { margin: 0 !important; font-family: 'Frank Ruhl Libre', 'Heebo', serif !important; font-size: 2rem !important; font-weight: 900 !important; letter-spacing: -.02em; line-height: 1.05 !important; text-shadow: 0 2px 18px rgba(4,8,22,.45) !important; }
+:root body .fin-card:nth-child(4n+1) h3 { font-size: 3rem !important; }
+:root body .fin-card .fc-sub { font-size: .95rem !important; font-weight: 500 !important; color: rgba(255,255,255,.9) !important; text-shadow: none !important; max-width: 70%; }
+:root body .fin-card .fc-go { top: auto !important; bottom: 22px !important; left: 22px !important; z-index: 2; height: 42px; min-width: 42px; padding: 0 13px; border-radius: 999px; display: inline-flex; align-items: center; justify-content: center;
+    color: #fff !important; font-size: .95rem !important; background: rgba(255,255,255,.16); border: 1px solid rgba(255,255,255,.3); transition: background .3s, color .3s, padding .35s cubic-bezier(.16,1,.3,1) !important; }
+:root body .fin-card .fc-go::before { content: "כניסה"; font: 800 .88rem 'Heebo', sans-serif; max-width: 0; opacity: 0; overflow: hidden; white-space: nowrap; transition: max-width .35s cubic-bezier(.16,1,.3,1), opacity .3s, margin .35s; }
+:root body .fin-card:nth-child(4n+1) .fc-go { background: #f5b83d; border-color: transparent; color: #1a1205 !important; padding-inline: 18px 14px; }
+:root body .fin-card:nth-child(4n+1) .fc-go::before { max-width: 90px; opacity: 1; margin-inline-end: 8px; }
 
-/* צבע לכל מקצוע - הגרדיאנטים העמוקים של דפי המקצועות */
-:root body .fin-card[onclick*="math"]    { --g1: #ef2b55; --g2: #7f1d1d; --glow: rgba(225,29,72,.55); }
-:root body .fin-card[onclick*="english"] { --g1: #f2a516; --g2: #8a3a07; --glow: rgba(234,150,20,.5); }
-:root body .fin-card[onclick*="hebrew"]  { --g1: #8b4cf6; --g2: #3b0764; --glow: rgba(124,58,237,.55); }
-:root body .fin-card[onclick*="science"] { --g1: #1fb880; --g2: #0a5c46; --glow: rgba(23,166,115,.55); }
-:root body .fin-card[onclick*="arabic"]  { --g1: #f08a3c; --g2: #7c2d12; --glow: rgba(234,128,52,.5); }
-:root body .fin-card[onclick*="finance"] { --g1: #0ea5c6; --g2: #164e63; --glow: rgba(8,145,178,.55); }
-:root body .fin-card[onclick*="tanach"]  { --g1: #0ea5c6; --g2: #164e63; --glow: rgba(8,145,178,.55); }
-:root body .fin-card[onclick*="trivia"]  { --g1: #ec4899; --g2: #831843; --glow: rgba(219,39,119,.55); }
+/* אריחים קטנים: הסמל עדין יותר, החץ למעלה והמספר למטה - כדי ששום דבר לא יעלה על הכותרת */
+:root body .fin-card:not(:nth-child(4n+1))::after { font-size: 150px !important; -webkit-text-stroke: 1.5px rgba(255,255,255,.17); left: -14px !important; bottom: -40px !important; }
+:root body .fin-card:not(:nth-child(4n+1))::before { top: auto !important; bottom: 24px !important; }
+:root body .fin-card:not(:nth-child(4n+1)) .fc-go { top: 22px !important; bottom: auto !important; }
+:root body .fin-card:not(:nth-child(4n+1)) .fc-sub { max-width: calc(100% - 34px); }
 
-@media (max-width: 760px) {
-    :root body .fin-how { grid-template-columns: 1fr !important; gap: 10px !important; }
-    :root body .fin-how-step { padding: 13px 15px !important; border-radius: 20px !important; }
-    :root body .fin-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px !important; }
-    :root body .fin-card { min-height: 150px !important; padding: 16px !important; border-radius: 22px !important; }
-    :root body .fin-card .fc-icon { width: 44px !important; height: 44px !important; border-radius: 13px !important; font-size: 1.1rem !important; }
-    :root body .fin-card h3 { margin-top: 14px !important; font-size: 1.25rem !important; }
-    :root body .fin-card .fc-sub { font-size: .8rem !important; }
-    :root body .fin-card .fc-go { width: 34px; height: 34px; top: 16px !important; left: 14px !important; font-size: .8rem !important; }
+/* צבע לכל מקצוע */
+:root body .fin-card[onclick*="math"]    { --g1: #ff3d68; --g2: #7a0f2e; --glow: rgba(225,29,72,.6); }
+:root body .fin-card[onclick*="english"] { --g1: #ffb020; --g2: #8a3a07; --glow: rgba(234,150,20,.55); }
+:root body .fin-card[onclick*="hebrew"]  { --g1: #9b5cff; --g2: #34096b; --glow: rgba(124,58,237,.6); }
+:root body .fin-card[onclick*="science"] { --g1: #22c98c; --g2: #07503c; --glow: rgba(23,166,115,.6); }
+:root body .fin-card[onclick*="arabic"]  { --g1: #ff914d; --g2: #7c2d12; --glow: rgba(234,128,52,.55); }
+:root body .fin-card[onclick*="finance"] { --g1: #19b8dc; --g2: #0f4558; --glow: rgba(8,145,178,.6); }
+:root body .fin-card[onclick*="tanach"]  { --g1: #19b8dc; --g2: #0f4558; --glow: rgba(8,145,178,.6); }
+:root body .fin-card[onclick*="trivia"]  { --g1: #ff5fa8; --g2: #7a1245; --glow: rgba(219,39,119,.6); }
+
+@media (max-width: 900px) {
+    :root body .fin-how { grid-template-columns: 1fr !important; padding: 6px !important; border-radius: 24px !important; }
+    :root body .fin-how-step { padding: 12px 14px !important; }
+    :root body .fin-how-step + .fin-how-step::before { display: none; }
+    :root body .fin-how-step + .fin-how-step { border-top: 1px solid rgba(255,255,255,.08) !important; border-radius: 0 0 20px 20px !important; }
+    :root body .fin-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); grid-auto-rows: 172px; gap: 12px !important; grid-auto-flow: dense; }
+    :root body .fin-card { grid-column: span 1; padding: 16px !important; border-radius: 24px !important; transform: none; }
+    :root body .fin-card:nth-child(4n+1) { grid-column: span 2; }
+    :root body .fin-card::before { top: 16px !important; left: 16px !important; }
+    :root body .fin-card::after, :root body .fin-card:not(:nth-child(4n+1))::after { font-size: 112px !important; bottom: -26px !important; left: -8px !important; }
+    :root body .fin-card:not(:nth-child(4n+1))::before { bottom: auto !important; top: 16px !important; }
+    :root body .fin-card:nth-child(4n+1)::after { font-size: 168px !important; bottom: -34px !important; left: 8px !important; }
+    :root body .fin-card .fc-icon { top: 14px; right: 14px; width: 46px !important; height: 46px !important; border-radius: 14px !important; font-size: 1.15rem !important; }
+    :root body .fin-card h3 { font-size: 1.5rem !important; }
+    :root body .fin-card:nth-child(4n+1) h3 { font-size: 2.2rem !important; }
+    :root body .fin-card .fc-sub { font-size: .82rem !important; max-width: 100%; }
+    :root body .fin-card:not(:nth-child(4n+1)) .fc-go { display: none; }
+    :root body .fin-card .fc-go { bottom: 16px !important; left: 16px !important; height: 38px; }
 }
-@media (max-width: 340px) { :root body .fin-grid { grid-template-columns: 1fr; } }
-@media (prefers-reduced-motion: reduce) { :root body .fin-card { transition: none !important; animation: none !important; } }
+@media (max-width: 340px) { :root body .fin-grid { grid-template-columns: 1fr; } :root body .fin-card:nth-child(4n+1) { grid-column: span 1; } }
+@media (prefers-reduced-motion: reduce) { :root body .fin-card, :root body .fin-card::after { transition: none !important; animation: none !important; transform: none !important; } }
 /* מחשב: דף הבית מוקטן ב-10% (הכותרת והכרטיסיות), כדי שלא ייראה גדול מדי */
 @media (min-width: 1025px) { :root body .fin-zoom { zoom: 1.08 !important; } }
 @supports (-webkit-touch-callout: none) { @media (min-width: 1025px) and (max-width: 1366px) { :root body .fin-zoom { zoom: 1.035 !important; } } }
@@ -16981,5 +17011,31 @@ window.__PR_DOC_CSS="\n\n\n.pr{--ink:#0B1D4D;--ink2:#1F3170;--mut:#5A6385;--pape
 })();
 </script>
 
+<script id="home-cards-2026-js">
+/* קיר הפוסטרים: הסמל הענק של כל מקצוע, זרקור שעוקב אחרי העכבר והטיה עדינה (רק עם עכבר, ורק כשאין בקשה להפחתת תנועה) */
+(function () {
+    var KIDS = false;
+    var GLYPH = { math: KIDS ? '1+2' : 'x²', english: 'Aa', hebrew: 'אב', science: KIDS ? '?!' : 'H₂O', arabic: 'ع', finance: '₪', tanach: 'א', trivia: '?' };
+    var cards = document.querySelectorAll('.fin-card');
+    Array.prototype.forEach.call(cards, function (c) {
+        var oc = c.getAttribute('onclick') || '';
+        for (var k in GLYPH) { if (oc.indexOf(k) > -1) { c.setAttribute('data-glyph', GLYPH[k]); break; } }
+    });
+    var fine = window.matchMedia && matchMedia('(hover: hover) and (pointer: fine)').matches, calm = window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if (!fine) return;
+    Array.prototype.forEach.call(cards, function (c) {
+        var raf = 0;
+        c.addEventListener('pointermove', function (e) {
+            cancelAnimationFrame(raf);
+            raf = requestAnimationFrame(function () {
+                var r = c.getBoundingClientRect(), x = (e.clientX - r.left) / r.width, y = (e.clientY - r.top) / r.height;
+                c.style.setProperty('--mx', (x * 100).toFixed(1) + '%'); c.style.setProperty('--my', (y * 100).toFixed(1) + '%');
+                if (!calm) { c.style.setProperty('--rx', ((.5 - y) * 6).toFixed(2) + 'deg'); c.style.setProperty('--ry', ((x - .5) * 7).toFixed(2) + 'deg'); }
+            });
+        });
+        c.addEventListener('pointerleave', function () { cancelAnimationFrame(raf); c.style.setProperty('--rx', '0deg'); c.style.setProperty('--ry', '0deg'); c.style.setProperty('--mx', '50%'); c.style.setProperty('--my', '0%'); });
+    });
+})();
+</script>
 </body>
 </html>

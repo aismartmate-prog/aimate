@@ -8,11 +8,11 @@ args = sys.argv[1:]; out = None
 kids = '--kids' in args
 if kids:
     args.remove('--kids')
-    k = open(os.path.join(here, 'home-kids-theme.css'), encoding='utf-8').read()
-    imp = [l for l in k.split('\n') if l.startswith('@import')][0]
-    css = imp + '\n' + css + k.replace(imp, '')
-if '--out' in args:
-    i = args.index('--out'); out = args[i + 1]; del args[i:i + 2]
+    css = css + open(os.path.join(here, 'home-kids-theme.css'), encoding='utf-8').read()
+# @import must come first inside a <style> block
+imports = re.findall(r"^@import[^\n]*\n", css, flags=re.M)
+css = ''.join(imports) + re.sub(r"^@import[^\n]*\n", '', css, flags=re.M)
+JS = open(os.path.join(here, 'home-theme.js.html'), encoding='utf-8').read().replace('__KIDS__', 'true' if kids else 'false')
 block = '<style id="home-cards-2026">\n' + css + '</style>\n'
 for f in args:
     s = open(f, encoding='utf-8').read()
@@ -21,6 +21,8 @@ for f in args:
     b = re.search(r'^<body[ >]', s, re.M)
     i = s.rindex('</head>', 0, b.start())
     s = s[:i] + block + s[i:]
+    s = re.sub(r'<script id="home-cards-2026-js">.*?</script>\n', '', s, flags=re.S)
+    j = s.rfind('</body>'); s = s[:j] + JS + s[j:]
     dst = os.path.join(out, re.sub(r'_\d+\.html$', '.html', re.sub(r'^[0-9a-f]{8}-', '', os.path.basename(f)))) if out else f
     open(dst, 'w', encoding='utf-8').write(s)
     print('ok', dst)

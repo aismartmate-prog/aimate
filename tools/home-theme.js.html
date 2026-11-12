@@ -1,0 +1,26 @@
+<script id="home-cards-2026-js">
+/* קיר הפוסטרים: הסמל הענק של כל מקצוע, זרקור שעוקב אחרי העכבר והטיה עדינה (רק עם עכבר, ורק כשאין בקשה להפחתת תנועה) */
+(function () {
+    var KIDS = __KIDS__;
+    var GLYPH = { math: KIDS ? '1+2' : 'x²', english: 'Aa', hebrew: 'אב', science: KIDS ? '?!' : 'H₂O', arabic: 'ع', finance: '₪', tanach: 'א', trivia: '?' };
+    var cards = document.querySelectorAll('.fin-card');
+    Array.prototype.forEach.call(cards, function (c) {
+        var oc = c.getAttribute('onclick') || '';
+        for (var k in GLYPH) { if (oc.indexOf(k) > -1) { c.setAttribute('data-glyph', GLYPH[k]); break; } }
+    });
+    var fine = window.matchMedia && matchMedia('(hover: hover) and (pointer: fine)').matches, calm = window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if (!fine) return;
+    Array.prototype.forEach.call(cards, function (c) {
+        var raf = 0;
+        c.addEventListener('pointermove', function (e) {
+            cancelAnimationFrame(raf);
+            raf = requestAnimationFrame(function () {
+                var r = c.getBoundingClientRect(), x = (e.clientX - r.left) / r.width, y = (e.clientY - r.top) / r.height;
+                c.style.setProperty('--mx', (x * 100).toFixed(1) + '%'); c.style.setProperty('--my', (y * 100).toFixed(1) + '%');
+                if (!calm) { c.style.setProperty('--rx', ((.5 - y) * 6).toFixed(2) + 'deg'); c.style.setProperty('--ry', ((x - .5) * 7).toFixed(2) + 'deg'); }
+            });
+        });
+        c.addEventListener('pointerleave', function () { cancelAnimationFrame(raf); c.style.setProperty('--rx', '0deg'); c.style.setProperty('--ry', '0deg'); c.style.setProperty('--mx', '50%'); c.style.setProperty('--my', '0%'); });
+    });
+})();
+</script>
